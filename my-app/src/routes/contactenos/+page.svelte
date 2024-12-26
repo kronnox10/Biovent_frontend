@@ -129,7 +129,6 @@
         <div class="pt-5 mt-5" id="map">
         </div>
     </div>
-</div>
 
 <Footer></Footer>
 
