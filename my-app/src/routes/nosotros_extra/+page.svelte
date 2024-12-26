@@ -34,8 +34,60 @@
 <SocialMedia></SocialMedia>
 <NavbarIndex></NavbarIndex>
 <div class="" style="background-image: url('/fondo-1.jpg'); background-size: cover; background-color: darkcyan; padding-bottom: 2%;">
-    <h3 class="text-center pt-2 pb-2" id="valores" style="background-color: darkgray;  color: #ffffff; border-bottom: 1px solid #ffffff;"> NUESTROS VALORES</h3>
+    <!--Mision-Vision-->
+    <div class="container" >
+        <div class="card mb-3" style="max-width: 100%;">
+            <div class="row g-0" >
+                <div class="col-md-12">
+                    <div class="card-body" >
+                        <div class="col-md-12 text-center" id="mision">
+                            <img
+                                id="mision-img"
+                                src="/mision.png"
+                                class="img-fluid rounded-start"
+                                alt="..."
+                            />
+                            <img hidden
+                                id="vision-img"
+                                src="/vision.png" 
+                                class="img-fluid rounded-start"
+                                alt="..."
+                                />
+                            </div>
+                            <div  style="margin-left: 4%;">
+                            <p class="card-text" id="mision-text">
+                                Somos una empresa biomédica calificada, con conocimiento
+                                en tecnología para la prestación de servicio oportuno,
+                                optimo y con calidad en el funcionamiento de equipo
+                                médico. De esta manera aportar herramientas para brindar
+                                una mayor seguridad y confianza a cada ente prestador
+                            </p>
+                            <p hidden class="card-text" id="vision-text">
+                                En el 2025 Biovent se consolidará como una entidad líder
+                                en satisfacer las necesidades de cada cliente, contar
+                                con un servicio personalizado, integral y de calidad
+                                tecnológica y humana, a su vez, siendo un apoyo en las
+                                funciones de regulación del sistema de garantía de
+                                calidad orientado al área biomédica, así como precios
+                                competitivos.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="margin-left: 2%;" class="py-4">
+                <button class="col-5 btn btn-dark mx-5" on:click={() => Cambiar(1)}>
+                    Mision
+                </button>
+                <button class="col-5 btn btn-dark mx-2" on:click={() => Cambiar(2)}>
+                    Vision
+                </button>
+            </div>
+        </div>
+    </div>
+    
     <!--Valores-->
+    <h3 class="text-center pt-2 pb-2" id="valores" style="background-color: darkgray;  color: #ffffff; border-bottom: 1px solid #ffffff;"> NUESTROS VALORES</h3>
     <div class="">
 
         <div class="container"  style="margin-left: 14%">
@@ -91,57 +143,6 @@
         </div>
     </div>
 
-    <!--Mision-Vision-->
-    <div class="container" >
-        <div class="card mb-3" style="max-width: 100%; margin-top:5%;">
-            <div class="row g-0" >
-                <div class="col-md-12">
-                    <div class="card-body" >
-                        <div class="col-md-12 text-center" id="mision">
-                            <img
-                                id="mision-img"
-                                src="/mision.png"
-                                class="img-fluid rounded-start"
-                                alt="..."
-                            />
-                            <img hidden
-                                id="vision-img"
-                                src="/vision.png" 
-                                class="img-fluid rounded-start"
-                                alt="..."
-                                />
-                            </div>
-                            <div  style="margin-left: 4%;">
-                            <p class="card-text" id="mision-text">
-                                Somos una empresa biomédica calificada, con conocimiento
-                                en tecnología para la prestación de servicio oportuno,
-                                optimo y con calidad en el funcionamiento de equipo
-                                médico. De esta manera aportar herramientas para brindar
-                                una mayor seguridad y confianza a cada ente prestador
-                            </p>
-                            <p hidden class="card-text" id="vision-text">
-                                En el 2025 Biovent se consolidará como una entidad líder
-                                en satisfacer las necesidades de cada cliente, contar
-                                con un servicio personalizado, integral y de calidad
-                                tecnológica y humana, a su vez, siendo un apoyo en las
-                                funciones de regulación del sistema de garantía de
-                                calidad orientado al área biomédica, así como precios
-                                competitivos.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div style="margin-left: 2%;" class="py-4">
-                <button class="col-5 btn btn-dark mx-5" on:click={() => Cambiar(1)}>
-                    Mision
-                </button>
-                <button class="col-5 btn btn-dark mx-2" on:click={() => Cambiar(2)}>
-                    Vision
-                </button>
-            </div>
-        </div>
-    </div>
 </div>
 <Footer></Footer>
 
