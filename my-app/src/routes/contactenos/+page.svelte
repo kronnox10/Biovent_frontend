@@ -60,76 +60,64 @@
 
 <div>
     <div class="container pt-5">
-        <h1 class="text-center">Contactenos
-                <div class="col-xl-4">
-                    <div class="card">
-                        <div
-                            class="card-body"
-                            style=" color: black; background-color: skyblue;"
-                        >
-                            <h5>
-                                <strong><b>Contactenos</b></strong>
-                            </h5>
-                            <div>
-                                <i class="fab fa-whatsapp" style="color: green;"
-                                ></i>
-                                WhatsApp:
-                                <p>300 302 2783</p>
-                                <p></p>
-                            </div>
-                            <div>
-                                <i
-                                    class="fas fa-envelope"
-                                    style="color: black ;"
-                                ></i> Correo Electrónico: bioventingenieriabiomedica@gmail.com
-                            </div>
-
-                            <div class="py-4">
-                                <p>
-                                    <strong>BIOVENT®</strong>
-                                    2024
-                                </p>
-                                <p>Todos los derechos reservados</p>
-                                <p></p>
-                            </div>
-
-                            <h5>
-                                <b>Ubicaciones</b>
-                            </h5>
-                            <p>
-                                <i
-                                    class="fas fa-map-marker-alt"
-                                    style="color: blue;"
-                                ></i> Barranquilla - Colombia
-                            </p>
-                        </div>
+        <h1 class="text-center">Contactenos</h1>
+        <div class="col-xl-4">
+            <div class="card">
+                <div class="card-body" style=" color: black; background-color: skyblue;">
+                    <h5>
+                        <strong><b>Contactenos</b></strong>
+                    </h5>
+                    <div>
+                        <i class="fab fa-whatsapp" style="color: green;"></i>
+                        WhatsApp:
+                        <p>300 302 2783</p>
+                        <p></p>
                     </div>
-                </div>
-
-                <div class="col-xl-8">
-                    <form action="">
-                        <label for="name">Nombre</label>
-                        <input id="name" type="text" class="form-control mb-2" />
-
-                        <label for="phone">Télefono</label>
-                        <input id="phone" type="text" class="form-control mb-2" />
-
-                        <label for="correo">Correo</label>
-                        <input id="correo" type="text" class="form-control mb-2" />
-
-                        <label for="mensaje">Mensaje</label>
-                        <input id="mensaje" type="text" class="form-control py-4 mb-3" />
-
-                        <button class="btn btn-info" on:click={sendEmail}>Enviar</button>
-                    </form>
+                    <div>
+                        <i class="fas fa-envelope"style="color: black ;"></i> Correo Electrónico: bioventingenieriabiomedica@gmail.com
+                    </div>
+                    <div class="py-4">
+                        <p>
+                            <strong>BIOVENT®</strong>
+                            2024
+                        </p>
+                        <p>Todos los derechos reservados</p>
+                        <p></p>
+                    </div>
+                    <h5>
+                        <b>Ubicaciones</b>
+                    </h5>
+                    <p>
+                        <i
+                            class="fas fa-map-marker-alt"
+                            style="color: blue;"
+                        ></i> Barranquilla - Colombia
+                    </p>
                 </div>
             </div>
         </div>
+        <div class="col-xl-8">
+            <form action="">
+                <label for="name">Nombre</label>
+                <input id="name" type="text" class="form-control mb-2" />
 
-        <div class="pt-5 mt-5" id="map">
+                <label for="phone">Télefono</label>
+                <input id="phone" type="text" class="form-control mb-2" />
+
+                <label for="correo">Correo</label>
+                <input id="correo" type="text" class="form-control mb-2" />
+
+                <label for="mensaje">Mensaje</label>
+                <input id="mensaje" type="text" class="form-control py-4 mb-3" />
+
+                <button class="btn btn-info" on:click={sendEmail}>Enviar</button>
+            </form>
         </div>
     </div>
+    <div class="pt-5 mt-5" id="map">
+    </div>
 </div>
+
 
 <Footer></Footer>
 
