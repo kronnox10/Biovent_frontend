@@ -55,14 +55,14 @@
                                 />
                             </div>
                             <div  style="margin-left: 4%;">
-                            <p class="card-text" id="mision-text">
+                            <p class="card-text" id="mision-text" style="text-align: justify;">
                                 Somos una empresa biomédica calificada, con conocimiento
                                 en tecnología para la prestación de servicio oportuno,
                                 optimo y con calidad en el funcionamiento de equipo
                                 médico. De esta manera aportar herramientas para brindar
                                 una mayor seguridad y confianza a cada ente prestador
                             </p>
-                            <p hidden class="card-text" id="vision-text">
+                            <p hidden class="card-text" id="vision-text" style="text-align: justify;">
                                 En el 2025 Biovent se consolidará como una entidad líder
                                 en satisfacer las necesidades de cada cliente, contar
                                 con un servicio personalizado, integral y de calidad

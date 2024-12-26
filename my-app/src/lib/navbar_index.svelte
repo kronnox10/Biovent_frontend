@@ -80,13 +80,13 @@
                     <p>
                         Nuestro equipo multidisciplinario está compuesto por profesionales altamente capacitados en diversas áreas clave para garantizar un servicio integral y de calidad. Contamos con:  
                         <li>
-                            Ingenieros Mecatrónicos, Electrónicos y Biomédicos: Especialistas en el diseño, desarrollo y optimización de  y equipos médicos, así como en el diagnóstico y resolución de problemas técnicos.
+                            Ingenieros Mecatrónicos, Electrónicos y Biomédicos.
                         </li>
                         <li>
-                            Ingenieros en Sistemas y Técnicos Especializados: Encargados de implementar y mantener soluciones tecnológicas y sistemas informáticos que aseguren la conectividad y funcionalidad de los equipos.
+                            Ingenieros en Sistemas y Técnicos Especializados.
                         </li>
                         <li>
-                            Enfermeras y Especialistas Clínicos: Profesionales con experiencia en el uso práctico de  y equipos médicos, quienes aportan conocimientos sobre las necesidades reales del entorno clínico.
+                            Enfermeras y Especialistas Clínicos.
                         </li>
                         <br>
                         Este equipo combina experiencia técnica, conocimiento clínico y habilidades tecnológicas para ofrecer soluciones innovadoras y un servicio de excelencia que responde a las necesidades de nuestros clientes."</p>

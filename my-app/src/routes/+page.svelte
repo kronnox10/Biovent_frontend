@@ -151,7 +151,7 @@
                     </div>
                         <div class="card-body">
                             <h5 class="card-title">SERVICIOS TECNICOS</h5>
-                            <p class="card-text">
+                            <p class="card-text" style="text-align: justify;">
                                 Ofrecemos servicios de mantenimientos preventivos programados y
                                 correctivos ilimitados a peticion del cliente, para garantizar el optimo
                                 funcionamiento de los dispositivos y equipos medicos.
@@ -178,7 +178,7 @@
                     </div>
                         <div class="card-body">
                             <h5 class="card-title">ENTRENAMIENTOS</h5>
-                            <p class="card-text">
+                            <p class="card-text" style="text-align: justify;">
                                 Nuestro servicio de entrenamiento esta dedicado a potenciar las habilidades y
                                 conocimientos de nuestros clientes, ofrecemos capacitaciones personalizadas enfocadas
                                 en practicas innovadoras y la seguridad del paciente.
@@ -204,7 +204,7 @@
                             <h5 class="card-title">
                                 DISEÑO DE PROTOTIPO DE EQUIPOS MEDICOS
                             </h5>
-                            <p class="card-text">
+                            <p class="card-text" style="text-align: justify;">
                                 Nuestro servicio de diseño de prototipos transforma ideas en soluciones tangibles,
                                 ayudando a nuestros clientes a visualizar y perfeccionar sus productos previo a su
                                 produccion final.
