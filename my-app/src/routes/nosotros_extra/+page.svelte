@@ -148,23 +148,23 @@
 <style>
 
     #calidad:hover {
-        content: url('valores/calidad_hover.png');
+        content: url('/valores/calidad_hover.png');
     }
 
     #compromiso:hover {
-        content: url('valores/compromiso_hover.png');
+        content: url('/valores/compromiso_hover.png');
     }
 
     #innovacion:hover {
-        content: url('valores/Innovacion_hover.png');
+        content: url('/valores/Innovacion_hover.png');
     }
 
     #respeto:hover {
-        content: url('valores/respeto_hover.png');
+        content: url('/valores/respeto_hover.png');
     }
 
     #responsabilidad:hover {
-        content: url('valores/responsabilidad_hover.png');
+        content: url('/valores/responsabilidad_hover.png');
     }
 
 </style>

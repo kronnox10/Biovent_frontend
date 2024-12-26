@@ -107,6 +107,6 @@
     }
 
     .icon_container:hover img{
-        content: url('usuario_hover.png');
+        content: url('/usuario_hover.png');
     }
 </style>
