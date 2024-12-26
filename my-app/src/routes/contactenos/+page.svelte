@@ -119,7 +119,6 @@
 </div>
 
 <Footer></Footer>
-
 <br>
 <style>
     #map {
