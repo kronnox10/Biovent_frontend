@@ -36,7 +36,7 @@
             Swal.fire({
                 position: "top",
                 icon: "success",
-                title: "Correo mandado con exito " + name,
+                title: "Correo enviado con exito " + name,
                 showConfirmButton: false,
                 });
                 setTimeout(() => {
