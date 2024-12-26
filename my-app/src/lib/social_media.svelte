@@ -47,11 +47,11 @@
         background-color: #127bbe;
     }
     .social-icons a.instagram {
-        background-color: #127bbe;
+        background: linear-gradient(rgb(250, 7, 230), rgb(249, 253, 12));
     }
 
     .social-icons a.whatsapp {
-        background-color: #127bbe;
+        background-color: #15dd0f;
     }
     
     .social-icons a:hover {
@@ -59,7 +59,7 @@
     }
 
     .social-icons a:hover {
-        background-color: #000000; /* Change to a lighter color on hover */
+        background: #000000;
     }
 
 </style>
