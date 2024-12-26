@@ -60,9 +60,7 @@
 
 <div>
     <div class="container pt-5">
-        <h1 class="text-center">Pongase en contacto con nosotros</h1>
-        <div class="d-fluid pt-5">
-            <div class="row">
+        <h1 class="text-center">Contactenos
                 <div class="col-xl-4">
                     <div class="card">
                         <div
