@@ -1,8 +1,12 @@
-import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
- //que me habias dicho que hiciera que fui por agua
-  
+import svelte from '@sveltejs/vite-plugin-svelte';
+
 export default defineConfig({
-	plugins: [sveltekit()],
-  });
-  // http://192.168.56.1:5173/
+  plugins: [svelte()],
+  root: './my-app',  // Apunta al directorio donde está tu app.html y src/
+  build: {
+    rollupOptions: {
+      input: './my-app/src/app.html',  // Especificamos el archivo HTML de entrada
+    }
+  }
+});
