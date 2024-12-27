@@ -60,7 +60,7 @@
 
 <div>
     <div class="container pt-5">
-        <h1 class="text-center">Contactenos</h1>
+        <h1 class="text-center">Contactanos</h1>
         <div class="col-xl-4">
             <div class="card">
                 <div class="card-body" style=" color: black; background-color: skyblue;">

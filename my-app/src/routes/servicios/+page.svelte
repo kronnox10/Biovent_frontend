@@ -16,45 +16,38 @@
                 <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade col-md-4" data-bs-ride="carousel" data-bs-interval="3000">
                     <div class="carousel-inner ">
                         <div class="carousel-item active">
-                            <img src="/servicios/Mantenimiento_preventivo-correctivo1.png" class="img-fluid rounded-start" alt="..." width="750" height="550">
+                            <img src="/servicios/Mantenimiento_preventivo-correctivo1.png"  width="360" height="250" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="/servicios/capacitacion_personal.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
+                            <img src="/servicios/Mantenimiento_preventivo-correctivo2.jpg"  width="360" height="250" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="/servicios/diseño_prototipomedico.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
+                            <img src="/servicios/Mantenimiento_preventivo-correctivo3.jpg"  width="360" height="250" alt="...">
                         </div>
                     </div>
                 </div>
                 <div class="col-md-8">
                     <div class="card-body" >
                         <h5 class="card-title py-2" >Mantenimientos preventivos y correctivos</h5>
-                        <p class="card-text py-4">Garantizamos el funcionamiento óptimo de los equipos médicos, evitando fallas futuras y reparando problemas existentes de manera eficiente.</p>
+                        <p class="card-text py-4">Nos comprometemos a garantizar el funcionamiento optimo de sus equipos médicos, prolongando su vida util y asegurando su fiabilidad y precision. Nuestros servicios de mantenimiento y reparacion estan diseñados para evitar futuras fallas y reparar problemas existentes de manera inmediata y eficiente, 
+                            minimizando el tiempo de inactividad y garantizando la continuidad de la atencion medica de alta calidad.
+                        </p>
                     </div>
                 </div>
             </div>
         </div> 
 
-        <div class="card mb-4 mt-5"  id="cronograma" style="max-width: 100vw;">
+        <div class="card mb-4 mt-5"  id="cronograma" style="max-width: ;">
             <div class="row g-0 py-2 px-2">
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title py-2">Diseño de cronograma de mantenimiento</h5>
-                        <p class="card-text py-4">Organizamos un plan personalizado para el cuidado regular de sus dispositivos, asegurando su disponibilidad y confiabilidad.</p>
+                        <p class="card-text py-4">Organizamos un plan personalizado para el cuidado continuo de dispositivos médicos asegurando su disponibilidad y confiabilidad y proporcionara nuestros clientes un servicio de alta calidad adaptable a sus necesidades.</p>
                     </div>
                 </div>
-                <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade col-md-4" data-bs-ride="carousel" data-bs-interval="3000">
-                    <div class="carousel-inner ">
-                        <div class="carousel-item active">
-                            <img src="/servicios/Mantenimiento_preventivo-correctivo1.png" class="img-fluid rounded-start" alt="..." width="750" height="550">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/servicios/capacitacion_personal.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
-                        </div>
-                        <div class="carousel-item">
-                            <img src="/servicios/diseño_prototipomedico.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
-                        </div>
-                    </div>
+                <div class="col-md-4">
+                    <!-- svelte-ignore a11y_media_has_caption -->
+                    <img src="/servicios/cronograma_mantenimiento.png" width="360" height="200" alt="...">
                 </div>
             </div>
         </div> 
