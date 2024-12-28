@@ -100,6 +100,10 @@
     .nav-link:hover {
         color: #d33764 !important; /* Cambia el color del texto (ejemplo: blanco) */
     }
+
+    .dropdown-menu {
+        background-color: #127bbe;
+    }
     
     .nav-item.dropdown:hover .dropdown-menu {
         display: block;
@@ -109,4 +113,10 @@
     .icon_container:hover img{
         content: url('/usuario_hover.png');
     }
+
+    .dropdown-menu a:hover{
+        background-color: darkgray;
+        color: #ffffff;
+    }
+
 </style>

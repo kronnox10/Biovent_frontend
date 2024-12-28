@@ -108,13 +108,13 @@
                 <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade col-md-4" data-bs-ride="carousel" data-bs-interval="3000">
                     <div class="carousel-inner ">
                         <div class="carousel-item active">
-                            <img src="/servicios/Mantenimiento_preventivo-correctivo1.png" class="img-fluid rounded-start" alt="..." width="750" height="550">
+                            <img src="/servicios/venta_equipos.png" width="360" height="250" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="/servicios/capacitacion_personal.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
+                            <img src="/servicios/diseño_prototipomedico_2.jpg" width="360" height="250" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="/servicios/diseño_prototipomedico.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
+                            <img src="/servicios/diseño_prototipomedico.png" width="360" height="250" alt="...">
                         </div>
                     </div>
                 </div>
