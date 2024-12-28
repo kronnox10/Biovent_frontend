@@ -86,16 +86,17 @@
                 </div>
                 <div class="col-md-4">
                     <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active" data-bs-interval="10000">
+                        <div>
+                            <div>
+                                <!-- svelte-ignore a11y_media_has_caption -->
                                 <video src="/servicios/diseño_prototipomedico.mp4" class="w-100" title="dp" autoplay loop></video>
                             </div>
-                            <div class="carousel-item">
+                            <!--<div class="carousel-item">
                                 <img src="/servicios/diseño_prototipomedico_2.jpg" width="360" height="250" alt="...">
                             </div>
                             <div class="carousel-item">
                                 <img src="/servicios/diseño_prototipomedico_3.jpg" width="360" height="250" alt="...">
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                 </div>
