@@ -100,10 +100,6 @@
     .nav-link:hover {
         color: #d33764 !important; /* Cambia el color del texto (ejemplo: blanco) */
     }
-
-    .dropdown-menu {
-        background-color: #127bbe;
-    }
     
     .nav-item.dropdown:hover .dropdown-menu {
         display: block;
@@ -115,7 +111,7 @@
     }
 
     .dropdown-menu a:hover{
-        background-color: darkgray;
+        background-color: #127bbe;
         color: #ffffff;
     }
 
