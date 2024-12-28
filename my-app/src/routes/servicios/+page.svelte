@@ -57,13 +57,13 @@
                 <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade col-md-4" data-bs-ride="carousel" data-bs-interval="3000">
                     <div class="carousel-inner ">
                         <div class="carousel-item active">
-                            <img src="/servicios/Mantenimiento_preventivo-correctivo1.png" class="img-fluid rounded-start" alt="..." width="750" height="550">
+                            <img src="/servicios/capacitacion_personal_1.jpg"  width="360" height="250" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="/servicios/capacitacion_personal.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
+                            <img src="/servicios/capacitacion_personal_2.jpg"  width="360" height="250" alt="...">
                         </div>
                         <div class="carousel-item">
-                            <img src="/servicios/diseño_prototipomedico.png" class="img-fluid rounded-start"  width="750" height="550" alt="...">
+                            <img src="/servicios/capacitacion_personal_3.jpg"  width="360" height="250" alt="...">
                         </div>
                     </div>
                 </div>
@@ -85,8 +85,19 @@
                     </div>
                 </div>
                 <div class="col-md-4">
-                    <!-- svelte-ignore a11y_media_has_caption -->
-                    <video src="/servicios/diseño_prototipomedico.mp4" class="w-100" title="dp" autoplay loop></video>
+                    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active" data-bs-interval="10000">
+                                <video src="/servicios/diseño_prototipomedico.mp4" class="w-100" title="dp" autoplay loop></video>
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/servicios/diseño_prototipomedico_2.jpg" width="360" height="250" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="/servicios/diseño_prototipomedico_3.jpg" width="360" height="250" alt="...">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div> 

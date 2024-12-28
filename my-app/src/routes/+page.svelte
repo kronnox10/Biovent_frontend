@@ -202,7 +202,7 @@
                         </div>
                         <div class="card-body">
                             <h5 class="card-title">
-                                DISEÑO DE PROTOTIPO DE EQUIPOS MEDICOS
+                                DISEÑO Y PROTOTIPADO DE EQUIPOS MEDICOS
                             </h5>
                             <p class="card-text" style="text-align: justify;">
                                 Nuestro servicio de diseño de prototipos transforma ideas en soluciones tangibles,

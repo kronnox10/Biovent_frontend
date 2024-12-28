@@ -18,8 +18,8 @@
         id=""
         alt=""
     />
-</a>
-    <div class="container-fluid" >
+    </a>
+    <div class="container-fluid mt-3">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -58,9 +58,9 @@
                 <p class="nav-link active" aria-current="page" data-bs-toggle="modal" data-bs-target="#exampleModal">EQUIPO DE TRABAJO</p>
             </li>
         </ul>
-        <a href="/Login" class="icon_container"><img src="/usuario.png"   alt="..." width="45" height="45" style="margin-right: 1vw;"></a>
+        <a href="/Login" class="icon_container"><img src="/usuario.png"   alt="..." width="45" height="45" style="margin-right: 1vw; margin-top:-20%"></a>
         <form class="d-flex" style="padding-right: 11vw;">
-            <a  href="/Login" class="btn btn-dark" alt="..." style="border-radius: 20%;">Sign in</a>
+            <a  href="/Login" class="btn btn-dark" alt="..." style="border-radius: 20%;margin-top:-20%">Sign in</a>
           <!--<input class="form-control  href="/Login"me-2" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-success" type="submit">Search</button>-->
         </form>

@@ -59,7 +59,7 @@
 <NavbarIndex></NavbarIndex>
 
 <div>
-    <div class="container pt-5">
+    <div class="container row pt-5">
         <h1 class="text-center">Contactanos</h1>
         <div class="col-xl-4">
             <div class="card">
