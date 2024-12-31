@@ -139,7 +139,7 @@
                     <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <img src="../servicio_t.jpg" class="card-img-top py-2" width="230" height="200" alt="...">
+                                <img src="../servicios/venta_equipos_1.jpg" class="card-img-top py-2" width="230" height="200" alt="...">
                             </div>
                             <div class="carousel-item">
                                 <img src="../servicio_t1.jpg" class="card-img-top py-2"  width="230" height="200" alt="...">
@@ -190,7 +190,7 @@
                         <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
-                                    <img src="../diseño_e.jpg" class="card-img-top py-2" width="230" height="200" alt="...">
+                                    <img src="../servicio_t.jpg" class="card-img-top py-2" width="230" height="200" alt="...">
                                 </div>
                                 <div class="carousel-item">
                                     <img src="../diseño_e3.jpg" class="card-img-top py-2"  width="230" height="200" alt="...">

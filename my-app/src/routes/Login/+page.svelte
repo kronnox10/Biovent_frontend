@@ -161,13 +161,22 @@
     style="background-image: url('/biovent-fondo-transformed.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;"
 >
     <div class="col-sm-2 col-md-3 col-xl-3 col-lg-3 col-2">
-        <a href="/" class="btn btn-dark mx-5" style="margin-top:5%;">Volver</a>
+        <a href="/" class="btn btn-dark mx-5" style="margin-top:5%; margin-bottom: -15%;">Volver</a>
     </div>
-    <div class="container" style="margin-top: 7%;">
+    <div class="container col-4" style="margin-top: 7%; margin-bottom: 2%; padding-top: -10%;">
         <div
-            style="text-align: center; margin-top: 4%; margin-bottom: 3%; "
+            style="text-align: center; margin-top: 1%; margin-bottom: 3%; "
             class="fs-3"
         >
+            <img
+                src="foto_logo__2_-removebg-preview.png"
+                width="125"
+                height="80"
+                id=""
+                alt=""
+                style="margin-bottom: 5%;"
+            />
+            <br>
             <b>Inicio de sesion</b>
         </div>
         <div class="row justify-content-center g-2">
