@@ -12,7 +12,7 @@
         ></i>
     </a>
 
-    <a href="https://www.whatsapp.com/" class="whatsapp" target="_blank" aria-label="Icono de whats">
+    <a href="https://wa.me/qr/E6SCTXPOXHDBD1" class="whatsapp" target="_blank" aria-label="Icono de whats">
         <i
             class="fab fa-whatsapp"
             id="whatsapp"

@@ -128,7 +128,7 @@
     Final de carrusel-->
     
     <div class="d-flex">
-        <div class=" container col-10">
+        <div class=" container col-12">
             <!--Inicio de cartas-->
             <div class="container text-center" style="">
                 <div class="row" style="padding-top: 4%;">
@@ -159,6 +159,8 @@
                         </div>
                     </div>
 
+
+
                     <div
                         class="card col-12 col-sm-3"
                         style="width: 32%; margin-right:1%; margin-left: 1%;"
@@ -186,6 +188,8 @@
                         </div>
                     </div>
 
+
+                    
                     <div class="card col-12 col-sm-3"style="width: 32%; margin-left: 1%;">
                         <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
                             <div class="carousel-inner">

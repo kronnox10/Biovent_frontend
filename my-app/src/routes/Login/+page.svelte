@@ -161,7 +161,7 @@
     style="background-image: url('/biovent-fondo-transformed.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;"
 >
     <div class="col-sm-2 col-md-3 col-xl-3 col-lg-3 col-2">
-        <a href="/" class="btn btn-dark mx-5" style="margin-top:5%; margin-bottom: -15%;">Volver</a>
+        <a href="/" class="btn btn-dark mx-5" style="margin-top:5%; margin-bottom: -15%;">Inicio</a>
     </div>
     <div class="container col-4" style="margin-top: 7%; margin-bottom: 2%; padding-top: -10%;">
         <div
@@ -267,3 +267,6 @@
         }
     }
 </style>
+
+
+<a href="/administrador">asdad</a>
