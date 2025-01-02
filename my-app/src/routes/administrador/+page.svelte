@@ -6,11 +6,9 @@
     style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;"
 >
     <div class="container">
-        <!--Hola-->
-
         <div class="row">
             <div class="col-4" style="margin-top: 15rem">
-                <a href="#">
+                <a href="/administrador/cliente">
                     <img
                         src="/admin_v/persona.png"
                         alt=""
@@ -58,3 +56,5 @@
     }
 
 </style>
+
+
