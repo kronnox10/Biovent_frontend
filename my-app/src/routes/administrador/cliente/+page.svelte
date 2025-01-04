@@ -3,8 +3,14 @@
     let todos = {};
     let loading = true;
     let error = null;
-
+    let activeElement = 'a';
+    
     onMount(async () => {
+        //const a = "";
+        //const b = "";
+        //const c = "";
+        //const d = "";
+        //const e = "";
         try {
             const response = await fetch("http://127.0.0.1:8000/get_users");
             if (!response.ok) throw new Error("Error al cargar los datos");
@@ -22,11 +28,53 @@
             loading = false;
         }
     });
+
+
+    /*function Cambiar(n) {
+        const a = document.getElementById("perfil");
+        const b = document.getElementById("inventario");
+        const c = document.getElementById("cronograma");
+        const d = document.getElementById("os_activas");
+        const e = document.getElementById("os_totales");
+
+        if (n == 1) {
+            a.removeAttribute("hidden");
+            b.setAttribute("hidden", "true");
+            c.setAttribute("hidden", "true");
+            d.setAttribute("hidden", "true");
+            e.setAttribute("hidden", "true");
+        }else if (n == 2) {
+            a.setAttribute("hidden", "true");
+            c.setAttribute("hidden", "true");
+            d.setAttribute("hidden", "true");
+            e.setAttribute("hidden", "true");
+            b.removeAttribute("hidden");
+        }else if (n == 3) {
+            a.setAttribute("hidden", "true");
+            b.setAttribute("hidden", "true");
+            d.setAttribute("hidden", "true");
+            e.setAttribute("hidden", "true");
+            c.removeAttribute("hidden");
+        }
+        else if (n == 4) {
+            a.setAttribute("hidden", "true");
+            b.setAttribute("hidden", "true");
+            c.setAttribute("hidden", "true");
+            e.setAttribute("hidden", "true");
+            d.removeAttribute("hidden");
+        }
+        else if (n == 5) {
+            a.setAttribute("hidden", "true");
+            b.setAttribute("hidden", "true");
+            c.setAttribute("hidden", "true");
+            d.setAttribute("hidden", "true");
+            e.removeAttribute("hidden");
+        }
+    }*/
 </script>
 
-<div
-    style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;"
->
+<div style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;">
+    
     <div id="Mostrarusuario">
         <div class="container py-4">
             <h2 class="mb-4">Lista de usuarios</h2>
@@ -119,13 +167,9 @@
         </div>
         <div class="container">
             <div class="row">
-
-
-                <div class="col-8">
-                    <div
-                        class="card border-dark shadow"
-                        style="width: 60%; margin-left: 20%;"
-                    >
+                <div class="col-8" style="background-color: red;">
+                    
+                    <div hidden={activeElement !== 'a'} class="card border-dark shadow" id="perfil" style="">
                         <div class="card-header row g-2">
                             <h5 class="card-title col-lg-11">
                                 <b>Editando Usuario</b>
@@ -246,15 +290,313 @@
                             </div>
                         </div>
                     </div>
+
+                    <div hidden={activeElement !== 'b'} class="card border-dark shadow" id="inventario" style="">
+                        <div class="card-header row g-2">
+                            <h5 class="card-title col-lg-11">
+                                <b>Inventario</b>
+                            </h5>
+                            <button
+                                class="btn btn-close col-lg-1"
+                                aria-label="Cerrar edición de usuario"
+                            ></button>
+                        </div>
+                        <div class="card-body" style="margin-left: 10%;">
+                            <div id="Mostrarusuario">
+                                <div class="container py-4">
+                                    <h2 class="mb-4">Lista de equipos</h2>
+                                    {#if loading}
+                                        <!---->
+                                        <div class="row g-2 justify-content-center">
+                                            <p
+                                                class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                            >
+                                                Cargando datos...
+                                            </p>
+                                            <div
+                                                class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                                role="status"
+                                            >
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    {:else if error}
+                                        <p class="text-red-500">Error: {error}</p>
+                                    {:else}
+                                        <div class="overflow-x-auto">
+                                            <table
+                                                class="min-w-full bg-white border border-gray-300"
+                                                id="myTable"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="px-4 py-2 border">Usuario</th>
+                                                        <th class="px-4 py-2 border">Nombre</th>
+                                                        <th class="px-4 py-2 border">Apellido</th>
+                                                        <th class="px-4 py-2 border">Documento</th>
+                                                        <th class="px-4 py-2 border">Telefono</th>
+                                                        <th class="px-4 py-2 border">Estado</th>
+                                                        <th class="px-4 py-2 border">Opcion</th>
+                                                    </tr>
+                                                </thead>
+                        
+                                                <tbody>
+                                                    {#each todos as todo}
+                                                        <tr class="hover:bg-gray-50">
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.usuario}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.nombre}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.apellido}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.documento}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.telefono}</td
+                                                            >
+                                                            <td class="px-4 py-2 border">
+                                                                <span
+                                                                    class={todo.estado
+                                                                        ? "text-green-600"
+                                                                        : "text-red-600"}
+                                                                >
+                                                                    {todo.estado
+                                                                        ? "Activo"
+                                                                        : "Desactivado"}
+                                                                </span>
+                                                            </td>
+                                                            <td class="px-4 py-2 border">
+                                                                <button class="btn btn-success"
+                                                                    >Ver</button
+                                                                >
+                                                            </td>
+                                                        </tr>
+                                                    {/each}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div hidden={activeElement !== 'c'} class="card border-dark shadow" id="cronograma" style="">
+                        <div class="card-header row g-2">
+                            <h5 class="card-title col-lg-11">
+                                <b>Cronograma</b>
+                            </h5>
+                            <button
+                                class="btn btn-close col-lg-1"
+                                aria-label="Cerrar edición de usuario"
+                            ></button>
+                        </div>
+                        <div class="card-body" style="margin-left: 10%;">
+                            
+                        </div>
+                    </div>
+
+                    <div hidden={activeElement !== 'd'} class="card border-dark shadow" id="os_activas" style="">
+                        <div class="card-header row g-2">
+                            <h5 class="card-title col-lg-11">
+                                <b>os activas</b>
+                            </h5>
+                            <button
+                                class="btn btn-close col-lg-1"
+                                aria-label="Cerrar edición de usuario"
+                            ></button>
+                        </div>
+                        <div class="card-body" style="margin-left: 10%;">
+                            <div id="Mostrarusuario">
+                                <div class="container py-4">
+                                    <h2 class="mb-4">OS activas</h2>
+                                    {#if loading}
+                                        <!---->
+                                        <div class="row g-2 justify-content-center">
+                                            <p
+                                                class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                            >
+                                                Cargando datos...
+                                            </p>
+                                            <div
+                                                class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                                role="status"
+                                            >
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    {:else if error}
+                                        <p class="text-red-500">Error: {error}</p>
+                                    {:else}
+                                        <div class="overflow-x-auto">
+                                            <table
+                                                class="min-w-full bg-white border border-gray-300"
+                                                id="myTable"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="px-4 py-2 border">Usuario</th>
+                                                        <th class="px-4 py-2 border">Nombre</th>
+                                                        <th class="px-4 py-2 border">Apellido</th>
+                                                        <th class="px-4 py-2 border">Documento</th>
+                                                        <th class="px-4 py-2 border">Telefono</th>
+                                                        <th class="px-4 py-2 border">Estado</th>
+                                                        <th class="px-4 py-2 border">Opcion</th>
+                                                    </tr>
+                                                </thead>
+                        
+                                                <tbody>
+                                                    {#each todos as todo}
+                                                        <tr class="hover:bg-gray-50">
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.usuario}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.nombre}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.apellido}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.documento}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.telefono}</td
+                                                            >
+                                                            <td class="px-4 py-2 border">
+                                                                <span
+                                                                    class={todo.estado
+                                                                        ? "text-green-600"
+                                                                        : "text-red-600"}
+                                                                >
+                                                                    {todo.estado
+                                                                        ? "Activo"
+                                                                        : "Desactivado"}
+                                                                </span>
+                                                            </td>
+                                                            <td class="px-4 py-2 border">
+                                                                <button class="btn btn-success"
+                                                                    >Ver</button
+                                                                >
+                                                            </td>
+                                                        </tr>
+                                                    {/each}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div hidden={activeElement !== 'e'} class="card border-dark shadow" id="os_totales" style="">
+                        <div class="card-header row g-2">
+                            <h5 class="card-title col-lg-11">
+                                <b>Historial de os</b>
+                            </h5>
+                            <button
+                                class="btn btn-close col-lg-1"
+                                aria-label="Cerrar edición de usuario"
+                            ></button>
+                        </div>
+                        <div class="card-body" style="margin-left: 10%;">
+                            <div id="Mostrarusuario">
+                                <div class="container py-4">
+                                    <h2 class="mb-4">Historial de servicios</h2>
+                                    {#if loading}
+                                        <!---->
+                                        <div class="row g-2 justify-content-center">
+                                            <p
+                                                class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                            >
+                                                Cargando datos...
+                                            </p>
+                                            <div
+                                                class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                                role="status"
+                                            >
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    {:else if error}
+                                        <p class="text-red-500">Error: {error}</p>
+                                    {:else}
+                                        <div class="overflow-x-auto">
+                                            <table
+                                                class="min-w-full bg-white border border-gray-300"
+                                                id="myTable"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="px-4 py-2 border">Usuario</th>
+                                                        <th class="px-4 py-2 border">Nombre</th>
+                                                        <th class="px-4 py-2 border">Apellido</th>
+                                                        <th class="px-4 py-2 border">Documento</th>
+                                                        <th class="px-4 py-2 border">Telefono</th>
+                                                        <th class="px-4 py-2 border">Estado</th>
+                                                        <th class="px-4 py-2 border">Opcion</th>
+                                                    </tr>
+                                                </thead>
+                        
+                                                <tbody>
+                                                    {#each todos as todo}
+                                                        <tr class="hover:bg-gray-50">
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.usuario}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.nombre}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.apellido}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.documento}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.telefono}</td
+                                                            >
+                                                            <td class="px-4 py-2 border">
+                                                                <span
+                                                                    class={todo.estado
+                                                                        ? "text-green-600"
+                                                                        : "text-red-600"}
+                                                                >
+                                                                    {todo.estado
+                                                                        ? "Activo"
+                                                                        : "Desactivado"}
+                                                                </span>
+                                                            </td>
+                                                            <td class="px-4 py-2 border">
+                                                                <button class="btn btn-success"
+                                                                    >Ver</button
+                                                                >
+                                                            </td>
+                                                        </tr>
+                                                    {/each}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
 
                 <div class="col-4 ">
-                    <div class="card bg-secondary">
-                        <div><button class="btn btn-primary">Perfil</button></div>
-                        <div><button class="btn btn-primary">Inventario</button></div>
-                        <div><button class="btn btn-primary">Cronograma</button></div>
-                        <div><button class="btn btn-primary">OS activa</button></div>
-                        <div><button class="btn btn-primary">Historial OS</button></div>
+                    <div class="card bg-secondary py-1 px-1">
+                        <div><button class="btn btn-primary" on:click={() => activeElement = 'a'}>Perfil</button></div>
+                        <div><button class="btn btn-primary" on:click={() => activeElement = 'b'}>Inventario</button></div>
+                        <div><button class="btn btn-primary" on:click={() => activeElement = 'c'}>Cronograma</button></div>
+                        <div><button class="btn btn-primary" on:click={() => activeElement = 'd'}>OS activa</button></div>
+                        <div><button class="btn btn-primary" on:click={() => activeElement = 'e'}>Historial OS</button></div>
                     </div>
                 </div>
 

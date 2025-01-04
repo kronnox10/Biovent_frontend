@@ -2,8 +2,7 @@
     import NavbarIndex from "../../lib/navbar_index.svelte";
     import SocialMedia from "../../lib/social_media.svelte";
     import Footer from "../../lib/Footer.svelte";
-
-
+    
 </script>
 
 <NavbarIndex></NavbarIndex>
