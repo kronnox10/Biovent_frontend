@@ -22,8 +22,14 @@
         }
     });
 
+
+    function cerrar() {
+        location.reload()
+    }
 //
+var v_id_usuario=0
     async function perfil(id) {
+        v_id_usuario=id
         const response = await fetch("http://127.0.0.1:8000/get_client",{
             method: "POST",
                 headers: {
@@ -48,12 +54,51 @@
         document.getElementById('direccion').value=todos[0].direccion;
         document.getElementById('nit').value=todos[0].nic;
         document.getElementById('estado').value=todos[0].estado;
-
-
     }
 
-    async function inventario() {
-        alert ("Hola mundo")
+    async function inventario() {//
+        try {
+            const response = await fetch("http://127.0.0.1:8000/get_machine",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_usuario: v_id_usuario,
+                }),
+            });
+            
+            const data = await response.json();
+            todos = data.resultado;
+
+
+            setTimeout(() => {
+                globalThis.$("#myinventario").DataTable(); 
+            }, 0);
+
+
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
+        
+        
+        /*
+        const response = await fetch("http://127.0.0.1:8000/get_machine",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_usuario: id,
+                }),
+            });
+
+        if (!response.ok) throw new Error("Error al cargar los datos");
+        const data = await response.json();
+        todos = data.resultado;
+        console.log(todos)*/
     }
 
 
@@ -164,7 +209,7 @@
             {/if}
         </div>
     </div>
-        <!---->
+        
     <div hidden={activeElement==='mostrar'}
     
         class=""
@@ -172,12 +217,31 @@
         role="tabpanel"
         aria-labelledby="nav-listado-tab"
     >
+    
         <div class="container text-center">
             <p class="text-orange"></p>
         </div>
         <div class="container">
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">-</button>
+
+                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+                        <div class="offcanvas-header text-center">
+                            <h5 id="offcanvasRightLabel">Menu</h5>
+                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <div class="card bg-secondary py-1 px-1">
+                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'a'; perfil(id); }}>Perfil</button></div>
+                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
+                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'c'}>Cronograma</button></div>
+                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
+                                <div class="text-center"><button class="mt-3 mb-3 btn btn-primary" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
+                            </div>
+                        </div>
+                    </div>
+                    
             <div class="row">
-                <div class="col-12 col-xl-10" style="background-color: red;">
+                <div class="col-12 col-xl-12" style="background-color: red;">
                     
                     <div hidden={activeElement !== 'a'} class="card border-dark shadow" id="perfil" style="">
                         <div class="card-header row g-2">
@@ -187,7 +251,7 @@
                             <button
                                 class="btn btn-close col-lg-1"
                                 aria-label="Cerrar edición de usuario"
-                                on:click={() => activeElement = 'mostrar'}
+                                on:click={() => {activeElement = 'mostrar'; cerrar()}}
                             ></button>
                         </div>
                         <div class="card-body" style="margin-left: 10%;">
@@ -350,21 +414,20 @@
 
                     <div hidden={activeElement !== 'b'} class="card border-dark shadow" id="inventario" style="">
                         <div class="card-header row g-2">
-                            <h5 class="card-title col-lg-11">
+                            <h5 class="card-title ">
                                 <b>Inventario</b>
                             </h5>
                             <button
                                 class="btn btn-close col-lg-1"
                                 aria-label="Cerrar edición de usuario"
-                                on:click={() => activeElement = 'mostrar'}
+                                on:click={() => {activeElement = 'mostrar'; cerrar()}}
                             ></button>
                         </div>
-                        <div class="card-body" style="margin-left: 10%;">
-                            <div id="Mostrarusuario">
+                        <div class="card-body" style="">
+                            <div id="tablita">
                                 <div class="container py-4">
                                     <h2 class="mb-4">Lista de equipos</h2>
                                     {#if loading}
-                                        <!---->
                                         <div class="row g-2 justify-content-center">
                                             <p
                                                 class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
@@ -381,7 +444,78 @@
                                     {:else if error}
                                         <p class="text-red-500">Error: {error}</p>
                                     {:else}
-                                        
+                                        <div class="overflow-x-auto">
+                                            <table style="width: 100%; height: 300px; border: 1px solid  ; "
+                                                class="min-w-full bg-white border border-gray-300"
+                                                id="myinventario"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="px-4 py-2 border">Nombre</th>
+                                                        <th class="px-4 py-2 border">Marca</th>
+                                                        <th class="px-4 py-2 border">Modelo</th>
+                                                        <th class="px-4 py-2 border">Serial</th>
+                                                        <th class="px-4 py-2 border">Inventario</th>
+                                                        <th class="px-4 py-2 border">Ubicacion</th>
+                                                        <th class="px-4 py-2 border">Estado</th>
+                                                        <th class="px-4 py-2 border">Descripcion de estado</th>
+                                                        <th class="px-4 py-2 border">Opciones</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    {#each todos as todo}
+                                                        <tr class="hover:bg-gray-50">
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.nombre}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.marca}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.modelo}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.serial}</td
+                                                            >
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.inventario}</td
+                                                            >
+
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.ubicacion}</td
+                                                        >
+
+                                                            <td class="px-4 py-2 border">
+                                                                <span class={todo.estado ? "text-green-600" : "text-red-600"}
+                                                                > {todo.estado ? "Activo" : "Inactivo"}
+                                                                </span>
+                                                            </td>
+
+
+                                                            {#if todo.estado==0}
+                                                            <td class="px-4 py-2 border"
+                                                            >{todo.desc_estado}</td>
+                                                            
+                                                            {:else if todo.estado==1}
+                                                            <td class="px-4 py-2 border"></td>
+                                                            {:else}
+                                                            <td class="px-4 py-2 border"></td>
+                                                            {/if}
+
+                                                            <td class="px-4 py-2 border">
+                                                                <button class="btn btn-success"
+                                                                    on:click={()=>{activeElement="a";perfil(todo.id)}}>Ver</button
+                                                                >
+                                                            </td>
+
+                                                            
+
+                                                        </tr>
+                                                    {/each}
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     {/if}
                                 </div>
                             </div>
@@ -396,7 +530,7 @@
                             <button
                                 class="btn btn-close col-lg-1"
                                 aria-label="Cerrar edición de usuario"
-                                on:click={() => activeElement = 'mostrar'}
+                                on:click={() => {activeElement = 'mostrar'; cerrar()}}
                             ></button>
                         </div>
                         <div class="card-body" style="margin-left: 10%;">
@@ -412,7 +546,7 @@
                             <button
                                 class="btn btn-close col-lg-1"
                                 aria-label="Cerrar edición de usuario"
-                                on:click={() => activeElement = 'mostrar'}
+                                on:click={() => {activeElement = 'mostrar'; cerrar()}}
                             ></button>
                         </div>
                         <div class="card-body" style="margin-left: 10%;">
@@ -507,7 +641,7 @@
                             <button
                                 class="btn btn-close col-lg-1"
                                 aria-label="Cerrar edición de usuario"
-                                on:click={() => activeElement = 'mostrar'}
+                                on:click={() => {activeElement = 'mostrar'; cerrar()}}
                             ></button>
                         </div>
                         <div class="card-body" style="margin-left: 10%;">
@@ -594,16 +728,6 @@
                         </div>
                     </div>
 
-                </div>
-
-                <div class="col-12 col-xl-2">
-                    <div class="card bg-secondary py-1 px-1">
-                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'a'; perfil(id); }}>Perfil</button></div>
-                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
-                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'c'}>Cronograma</button></div>
-                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
-                        <div class="text-center"><button class="mt-3 mb-3 btn btn-primary" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
-                    </div>
                 </div>
             </div>
         </div>
