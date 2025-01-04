@@ -6,7 +6,6 @@
     let activeElement = 'mostrar';
     
     onMount(async () => {
-        
         try {
             const response = await fetch("http://127.0.0.1:8000/get_clients");
             if (!response.ok) throw new Error("Error al cargar los datos");
@@ -25,7 +24,6 @@
 
 //
     async function perfil(id) {
-        alert(id)
         const response = await fetch("http://127.0.0.1:8000/get_client",{
             method: "POST",
                 headers: {
@@ -43,19 +41,34 @@
 
         document.getElementById('nombres').value=todos[0].cliente;
         document.getElementById('correo').value=todos[0].correo;
-        document.getElementById('password').value=todos[0].password;
-        document.getElementById('jefe_de_uso').value=todos[0].jefe;
-        document.getElementById('telefono').value=todos[0].cliente;
-        document.getElementById('ciudad').value=todos[0].cliente;
-        document.getElementById('direccion').value=todos[0].cliente;
-        document.getElementById('nic').value=todos[0].cliente;
+        document.getElementById('password').value=todos[0].contraseña;
+        document.getElementById('jefe_de_uso').value=todos[0].persona_acargo;
+        document.getElementById('telefono').value=todos[0].telefono;
+        document.getElementById('ciudad').value=todos[0].ciudad;
+        document.getElementById('direccion').value=todos[0].direccion;
+        document.getElementById('nit').value=todos[0].nic;
+        document.getElementById('estado').value=todos[0].estado;
+
 
     }
 
+    async function inventario() {
+        alert ("Hola mundo")
+    }
+
+
+    async function OS_activa() {
+        alert ("Hello World")
+    }
+
+
+    async function OS_historial() {//
+        alert ("Bonjour le monde")//espera dame unos min    
+    }
 
 </script>
 
-<div class="py-4" style="background-image: url(''); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;">
+<div class="py-4" style="background-image: url(''); background-size: cover; background-color: white; height: 100vh; width: 100vw;">
     
     <div id="Mostrarusuario" hidden={activeElement!=='mostrar'}>
         <div class="container">
@@ -94,6 +107,8 @@
                                 <th class="px-4 py-2 border">Direccion</th>
                                 <th class="px-4 py-2 border">NIT</th>
                                 <th class="px-4 py-2 border">Estado</th>
+                                <th class="px-4 py-2 border">Opciones</th>
+
 
 
                             </tr>
@@ -149,7 +164,7 @@
             {/if}
         </div>
     </div>
-
+        <!---->
     <div hidden={activeElement==='mostrar'}
     
         class=""
@@ -188,38 +203,54 @@
                                         id="nombres"
                                         maxlength="100"
                                         style="border: none; width: 55%;"
-                                        readonly
+                                        
                                     />
                                 </div>
                             </div>
 
                             <div class="row pt-3">
                                 <div class="col-lg-2">
-                                    <p class="card-text"><b>Apellido:</b></p>
+                                    <p class="card-text"><b>correo:</b></p>
                                 </div>
 
                                 <div class="col-lg-10">
                                     <input
-                                        type="text"
-                                        placeholder="Apellidos"
-                                        id="apellidos"
+                                        type="email"
+                                        placeholder="email"
+                                        id="correo"
                                         style="border: none; width: 55%;"
-                                        readonly
+                                        
                                     />
                                 </div>
                             </div>
 
                             <div class="row pt-3">
                                 <div class="col-lg-2">
-                                    <p class="card-text"><b>documento:</b></p>
+                                    <p class="card-text"><b>password:</b></p>
                                 </div>
                                 <div class="col-lg-10">
                                     <input
                                         type="text"
-                                        id="documento"
-                                        placeholder="Documento de identidad"
+                                        id="password"
+                                        placeholder="contraseña"
                                         style="border: none; width: 55%;"
-                                        readonly
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Jefe de uso:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        id="jefe_de_uso"
+                                        placeholder="Nombres"
+                                        maxlength="50"
+                                        style="border: none; width: 55%;"
+                                        
                                     />
                                 </div>
                             </div>
@@ -231,29 +262,60 @@
                                 <div class="col-lg-10">
                                     <input
                                         type="text"
-                                        id="telefono"
                                         placeholder="Telefono"
-                                        maxlength="20"
+                                        id="telefono"
                                         style="border: none; width: 55%;"
-                                        readonly
+                                        
                                     />
                                 </div>
                             </div>
 
                             <div class="row pt-3">
                                 <div class="col-lg-2">
-                                    <p class="card-text"><b>Correo:</b></p>
+                                    <p class="card-text"><b>Ciudad:</b></p>
                                 </div>
                                 <div class="col-lg-10">
                                     <input
                                         type="text"
-                                        placeholder="Correo electronico"
-                                        id="correo"
+                                        placeholder="Ciudad"
+                                        id="ciudad"
                                         style="border: none; width: 55%;"
-                                        readonly
+                                        
                                     />
                                 </div>
                             </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>direccion:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="Direccion"
+                                        id="direccion"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Nit:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="NIT"
+                                        id="nit"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
 
                             <div class="row pt-3">
                                 <div class="col-lg-2">
@@ -265,8 +327,8 @@
                                         name="opciones"
                                         style="border: none; width: 55%;"
                                     >
-                                        <option value="1">Activar</option>
-                                        <option value="0">Desactivar</option>
+                                        <option value="1">Activado</option>
+                                        <option value="0">Desactivado</option>
                                     </select>
                                 </div>
                             </div>
@@ -319,62 +381,7 @@
                                     {:else if error}
                                         <p class="text-red-500">Error: {error}</p>
                                     {:else}
-                                        <div class="overflow-x-auto">
-                                            <table
-                                                class="min-w-full bg-white border border-gray-300"
-                                                id="myTable"
-                                            >
-                                                <thead>
-                                                    <tr>
-                                                        <th class="px-4 py-2 border">Usuario</th>
-                                                        <th class="px-4 py-2 border">Nombre</th>
-                                                        <th class="px-4 py-2 border">Apellido</th>
-                                                        <th class="px-4 py-2 border">Documento</th>
-                                                        <th class="px-4 py-2 border">Telefono</th>
-                                                        <th class="px-4 py-2 border">Estado</th>
-                                                        <th class="px-4 py-2 border">Opcion</th>
-                                                    </tr>
-                                                </thead>
-                        
-                                                <tbody>
-                                                    {#each todos as todo}
-                                                        <tr class="hover:bg-gray-50">
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.usuario}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.nombre}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.apellido}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.documento}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.telefono}</td
-                                                            >
-                                                            <td class="px-4 py-2 border">
-                                                                <span
-                                                                    class={todo.estado
-                                                                        ? "text-green-600"
-                                                                        : "text-red-600"}
-                                                                >
-                                                                    {todo.estado
-                                                                        ? "Activo"
-                                                                        : "Desactivado"}
-                                                                </span>
-                                                            </td>
-                                                            <td class="px-4 py-2 border">
-                                                                <button class="btn btn-success"
-                                                                    >Ver</button
-                                                                >
-                                                            </td>
-                                                        </tr>
-                                                    {/each}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        
                                     {/if}
                                 </div>
                             </div>
@@ -592,10 +599,10 @@
                 <div class="col-12 col-xl-2">
                     <div class="card bg-secondary py-1 px-1">
                         <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'a'; perfil(id); }}>Perfil</button></div>
-                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'b'}>Inventario</button></div>
+                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
                         <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'c'}>Cronograma</button></div>
-                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'd'}>OS activa</button></div>
-                        <div class="text-center"><button class="mt-3 mb-3 btn btn-primary" on:click={() => activeElement = 'e'}>Historial OS</button></div>
+                        <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
+                        <div class="text-center"><button class="mt-3 mb-3 btn btn-primary" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
                     </div>
                 </div>
             </div>
