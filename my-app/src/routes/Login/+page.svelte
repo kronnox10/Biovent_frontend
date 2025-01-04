@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
 
     let todos = {};
-    let todos2 = {};
+    //let todos2 = {};
 
     let loading = false;
     let error = null;
@@ -31,7 +31,7 @@
         }
     });
 
-    async function token() {
+    /*async function token() {
         const response = await fetch("http://127.0.0.1:8000/generate_token", {
             method: "POST",
             headers: {
@@ -48,7 +48,7 @@
         todos2 = data.access_token;
         console.log("Revisando token", todos2);
         Login(todos2);
-    }
+    }*/
 
     async function Login() {
         loading = true;
@@ -59,7 +59,7 @@
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    usuario: v_usuario,
+                    correo: v_usuario,
                     password: v_password,
                 }),
             });
@@ -72,14 +72,13 @@
                 console.log(rol_v);
 
                 console.log(todos);
-               
+                
                 if (rol_v == 1) {
-                    let name = data.resultado[0].nombre;
+                    let name = data.resultado[0].persona_acargo;
                     let id = data.resultado[0].id;
                     let correo = data.resultado[0].correo;
 
                     let encontrado = { name, id, correo };
-                    console.log("Imprimos el encontrado", encontrado);
                     let miStorage = window.localStorage;
                     miStorage.setItem("usuario", JSON.stringify(encontrado));
                    
@@ -94,6 +93,7 @@
                     setTimeout(() => {
                         window.location.href = "/administrador";
                     }, 2000);
+
                 } else if (rol_v == 2) {
                     let name = data.resultado[0].nombre;
                     let id = data.resultado[0].id;
