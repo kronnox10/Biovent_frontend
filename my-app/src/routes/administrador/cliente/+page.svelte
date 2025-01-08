@@ -1,10 +1,15 @@
 <script>
     import { onMount } from "svelte";
     let todos = {};
+    let todos2 = {};
     let loading = true;
     let error = null;
     let activeElement = 'mostrar';
-    
+    let activador = 0;
+    var v_id_usuario=0;
+    var v_id_maquina=0;
+    var file = null;
+
     onMount(async () => {
         try {
             const response = await fetch("http://127.0.0.1:8000/get_clients");
@@ -22,12 +27,54 @@
         }
     });
 
+    async function enviar() {
+        const input = document.getElementById("archivo");
+        file = input.files[0];
+        console.log(file);
+
+        if (file) {
+            // Crear un objeto FormData
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                const response = await fetch(
+                    "http://localhost:8000/create_user_masivo",
+                    {
+                        method: "POST",
+                        body: formData,
+                    },
+                );
+
+                const data = await response.json();
+                console.log("probando que entra");
+                console.log(data);
+                if (data.resultado === "Maquinas añadidas exitosamente") {
+                    Swal.fire({
+                        title: "Cargue exisoto",
+                        icon: "success",
+                        draggable: true,
+                    });
+
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        title: "ups! uyuyui esto no hay quien lo arregle",
+                        icon: "error",
+                        draggable: true,
+                    });
+                }
+            } catch (error) {
+                console.error("Error de red:", error);
+            }
+        } else {
+        }
+    }
 
     function cerrar() {
         location.reload()
     }
-//
-var v_id_usuario=0
+
     async function perfil(id) {
         v_id_usuario=id
         const response = await fetch("http://127.0.0.1:8000/get_client",{
@@ -56,59 +103,124 @@ var v_id_usuario=0
         document.getElementById('estado').value=todos[0].estado;
     }
 
-    async function inventario() {//
-        try {
-            const response = await fetch("http://127.0.0.1:8000/get_machine",{
+    async function perfil_maquina(id) {
+        console.log("verificando que id toma", id)
+        v_id_maquina=id
+        const response = await fetch("http://127.0.0.1:8000/get_machines",{
             method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify({
-                    id_usuario: v_id_usuario,
-                }),
-            });
-            
-            const data = await response.json();
-            todos = data.resultado;
-
-
-            setTimeout(() => {
-                globalThis.$("#myinventario").DataTable(); 
-            }, 0);
-
-
-        } catch (e) {
-            error = e.message;
-        } finally {
-            loading = false;
-        } 
-        
-        
-        /*
-        const response = await fetch("http://127.0.0.1:8000/get_machine",{
-            method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    id_usuario: id,
+                    id: v_id_maquina,
                 }),
             });
 
         if (!response.ok) throw new Error("Error al cargar los datos");
         const data = await response.json();
-        todos = data.resultado;
-        console.log(todos)*/
+        todos2 = data.resultado;
+        console.log(todos2)
+
+        document.getElementById('nombre').value=todos2[0].nombre;
+        document.getElementById('marca').value=todos2[0].marca;
+        document.getElementById('modelo').value=todos2[0].modelo;
+        document.getElementById('serie').value=todos2[0].serial;
+        document.getElementById('inventario').value=todos2[0].inventario;
+        document.getElementById('ubicacion').value=todos2[0].ubicacion;
+        document.getElementById('desc_estado').value=todos2[0].desc_estado;
+        document.getElementById('estado_i').value=todos2[0].estado;
     }
 
+    async function inventario() {
+        try { 
+                const response = await fetch("http://127.0.0.1:8000/get_machine",{
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_usuario: v_id_usuario,
+                    }),
+                });
+                
+                const data = await response.json();
+                todos = data.resultado;
+
+
+                setTimeout(() => {
+                    globalThis.$("#myinventario").DataTable(); 
+                }, 0);
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
+
+    }
+
+    async function cronograma() {
+        
+    }
 
     async function OS_activa() {
-        alert ("Hello World")
+        try { 
+                const response = await fetch("http://127.0.0.1:8000/get_osi",{
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_usuario: v_id_usuario,
+                    }),
+                });
+                
+                const data = await response.json();
+                if (data.resultado && data.resultado.length > 0) {
+            todos = data.resultado;
+            
+            setTimeout(() => {
+                globalThis.$("#myOSI").DataTable(); 
+            }, 0);
+            } else {
+                todos = [];
+                error = "No hay órdenes de servicio activas para este usuario. :D";
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
     }
 
-
     async function OS_historial() {//
-        alert ("Bonjour le monde")//espera dame unos min    
+        try { 
+                const response = await fetch("http://127.0.0.1:8000/get_os",{
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_usuario: v_id_usuario,
+                    }),
+                });
+                
+                const data = await response.json();
+                if (data.resultado && data.resultado.length > 0) {
+            todos = data.resultado;
+            
+            setTimeout(() => {
+                globalThis.$("#myOS").DataTable(); 
+            }, 0);
+            } else {
+                todos = [];
+                error = "Que raro, no hay ninguna Orden de servicio para ese usuario (?";
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
+
     }
 
 </script>
@@ -116,8 +228,19 @@ var v_id_usuario=0
 <div class="py-4" style="background-image: url(''); background-size: cover; background-color: white; height: 100vh; width: 100vw;">
     
     <div id="Mostrarusuario" hidden={activeElement!=='mostrar'}>
+        <div class="mx-4 fs-1">
+            <!-- svelte-ignore a11y_consider_explicit_label -->
+            <a href="/administrador">
+                <i class="fa fa-caret-left" aria-hidden="true"></i>
+            </a>
+        </div>
+        
         <div class="container">
             <h2 class="mb-4">Lista de usuarios</h2>
+
+            <button class="btn btn-dark">Crear usuario nuevo </button>
+            <button class="btn btn-dark mx-1" data-bs-toggle="modal" data-bs-target="#cargue_excel">Cargar desde excel </button>
+
             {#if loading}
                 <!---->
                 <div class="row g-2 justify-content-center">
@@ -211,43 +334,29 @@ var v_id_usuario=0
     </div>
         
     <div hidden={activeElement==='mostrar'}
-    
-        class=""
-        id="nav-listado"
-        role="tabpanel"
-        aria-labelledby="nav-listado-tab"
-    >
+        class="" id="nav-listado" role="tabpanel" aria-labelledby="nav-listado-tab">
     
         <div class="container text-center">
             <p class="text-orange"></p>
         </div>
-        <div class="container">
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">-</button>
+          
+        <div class="text-end mx-5">
+            <!-- svelte-ignore a11y_consider_explicit_label -->
+            <button class="btn btn-primary fs-5" style="background-color: white; border-color: white;" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                <i class="fa fa-align-justify" aria-hidden="true"></i>
+            </button>
+        </div>
 
-                    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
-                        <div class="offcanvas-header text-center">
-                            <h5 id="offcanvasRightLabel">Menu</h5>
-                            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-                        </div>
-                        <div class="offcanvas-body">
-                            <div class="card bg-secondary py-1 px-1">
-                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'a'; perfil(id); }}>Perfil</button></div>
-                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
-                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'c'}>Cronograma</button></div>
-                                <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
-                                <div class="text-center"><button class="mt-3 mb-3 btn btn-primary" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
-                            </div>
-                        </div>
-                    </div>
-                    
+        <div class="container">          
             <div class="row">
                 <div class="col-12 col-xl-12" style="background-color: red;">
-                    
+                                                
                     <div hidden={activeElement !== 'a'} class="card border-dark shadow" id="perfil" style="">
                         <div class="card-header row g-2">
                             <h5 class="card-title col-lg-11">
                                 <b>Editando Usuario</b>
                             </h5>
+
                             <button
                                 class="btn btn-close col-lg-1"
                                 aria-label="Cerrar edición de usuario"
@@ -402,6 +511,157 @@ var v_id_usuario=0
                                     ¡Al terminar de editar, darle click en
                                     actualizar para guardar los cambios!
                                 </div>
+                                <div class="col-lg-3 ">
+                                    <button class="btn btn-outline-info"
+                                        ><b>Actualizar</b></button
+                                    >
+                                </div>
+                                <div id="estado" class="col-lg-10"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div hidden={activeElement !== 'mostrarb'} class="card border-dark shadow" id="perfil_maquina" style="">
+                        <div class="card-header row g-2">
+                            <h5 class="card-title col-lg-11">
+                                <b>Editando maquina</b>
+                            </h5>
+                            <button
+                                class="btn btn-close col-lg-1"
+                                aria-label="Cerrar edición de usuario"
+                                on:click={() => {activeElement = 'mostrar'; cerrar()}}
+                            ></button>
+                        </div>
+                        <div class="card-body" style="margin-left: 10%;">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Nombre:</b></p>
+                                </div>
+
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="Nombres"
+                                        id="nombre"
+                                        maxlength="100"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Marca:</b></p>
+                                </div>
+
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="marca"
+                                        id="marca"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Modelo:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        id="modelo"
+                                        placeholder="Modelo"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Serial:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        id="serie"
+                                        placeholder="Serial"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Inventario:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="inventario"
+                                        id="inventario"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Ubicacion:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="ubicacion"
+                                        id="ubicacion"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Estado:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <select
+                                        id="estado_i"
+                                        name="opciones"
+                                        style="border: none; width: 55%;"
+                                    >
+                                        <option value="1">Activado</option>
+                                        <option value="0">Desactivado</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Descripcion:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="desc_estado"
+                                        id="desc_estado"
+                                        style="border: none; width: 55%;"
+                                        
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row" style="margin-top: 4%;">
+                                <div class="col-lg-9">
+                                    ¡Al terminar de editar, darle click en
+                                    actualizar para guardar los cambios!
+                                </div>
                                 <div class="col-lg-3 text-end">
                                     <button class="btn btn-outline-info"
                                         ><b>Actualizar</b></button
@@ -414,7 +674,7 @@ var v_id_usuario=0
 
                     <div hidden={activeElement !== 'b'} class="card border-dark shadow" id="inventario" style="">
                         <div class="card-header row g-2">
-                            <h5 class="card-title ">
+                            <h5 class="card-title col-lg-11">
                                 <b>Inventario</b>
                             </h5>
                             <button
@@ -445,7 +705,7 @@ var v_id_usuario=0
                                         <p class="text-red-500">Error: {error}</p>
                                     {:else}
                                         <div class="overflow-x-auto">
-                                            <table style="width: 100%; height: 300px; border: 1px solid  ; "
+                                            <table 
                                                 class="min-w-full bg-white border border-gray-300"
                                                 id="myinventario"
                                             >
@@ -487,8 +747,8 @@ var v_id_usuario=0
                                                         >
 
                                                             <td class="px-4 py-2 border">
-                                                                <span class={todo.estado ? "text-green-600" : "text-red-600"}
-                                                                > {todo.estado ? "Activo" : "Inactivo"}
+                                                                <span style="color: {todo.estado ? 'green' : 'red'};">
+                                                                    {todo.estado ? "Activo" : "Inactivo"}
                                                                 </span>
                                                             </td>
 
@@ -505,12 +765,9 @@ var v_id_usuario=0
 
                                                             <td class="px-4 py-2 border">
                                                                 <button class="btn btn-success"
-                                                                    on:click={()=>{activeElement="a";perfil(todo.id)}}>Ver</button
+                                                                    on:click={()=>{activeElement="mostrarb";perfil_maquina(todo.id)}}>Editar</button
                                                                 >
                                                             </td>
-
-                                                            
-
                                                         </tr>
                                                     {/each}
                                                 </tbody>
@@ -574,15 +831,14 @@ var v_id_usuario=0
                                         <div class="overflow-x-auto">
                                             <table
                                                 class="min-w-full bg-white border border-gray-300"
-                                                id="myTable"
+                                                id="myOS"
                                             >
                                                 <thead>
                                                     <tr>
-                                                        <th class="px-4 py-2 border">Usuario</th>
-                                                        <th class="px-4 py-2 border">Nombre</th>
-                                                        <th class="px-4 py-2 border">Apellido</th>
-                                                        <th class="px-4 py-2 border">Documento</th>
-                                                        <th class="px-4 py-2 border">Telefono</th>
+                                                        <th class="px-4 py-2 border">Cliente</th>
+                                                        <th class="px-4 py-2 border">Maquina</th>
+                                                        <th class="px-4 py-2 border">Descripcion</th>
+                                                        <th class="px-4 py-2 border">Tecnico</th>
                                                         <th class="px-4 py-2 border">Estado</th>
                                                         <th class="px-4 py-2 border">Opcion</th>
                                                     </tr>
@@ -592,34 +848,25 @@ var v_id_usuario=0
                                                     {#each todos as todo}
                                                         <tr class="hover:bg-gray-50">
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.usuario}</td
+                                                                >{todo.usuario_cliente}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.nombre}</td
+                                                                >{todo.nombre_maquina}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.apellido}</td
+                                                                >{todo.descripcion}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.documento}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.telefono}</td
+                                                                >{todo.id_tecnico}</td
                                                             >
                                                             <td class="px-4 py-2 border">
-                                                                <span
-                                                                    class={todo.estado
-                                                                        ? "text-green-600"
-                                                                        : "text-red-600"}
-                                                                >
-                                                                    {todo.estado
-                                                                        ? "Activo"
-                                                                        : "Desactivado"}
+                                                                <span style="color: {todo.estado ? 'red' : 'green'};">
+                                                                    {todo.estado ? "Activo" : "Inactivo"}
                                                                 </span>
                                                             </td>
                                                             <td class="px-4 py-2 border">
                                                                 <button class="btn btn-success"
-                                                                    >Ver</button
+                                                                    >Asignar tecnico</button
                                                                 >
                                                             </td>
                                                         </tr>
@@ -666,62 +913,52 @@ var v_id_usuario=0
                                     {:else if error}
                                         <p class="text-red-500">Error: {error}</p>
                                     {:else}
-                                        <div class="overflow-x-auto">
-                                            <table
-                                                class="min-w-full bg-white border border-gray-300"
-                                                id="myTable"
-                                            >
-                                                <thead>
-                                                    <tr>
-                                                        <th class="px-4 py-2 border">Usuario</th>
-                                                        <th class="px-4 py-2 border">Nombre</th>
-                                                        <th class="px-4 py-2 border">Apellido</th>
-                                                        <th class="px-4 py-2 border">Documento</th>
-                                                        <th class="px-4 py-2 border">Telefono</th>
-                                                        <th class="px-4 py-2 border">Estado</th>
-                                                        <th class="px-4 py-2 border">Opcion</th>
+                                    <div class="overflow-x-auto">
+                                        <table
+                                            class="min-w-full bg-white border border-gray-300"
+                                            id="myOS"
+                                        >
+                                            <thead>
+                                                <tr>
+                                                    <th class="px-4 py-2 border">Cliente</th>
+                                                    <th class="px-4 py-2 border">Maquina</th>
+                                                    <th class="px-4 py-2 border">Descripcion</th>
+                                                    <th class="px-4 py-2 border">Tecnico</th>
+                                                    <th class="px-4 py-2 border">Estado</th>
+                                                    <th class="px-4 py-2 border">Opcion</th>
+                                                </tr>
+                                            </thead>
+                    
+                                            <tbody>
+                                                {#each todos as todo}
+                                                    <tr class="hover:bg-gray-50">
+                                                        <td class="px-4 py-2 border"
+                                                            >{todo.usuario_cliente}</td
+                                                        >
+                                                        <td class="px-4 py-2 border"
+                                                            >{todo.nombre_maquina}</td
+                                                        >
+                                                        <td class="px-4 py-2 border"
+                                                            >{todo.descripcion}</td
+                                                        >
+                                                        <td class="px-4 py-2 border"
+                                                            >{todo.id_tecnico}</td
+                                                        >
+                                                        <td class="px-4 py-2 border">
+                                                            <span style="color: {todo.estado ? 'red' : 'green'};">
+                                                                {todo.estado ? "Activo" : "Solucionado"}
+                                                            </span>
+                                                        </td>
+                                                        {#if todo.estado === 1}
+                                                            <td class="px-4 py-2 border">
+                                                                <button class="btn btn-success">Asignar técnico</button>
+                                                            </td>
+                                                        {/if}
                                                     </tr>
-                                                </thead>
-                        
-                                                <tbody>
-                                                    {#each todos as todo}
-                                                        <tr class="hover:bg-gray-50">
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.usuario}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.nombre}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.apellido}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.documento}</td
-                                                            >
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.telefono}</td
-                                                            >
-                                                            <td class="px-4 py-2 border">
-                                                                <span
-                                                                    class={todo.estado
-                                                                        ? "text-green-600"
-                                                                        : "text-red-600"}
-                                                                >
-                                                                    {todo.estado
-                                                                        ? "Activo"
-                                                                        : "Desactivado"}
-                                                                </span>
-                                                            </td>
-                                                            <td class="px-4 py-2 border">
-                                                                <button class="btn btn-success"
-                                                                    >Ver</button
-                                                                >
-                                                            </td>
-                                                        </tr>
-                                                    {/each}
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                                {/each}
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     {/if}
                                 </div>
                             </div>
@@ -734,3 +971,51 @@ var v_id_usuario=0
     </div>
     
 </div>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+    <div class="offcanvas-header text-center">
+        <h5 id="offcanvasRightLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div class="card bg-secondary py-1 px-1">
+            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'a'; perfil(id);  }}>Perfil</button></div>
+            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
+            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'c'}>Cronograma</button></div>
+            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
+            <div class="text-center"><button class="mt-3 mb-3 btn btn-primary" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="cargue_excel" tabindex="-1" aria-labelledby="rModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mleModalLabel">
+                    <b>Cargue de equipos</b>
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <p>Cargue el archivo de excel</p>
+
+                <input type="file" id="archivo" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" on:click={enviar}> Enviar </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .fa{
+        color: black;
+    }
+</style>
