@@ -9,6 +9,7 @@
     let activador = 0;
     var v_id_usuario=0;
     var v_id_maquina=0;
+    var v_os_id=0;
     var file = null;
 
     onMount(async () => {
@@ -27,8 +28,6 @@
             loading = false;
         }
     });
-
-
 
     async function editar_perfil() {
         console.log(v_id_usuario)
@@ -91,7 +90,6 @@
         }
     }
 
-
     async function editar_perfil_maquina() {
         console.log(v_id_maquina)
 
@@ -152,6 +150,55 @@
         }
     }
 
+    async function editar_tecnico() {
+        let vtecnico = document.getElementById("tecnico_se").value;
+        try {
+
+            const response = await fetch("http://127.0.0.1:8000/asignar_tecnico_os", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                id: v_os_id,
+                id_tecnico: vtecnico
+            }),
+            });
+            console.log("Actualizado");
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+            });
+            Toast.fire({
+                icon: "success",
+                iconColor: "white",
+                color: "white",
+                background: "#00bdff",
+                title: "Tecnico asignado correctamente",
+            });
+            
+            setTimeout(() => {
+                const modalElement = document.getElementById('Select_tecnico');
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                modalInstance.hide();
+            }, 5000);
+            
+
+        } catch (e) {
+        error = e.message;
+        } finally {
+        loading = false;
+        }
+    }
+    
     async function enviar() {
         const input = document.getElementById("archivo");
         file = input.files[0];
@@ -204,7 +251,8 @@
             tecnicos = data.resultado;
 
             console.log("eu",tecnicos)
-            const Selectpaciente = document.getElementById("tecnico");
+
+            const Selecttecnical = document.getElementById("tecnico_se");
             for (let i = 0; i < data.resultado.length; i++) {
                 const user = data.resultado[i];
 
@@ -214,7 +262,7 @@
 
                 option.textContent = user.Nombre;
 
-                Selectpaciente.appendChild(option);
+                Selecttecnical.appendChild(option);
             }
         } catch (e) {
             error = e.message;
@@ -314,7 +362,7 @@
         
     }
 
-    async function OS_activa() {
+    async function OS_activa(id) {
         try { 
                 const response = await fetch("http://127.0.0.1:8000/get_osi",{
                 method: "POST",
@@ -327,12 +375,14 @@
                 });
                 
                 const data = await response.json();
+                console.log("_________",data)
                 if (data.resultado && data.resultado.length > 0) {
-            todos = data.resultado;
-            
-            setTimeout(() => {
-                globalThis.$("#myOSI").DataTable(); 
-            }, 0);
+                    todos = data.resultado;
+                    v_os_id=data.resultado[0].id
+                    console.log("la id de la maquina es",v_os_id)
+                setTimeout(() => {
+                    globalThis.$("#myOSI").DataTable(); 
+                }, 0);
             } else {
                 todos = [];
                 error = "No hay órdenes de servicio activas para este usuario. :D";
@@ -374,7 +424,6 @@
         } 
 
     }
-
 </script>
 
 <div class="py-4" style="background-image: url(''); background-size: cover; background-color: white; height: 100vh; width: 100vw;">
@@ -390,7 +439,7 @@
         <div class="container">
             <h2 class="mb-4">Lista de usuarios</h2>
 
-            <button class="btn btn-dark">Crear usuario nuevo </button>
+            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#creacion_user">Crear usuario</button>
             <button class="btn btn-dark mx-1" data-bs-toggle="modal" data-bs-target="#cargue_excel">Cargar desde excel </button>
 
             {#if loading}
@@ -1009,7 +1058,7 @@
                                                                 >{todo.descripcion}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.id_tecnico}</td
+                                                                >{todo.tecnico}</td
                                                             >
                                                             <td class="px-4 py-2 border">
                                                                 <span style="color: {todo.estado ? 'red' : 'green'};">
@@ -1094,7 +1143,7 @@
                                                             >{todo.descripcion}</td
                                                         >
                                                         <td class="px-4 py-2 border"
-                                                            >{todo.id_tecnico}</td
+                                                            >{todo.tecnico}</td
                                                         >
                                                         <td class="px-4 py-2 border">
                                                             <span style="color: {todo.estado ? 'red' : 'green'};">
@@ -1123,7 +1172,6 @@
             </div>
         </div>
     </div>
-    
 </div>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
@@ -1142,14 +1190,13 @@
     </div>
 </div>
 
-
-    <!-- Modal de cargue de equipos -->
+    <!-- Modal de cargue de usuarios -->
 <div class="modal fade" id="cargue_excel" tabindex="-1" aria-labelledby="rModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="mleModalLabel">
-                    <b>Cargue de equipos</b>
+                    <b>Cargue de usuarios</b>
                 </h5>
                 <button
                     type="button"
@@ -1170,30 +1217,153 @@
     </div>
 </div>
 
-
-    <!-- Modal de escoger tecnicos -->
-    <div class="modal fade" id="Select_tecnico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+    <!-- Modal de creacion de usuarios -->
+    <div class="modal fade" id="creacion_user" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Asignar tecnico</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <h5 class="modal-title" id="mleModalLabel">
+                        <b>Creacion de usuario</b>
+                    </h5>
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    ></button>
                 </div>
                 <div class="modal-body">
-                    <div>
-                        <label>Elija un tecnico</label>
-                    </div>
-                    <select class="form-select" id="tecnico" required>
-                        <option selected>Seleccione</option>
-                    </select>
+                        <form name="formulario"id="formulario">
+                            <div class="container py-5 ps-4 px-5 mt-5 border">
+                                <!-- border-danger -->
+                                <div class="row mt-5 mx-5">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                        <label for="nombre">Nombre</label>
+                                        <input
+                                            type="text"
+                                            id="nombre"
+                                            name="name"
+                                            placeholder="Escriba el nombre completo"
+                                            autocomplete="off"
+                                            class="form-control rounded-pill"
+                                            required
+                                  
+                                        />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                        <!--El autocomplete off, es para que no te salga sugerencia de cosas que ya registraste-->
+                                        <label for="serial">Serial</label>
+                                        <input
+                                            type="text"
+                                            id="serial"
+                                            name="serial"
+                                            placeholder="Escriba el serial"
+                                            autocomplete="off"
+                                            class="form-control rounded-pill"
+                                            required
+                                    
+                                        />
+                                    </div>
+                                </div>
+                    
+                                <div class="row mt-4 mx-5">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                        <label for="modelo">Modelo</label>
+                                        <input
+                                            type="text"
+                                            id="modelo"
+                                            name="modelo"
+                                            placeholder="Escriba el modelo de la maquina"
+                                            autocomplete="off"
+                                            class="form-control rounded-pill"
+                                            required
+                                     
+                                        />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                        <label for="marca">Marca</label>
+                                        <input
+                                            type="text"
+                                            id="marca"
+                                            name="marca"
+                                            placeholder="Escriba la marca de la maquina"
+                                            autocomplete="off"
+                                            class="form-control rounded-pill"
+                                            required
+                                           
+                                        />
+                                    </div>
+                                </div>
+                    
+                                <div class="row mt-4 mx-5">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                        <label for="inventario">Inventario</label>
+                                        <input
+                                            type="text"
+                                            id="inventario"
+                                            name="inventario"
+                                            placeholder="Escriba el inventario"
+                                            class="form-control rounded-pill"
+                                          
+                                        />
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                        <label for="ubicacion">Ubicacion</label>
+                                        <input
+                                            type="text"
+                                            id="ubicacion"
+                                            placeholder="Escriba la ubicacion de la maquina"
+                                            required
+                                            class="form-control rounded-pill"
+                                        />
+                                    </div>
+                                </div>
+                    
+                                <div class="row mt-4" style="margin-left: 38%;">
+                                    <div class="row mt-4 mx-5">
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                            <input
+                                                type="submit"
+                                                value="Enviar"
+                                                class="btn text-black btn-info rounded-pill"
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Guardar cambios</button>
+                    <button class="btn btn-info"> Crear </button>
                 </div>
             </div>
         </div>
     </div>
+    
+
+    <!-- Modal de escoger tecnicos -->
+<div class="modal fade" id="Select_tecnico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Asignar tecnico</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <label>Elija un tecnico</label>
+                </div>
+                <select class="form-select" id="tecnico_se" required>
+                    <option selected>Seleccione</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" on:click={editar_tecnico}>Guardar cambios</button>
+            </div>
+        </div>
+    </div>
+</div>
   
 <style>
     .fa{
