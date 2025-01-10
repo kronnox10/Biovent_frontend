@@ -10,7 +10,7 @@
 </div>
     <div class="container">
         <div class="row">
-            <div class="col-4" style="margin-top: 15rem">
+            <div class="col-4 text-center" style="margin-top: 15rem">
                 <a href="/administrador/cliente">
                     <img
                         src="/admin_v/persona.png"
@@ -23,7 +23,7 @@
                 <div><p class="fs-2 text-white">Cliente</p></div>
             </div>
 
-            <div class="col-4"   style="margin-top: 15rem">
+            <div class="col-4 text-center" style="margin-top: 15rem">
                 <a href="#">
                     <img
                         src="/foto_logo__2_-removebg-preview.png"
@@ -36,7 +36,7 @@
                 <div><p class="fs-2 text-white">Tecnico</p></div>
             </div>
 
-            <div class="col-4" style="margin-top: 15rem">
+            <div class="col-4 text-center" style="margin-top: 15rem">
                 <a href="#">
                     <img
                         src="/foto_logo__2_-removebg-preview.png"
