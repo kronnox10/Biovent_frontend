@@ -2,7 +2,22 @@
     import NavbarIndex from "../../lib/navbar_index.svelte";
     import SocialMedia from "../../lib/social_media.svelte";
     import Footer from "../../lib/Footer.svelte";
-    
+    import { onMount,onDestroy } from "svelte";
+
+    onMount(() => {
+        if (typeof window !== 'undefined') {
+            if (!sessionStorage.getItem("carousel-loaded")) {
+                sessionStorage.setItem("carousel-loaded", "true");
+                location.reload();
+            }
+        }
+    });
+
+    onDestroy(() => {
+        if (typeof window !== 'undefined') {
+            sessionStorage.removeItem("carousel-loaded");
+        }
+    });
 </script>
 
 <NavbarIndex></NavbarIndex>
@@ -83,7 +98,7 @@
                         <p class="card-text py-4">Desarrollamos soluciones innovadoras en tecnología médica adaptadas a las necesidades específicas de los clientes.</p>
                     </div>
                 </div>
-                <div id="carouselExampleSlidesOnly" class="carousel col-md-4" data-bs-ride="carousel" data-bs-interval="300">
+                <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade col-md-4" data-bs-ride="carousel" data-bs-interval="100">
                     <div class="carousel-inner ">
                         <div class="carousel-item active">
                             <img src="/servicios/tarjetas_1.jpg"  width="360" height="250" alt="...">
@@ -128,7 +143,7 @@
                         <p class="card-text py-4">Creamos herramientas para entrenamientos clínicos, ayudando a perfeccionar habilidades en un entorno seguro y controlado.</p>
                     </div>
                 </div>
-                <div id="carouselExampleSlidesOnly" class="carousel col-md-4" data-bs-ride="carousel" data-bs-interval="300">
+                <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade col-md-4" data-bs-ride="carousel" data-bs-interval="100">
                     <div class="carousel-inner ">
                         <div class="carousel-item active">
                             <img src="/servicios/diseño_prototipomedico_3.jpg" width="360" height="250" alt="...">

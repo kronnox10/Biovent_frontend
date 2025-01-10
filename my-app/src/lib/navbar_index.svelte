@@ -2,7 +2,14 @@
     import { onMount } from "svelte";
 
     onMount(() => {
-
+        const carousels = document.querySelectorAll('.carousel');
+        carousels.forEach(carousel => {
+            const instance = bootstrap.Carousel.getInstance(carousel); // Obtiene la instancia actual
+            if (instance) {
+                instance.dispose(); // Elimina la instancia previa
+            }
+            new bootstrap.Carousel(carousel); // Crea una nueva instancia
+        });
     });
 </script>
 

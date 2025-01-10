@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     let todos = {};
+    let tecnicos = {};
     let todos2 = {};
     let loading = true;
     let error = null;
@@ -26,6 +27,130 @@
             loading = false;
         }
     });
+
+
+
+    async function editar_perfil() {
+        console.log(v_id_usuario)
+        let vnombre=document.getElementById('nombres').value;
+        let vcorreo=document.getElementById('correo').value
+        let vpassword=document.getElementById('password').value
+        let vjefe=document.getElementById('jefe_de_uso').value
+        let vtelefono=document.getElementById('telefono').value
+        let vciudad=document.getElementById('ciudad').value
+        let vdireccion=document.getElementById('direccion').value
+        let vnit=document.getElementById('nit').value
+        let vestado = document.getElementById('estado').value
+
+        try{
+            console.log("Entra al try de actualzar");
+            const response = await fetch("http://127.0.0.1:8000/update_client", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: v_id_usuario,
+                    cliente:vnombre,
+                    correo:vcorreo,
+                    password:vpassword,
+                    jefe_de_uso:vjefe,
+                    telefono:vtelefono,
+                    ciudad:vciudad,
+                    direccion:vdireccion,
+                    nic:vnit,
+                    estado:vestado,
+                }),
+            });
+
+            if (!response.ok) {
+            throw new Error("Error en la actualización del usuario.");
+            }
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+            });
+            Toast.fire({
+                icon: "success",
+                iconColor: "white",
+                color: "white",
+                background: "#00bdff",
+                title: "usuario actualizado con exito",
+            });
+        }catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        }
+    }
+
+
+    async function editar_perfil_maquina() {
+        console.log(v_id_maquina)
+
+        let v_nombre=document.getElementById('nombre').value
+        let v_marca=document.getElementById('marca').value
+        let v_modelo=document.getElementById('modelo').value
+        let v_serial=document.getElementById('serie').value
+        let v_inventario=document.getElementById('inventario').value
+        let v_ubicacion=document.getElementById('ubicacion').value
+        let v_desc_estado=document.getElementById('desc_estado').value
+        let v_estado=document.getElementById('estado_i').value
+
+        try{
+            console.log("Entra al try de actualzar");
+            const response = await fetch("http://127.0.0.1:8000/update_maquina", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: v_id_maquina,
+                    nombre:v_nombre,
+                    marca:v_marca,
+                    modelo:v_modelo,
+                    serial:v_serial,
+                    inventario:v_inventario,
+                    ubicacion:v_ubicacion,
+                    estado:v_estado,
+                    descripcion_e:v_desc_estado,
+                }),
+            });
+
+            if (!response.ok) {
+            throw new Error("Error en la actualización de la maquina.");
+            }
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+            });
+            Toast.fire({
+                icon: "success",
+                iconColor: "white",
+                color: "white",
+                background: "#00bdff",
+                title: "Maquina actualizado con exito",
+            });
+        }catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        }
+    }
 
     async function enviar() {
         const input = document.getElementById("archivo");
@@ -68,6 +193,33 @@
                 console.error("Error de red:", error);
             }
         } else {
+        }
+    }
+
+    async function Asignar_tecnico(){
+        try {
+            const response = await fetch("http://127.0.0.1:8000/get_tecnicos");
+            if (!response.ok) throw new Error("Error al cargar los datos");
+            const data = await response.json();
+            tecnicos = data.resultado;
+
+            console.log("eu",tecnicos)
+            const Selectpaciente = document.getElementById("tecnico");
+            for (let i = 0; i < data.resultado.length; i++) {
+                const user = data.resultado[i];
+
+                const option = document.createElement("option");
+
+                option.value = user.id;
+
+                option.textContent = user.Nombre;
+
+                Selectpaciente.appendChild(option);
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
         }
     }
 
@@ -512,7 +664,7 @@
                                     actualizar para guardar los cambios!
                                 </div>
                                 <div class="col-lg-3 ">
-                                    <button class="btn btn-outline-info"
+                                    <button class="btn btn-outline-info" on:click={editar_perfil}
                                         ><b>Actualizar</b></button
                                     >
                                 </div>
@@ -663,7 +815,7 @@
                                     actualizar para guardar los cambios!
                                 </div>
                                 <div class="col-lg-3 text-end">
-                                    <button class="btn btn-outline-info"
+                                    <button class="btn btn-outline-info" on:click={editar_perfil_maquina}
                                         ><b>Actualizar</b></button
                                     >
                                 </div>
@@ -865,8 +1017,8 @@
                                                                 </span>
                                                             </td>
                                                             <td class="px-4 py-2 border">
-                                                                <button class="btn btn-success"
-                                                                    >Asignar tecnico</button
+                                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Select_tecnico"
+                                                                on:click={Asignar_tecnico}>Asignar tecnico</button
                                                                 >
                                                             </td>
                                                         </tr>
@@ -951,7 +1103,9 @@
                                                         </td>
                                                         {#if todo.estado === 1}
                                                             <td class="px-4 py-2 border">
-                                                                <button class="btn btn-success">Asignar técnico</button>
+                                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Select_tecnico"
+                                                                on:click={Asignar_tecnico}>Asignar tecnico</button
+                                                                >
                                                             </td>
                                                         {/if}
                                                     </tr>
@@ -988,6 +1142,8 @@
     </div>
 </div>
 
+
+    <!-- Modal de cargue de equipos -->
 <div class="modal fade" id="cargue_excel" tabindex="-1" aria-labelledby="rModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1014,6 +1170,31 @@
     </div>
 </div>
 
+
+    <!-- Modal de escoger tecnicos -->
+    <div class="modal fade" id="Select_tecnico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Asignar tecnico</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <label>Elija un tecnico</label>
+                    </div>
+                    <select class="form-select" id="tecnico" required>
+                        <option selected>Seleccione</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-primary">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+  
 <style>
     .fa{
         color: black;
