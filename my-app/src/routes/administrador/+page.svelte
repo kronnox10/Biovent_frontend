@@ -24,12 +24,13 @@
             </div>
 
             <div class="col-4 text-center" style="margin-top: 15rem">
-                <a href="#">
+                <a href="/administrador/tecnico">
                     <img
-                        src="/foto_logo__2_-removebg-preview.png"
+                        src="/admin_v/tecnico.png"
                         alt=""
                         width="125"
-                        height="80"
+                        height="125"
+                        id="tecnico_si"
                     />
                 </a>
 
@@ -39,10 +40,11 @@
             <div class="col-4 text-center" style="margin-top: 15rem">
                 <a href="#">
                     <img
-                        src="/foto_logo__2_-removebg-preview.png"
+                        src="/admin_v/os.png"
                         alt=""
                         width="125"
-                        height="80"
+                        height="125"
+                        id="os_si"
                     />
                 </a>
 
@@ -56,6 +58,13 @@
 
     #cliente_si:hover {
         content: url('/admin_v/persona (1).png');
+    }
+
+    #tecnico_si:hover {
+        content: url('/admin_v/tecnico (1).png');
+    }
+    #os_si:hover {
+        content: url('/admin_v/os (1).png');
     }
 
 </style>

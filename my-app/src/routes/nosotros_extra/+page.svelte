@@ -123,7 +123,7 @@
             <div class="row pt-5">
                 <div class="card card col-xl-3 col-12 col-sm-3" style="margin-left:15vw; border-radius: 15%;">
                     <img id="respeto" src="../../valores/respeto.png" class="2" alt="..." style="padding: 20%;" />
-                        <p class="card-text text-center fs-5 mb-2">
+                        <p class="card-text text-center fs-5 mt-5">
                             Respeto.
                         </p>
                
@@ -134,7 +134,7 @@
                     style="margin-left:4vw; border-radius: 15%;"
                 >
                     <img id=responsabilidad src="../../valores/responsabilidad.png" class="" alt="..." style="padding: 20%;" />
-                        <p class="card-text text-center fs-5 mb-2">
+                        <p class="card-text text-center fs-5 pb-3">
                            responsabilidad.
                         </p>
                    

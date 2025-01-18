@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { nonpassive } from "svelte/legacy";
     let todos = {};
     let tecnicos = {};
     let todos2 = {};
@@ -11,6 +12,17 @@
     var v_id_maquina=0;
     var v_os_id=0;
     var file = null;
+
+    let vu_nombre = "";
+    let vu_correo = "";
+    let vu_contraseña = "";
+    let vu_user = "";
+    let vu_telefono = "";
+    let vu_ciudad = "";
+    let vu_direccion = "";
+    let vu_NIT = "";
+
+
 
     onMount(async () => {
         try {
@@ -29,8 +41,63 @@
         }
     });
 
+    async function Register() {
+        vu_nombre = document.getElementById("u_nombre").value;
+        vu_correo = document.getElementById("u_correo").value;
+        vu_contraseña = document.getElementById("u_contraseña").value;
+        vu_user = document.getElementById("u_user").value;
+        vu_telefono = document.getElementById("u_telefono").value;
+        vu_ciudad = document.getElementById("u_ciudad").value;
+        vu_direccion = document.getElementById("u_direccion").value;
+        vu_NIT = document.getElementById("u_NIT").value;
+
+        try {
+            const response = await fetch(
+                "http://localhost:8000/create_client",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_rol: 2,
+                        cliente: vu_nombre,
+                        correo: vu_correo,
+                        password: vu_contraseña,
+                        jefe_de_uso: vu_user,
+                        telefono: vu_telefono,
+                        ciudad: vu_ciudad,
+                        direccion: vu_direccion,
+                        nic: vu_NIT,
+                        estado: true
+                    }),
+                },);
+
+            const data = await response.json();
+            console.log(data);
+
+            if (data.resultado === "Usuario registrado") {
+                Swal.fire({
+                    title: "registro exisoto",
+                    icon: "success",
+                    draggable: true,
+                });
+
+                location.reload();
+            } else {
+                Swal.fire({
+                    title: "ups! uyuyui esto no hay quien lo arregle",
+                    icon: "error",
+                    draggable: true,
+                });
+            }
+        } catch (error) {
+            console.error("Error de red:", error);
+        }
+    }
+
     async function editar_perfil() {
-        console.log(v_id_usuario)
+        console.log(v_id_usuario)   
         let vnombre=document.getElementById('nombres').value;
         let vcorreo=document.getElementById('correo').value
         let vpassword=document.getElementById('password').value
@@ -99,6 +166,7 @@
         let v_serial=document.getElementById('serie').value
         let v_inventario=document.getElementById('inventario').value
         let v_ubicacion=document.getElementById('ubicacion').value
+        let v_sede=document.getElementById('sedes').value
         let v_desc_estado=document.getElementById('desc_estado').value
         let v_estado=document.getElementById('estado_i').value
 
@@ -117,6 +185,7 @@
                     serial:v_serial,
                     inventario:v_inventario,
                     ubicacion:v_ubicacion,
+                    sede:v_sede,
                     estado:v_estado,
                     descripcion_e:v_desc_estado,
                 }),
@@ -203,15 +272,18 @@
         const input = document.getElementById("archivo");
         file = input.files[0];
         console.log(file);
+        let uid_usuario=v_id_usuario;
+        console.log("al usuario que se le mandan es", uid_usuario);
 
         if (file) {
             // Crear un objeto FormData
             const formData = new FormData();
             formData.append("file", file);
+            formData.append("id_usuario",uid_usuario);
 
             try {
                 const response = await fetch(
-                    "http://localhost:8000/create_user_masivo",
+                    "http://localhost:8000/create_machine_masivo",
                     {
                         method: "POST",
                         body: formData,
@@ -221,6 +293,7 @@
                 const data = await response.json();
                 console.log("probando que entra");
                 console.log(data);
+
                 if (data.resultado === "Maquinas añadidas exitosamente") {
                     Swal.fire({
                         title: "Cargue exisoto",
@@ -327,6 +400,7 @@
         document.getElementById('serie').value=todos2[0].serial;
         document.getElementById('inventario').value=todos2[0].inventario;
         document.getElementById('ubicacion').value=todos2[0].ubicacion;
+        document.getElementById('sedes').value=todos2[0].sede;
         document.getElementById('desc_estado').value=todos2[0].desc_estado;
         document.getElementById('estado_i').value=todos2[0].estado;
     }
@@ -345,11 +419,16 @@
                 
                 const data = await response.json();
                 todos = data.resultado;
+                console.log(todos)
 
-
+                if (data.resultado && data.resultado.length > 0) {
                 setTimeout(() => {
                     globalThis.$("#myinventario").DataTable(); 
                 }, 0);
+            }else {
+                todos = [];
+                error = "No hay maquinas en el inventario de este cliente :(";
+            }
         } catch (e) {
             error = e.message;
         } finally {
@@ -364,31 +443,32 @@
 
     async function OS_activa(id) {
         try { 
-                const response = await fetch("http://127.0.0.1:8000/get_osi",{
-                method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        id_usuario: v_id_usuario,
-                    }),
-                });
-                
-                const data = await response.json();
-                console.log("_________",data)
-                if (data.resultado && data.resultado.length > 0) {
-                    todos = data.resultado;
-                    v_os_id=data.resultado[0].id
-                    console.log("la id de la maquina es",v_os_id)
-                setTimeout(() => {
-                    globalThis.$("#myOSI").DataTable(); 
-                }, 0);
+            const response = await fetch("http://127.0.0.1:8000/get_osi",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_usuario: v_id_usuario,
+                }),
+            });
+            const data = await response.json();
+            console.log("_________",data)
+            
+            if ( data!=null && data.resultado && data.resultado.length > 0) {
+                todos = data.resultado;
+                v_os_id=data.resultado[0].id
+                console.log("la id de la maquina es",v_os_id)
+            setTimeout(() => {
+                globalThis.$("#myOSI").DataTable(); 
+            }, 0);
             } else {
                 todos = [];
                 error = "No hay órdenes de servicio activas para este usuario. :D";
             }
         } catch (e) {
             error = e.message;
+            console.log(err);
         } finally {
             loading = false;
         } 
@@ -407,7 +487,7 @@
                 });
                 
                 const data = await response.json();
-                if (data.resultado && data.resultado.length > 0) {
+                if ( data!=null && data.resultado && data.resultado.length > 0) {
             todos = data.resultado;
             
             setTimeout(() => {
@@ -423,6 +503,63 @@
             loading = false;
         } 
 
+    }
+
+    async function register_machine() {
+        let vm_equipo = document.getElementById("m_equipo")?.value || "";
+        let vm_marca = document.getElementById("m_marca")?.value || "";
+        let vm_modelo = document.getElementById("m_modelo")?.value || "";
+        let vm_serie = document.getElementById("m_serie")?.value || "";
+        let vm_inventario = document.getElementById("m_inventario")?.value || "";
+        let vm_ubicacion = document.getElementById("m_ubicacion")?.value || "";
+        let vm_sede = document.getElementById("m_sede")?.value || "";
+
+        console.log("la id donde se crea la maquina es la ",v_id_usuario)
+        console.log("Equipo: ", vm_equipo);
+
+        try {
+            const response = await fetch(
+                "http://localhost:8000/create_machine",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_user: v_id_usuario,
+                        nombre: vm_equipo,
+                        marca: vm_marca,
+                        modelo: vm_modelo,
+                        serial: vm_serie,
+                        inventario: vm_inventario,
+                        ubicacion: vm_ubicacion,
+                        sede: vm_sede,
+                        estado: true,
+                        descripcion_e:null,
+                    }),
+                },);
+
+            const data = await response.json();
+            console.log(data);
+
+            if (data.resultado === "Maquina añadida") {
+                Swal.fire({
+                    title: "registro exisoto",
+                    icon: "success",
+                    draggable: true,
+                });
+
+                location.reload();
+            } else {
+                Swal.fire({
+                    title: "ups! uyuyui esto no hay quien lo arregle",
+                    icon: "error",
+                    draggable: true,
+                });
+            }
+        } catch (error) {
+            console.error("Error de red:", error);
+        }
     }
 </script>
 
@@ -440,7 +577,6 @@
             <h2 class="mb-4">Lista de usuarios</h2>
 
             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#creacion_user">Crear usuario</button>
-            <button class="btn btn-dark mx-1" data-bs-toggle="modal" data-bs-target="#cargue_excel">Cargar desde excel </button>
 
             {#if loading}
                 <!---->
@@ -575,6 +711,7 @@
                                         type="text"
                                         placeholder="Nombres"
                                         id="nombres"
+                                        autocomplete="off"
                                         maxlength="100"
                                         style="border: none; width: 55%;"
                                         
@@ -593,7 +730,7 @@
                                         placeholder="email"
                                         id="correo"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -608,7 +745,7 @@
                                         id="password"
                                         placeholder="contraseña"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -624,7 +761,7 @@
                                         placeholder="Nombres"
                                         maxlength="50"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -639,7 +776,7 @@
                                         placeholder="Telefono"
                                         id="telefono"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -654,7 +791,7 @@
                                         placeholder="Ciudad"
                                         id="ciudad"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -669,7 +806,7 @@
                                         placeholder="Direccion"
                                         id="direccion"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -685,7 +822,7 @@
                                         placeholder="NIT"
                                         id="nit"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -746,7 +883,7 @@
                                         id="nombre"
                                         maxlength="100"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -762,7 +899,7 @@
                                         placeholder="marca"
                                         id="marca"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -777,7 +914,7 @@
                                         id="modelo"
                                         placeholder="Modelo"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -792,7 +929,7 @@
                                         id="serie"
                                         placeholder="Serial"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -807,7 +944,7 @@
                                         placeholder="inventario"
                                         id="inventario"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -822,7 +959,22 @@
                                         placeholder="ubicacion"
                                         id="ubicacion"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>sede:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        placeholder="sedes"
+                                        id="sedes"
+                                        style="border: none; width: 55%;"
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -853,7 +1005,7 @@
                                         placeholder="desc_estado"
                                         id="desc_estado"
                                         style="border: none; width: 55%;"
-                                        
+                                        autocomplete="off"
                                     />
                                 </div>
                             </div>
@@ -883,7 +1035,10 @@
                                 aria-label="Cerrar edición de usuario"
                                 on:click={() => {activeElement = 'mostrar'; cerrar()}}
                             ></button>
+                            <button class="btn btn-dark col-lg-5" data-bs-toggle="modal" data-bs-target="#creacion_maquina">Crear maquina</button>
+                            <button class="btn btn-dark mx-1 col-lg-5" data-bs-toggle="modal" data-bs-target="#cargue_excel">Cargar desde excel </button>
                         </div>
+                        
                         <div class="card-body" style="">
                             <div id="tablita">
                                 <div class="container py-4">
@@ -912,15 +1067,16 @@
                                             >
                                                 <thead>
                                                     <tr>
-                                                        <th class="px-4 py-2 border">Nombre</th>
-                                                        <th class="px-4 py-2 border">Marca</th>
-                                                        <th class="px-4 py-2 border">Modelo</th>
-                                                        <th class="px-4 py-2 border">Serial</th>
-                                                        <th class="px-4 py-2 border">Inventario</th>
-                                                        <th class="px-4 py-2 border">Ubicacion</th>
-                                                        <th class="px-4 py-2 border">Estado</th>
-                                                        <th class="px-4 py-2 border">Descripcion de estado</th>
-                                                        <th class="px-4 py-2 border">Opciones</th>
+                                                        <th class="px-3 py-2 border">Nombre</th>
+                                                        <th class="px-3 py-2 border">Marca</th>
+                                                        <th class="px-3 py-2 border">Modelo</th>
+                                                        <th class="px-3 py-2 border">Serial</th>
+                                                        <th class="px-3 py-2 border">Inventario</th>
+                                                        <th class="px-3 py-2 border">Ubicacion</th>
+                                                        <th class="px-3 py-2 border">Sede</th>
+                                                        <th class="px-3 py-2 border">Estado</th>
+                                                        <th class="px-3 py-2 border">Descripcion de estado</th>
+                                                        <th class="px-3 py-2 border">Opciones</th>
                                                     </tr>
                                                 </thead>
 
@@ -945,6 +1101,10 @@
 
                                                             <td class="px-4 py-2 border"
                                                                 >{todo.ubicacion}</td
+                                                        >
+
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.sede}</td
                                                         >
 
                                                             <td class="px-4 py-2 border">
@@ -1190,7 +1350,7 @@
     </div>
 </div>
 
-    <!-- Modal de cargue de usuarios -->
+    <!-- Modal de cargue de maquina -->
 <div class="modal fade" id="cargue_excel" tabindex="-1" aria-labelledby="rModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -1218,129 +1378,140 @@
 </div>
 
     <!-- Modal de creacion de usuarios -->
-    <div class="modal fade" id="creacion_user" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="mleModalLabel">
-                        <b>Creacion de usuario</b>
-                    </h5>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
-                </div>
-                <div class="modal-body">
-                        <form name="formulario"id="formulario">
-                            <div class="container py-5 ps-4 px-5 mt-5 border">
-                                <!-- border-danger -->
-                                <div class="row mt-5 mx-5">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
-                                        <label for="nombre">Nombre</label>
-                                        <input
-                                            type="text"
-                                            id="nombre"
-                                            name="name"
-                                            placeholder="Escriba el nombre completo"
-                                            autocomplete="off"
-                                            class="form-control rounded-pill"
-                                            required
-                                  
-                                        />
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
-                                        <!--El autocomplete off, es para que no te salga sugerencia de cosas que ya registraste-->
-                                        <label for="serial">Serial</label>
-                                        <input
-                                            type="text"
-                                            id="serial"
-                                            name="serial"
-                                            placeholder="Escriba el serial"
-                                            autocomplete="off"
-                                            class="form-control rounded-pill"
-                                            required
+<div class="modal fade" id="creacion_user" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mleModalLabel">
+                    <b>Creacion de usuario</b>
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                    <form name="formulario"id="formulario">
+                        <div class="container py-1 ps-3 px-5">
+                            <!-- border-danger -->
+                            <div class="row mt-5 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <label for="u_nombre">Nombre de la empresa</label>
+                                    <input
+                                        type="text"
+                                        id="u_nombre"
+                                        name="name"
+                                        placeholder="Escriba el nombre de la empresa"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                        required
+                                
+                                    />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <!--El autocomplete off, es para que no te salga sugerencia de cosas que ya registraste-->
+                                    <label for="u_correo">correo</label>
+                                    <input
+                                        type="text"
+                                        id="u_correo"
+                                        name="correo"
+                                        placeholder="Escriba el correo electronico"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                        required
+                                
+                                    />
+                                </div>
+                            </div>
+                
+                            <div class="row mt-4 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <label for="u_contraseña">Contraseña</label>
+                                    <input
+                                        type="text"
+                                        id="u_contraseña"
+                                        name="contraseña"
+                                        placeholder="Escriba la contraseña de la cuenta"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                        required
                                     
-                                        />
-                                    </div>
+                                    />
                                 </div>
-                    
-                                <div class="row mt-4 mx-5">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
-                                        <label for="modelo">Modelo</label>
-                                        <input
-                                            type="text"
-                                            id="modelo"
-                                            name="modelo"
-                                            placeholder="Escriba el modelo de la maquina"
-                                            autocomplete="off"
-                                            class="form-control rounded-pill"
-                                            required
-                                     
-                                        />
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
-                                        <label for="marca">Marca</label>
-                                        <input
-                                            type="text"
-                                            id="marca"
-                                            name="marca"
-                                            placeholder="Escriba la marca de la maquina"
-                                            autocomplete="off"
-                                            class="form-control rounded-pill"
-                                            required
-                                           
-                                        />
-                                    </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <label for="u_user">Persona a cargo</label>
+                                    <input
+                                        type="text"
+                                        id="u_user"
+                                        name="otro_nombre"
+                                        placeholder="Escriba el nombre de la persona a cargo"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                        required
+                                        
+                                    />
                                 </div>
-                    
-                                <div class="row mt-4 mx-5">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
-                                        <label for="inventario">Inventario</label>
-                                        <input
-                                            type="text"
-                                            id="inventario"
-                                            name="inventario"
-                                            placeholder="Escriba el inventario"
-                                            class="form-control rounded-pill"
-                                          
-                                        />
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
-                                        <label for="ubicacion">Ubicacion</label>
-                                        <input
-                                            type="text"
-                                            id="ubicacion"
-                                            placeholder="Escriba la ubicacion de la maquina"
-                                            required
-                                            class="form-control rounded-pill"
-                                        />
-                                    </div>
+                            </div>
+                
+                            <div class="row mt-4 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                    <label for="u_telefono">Telefono</label>
+                                    <input
+                                        type="text"
+                                        id="u_telefono"
+                                        name="telefono"
+                                        placeholder="Escriba el telefono"
+                                        class="form-control rounded-pill"
+                                        autocomplete="off"
+                                    />
                                 </div>
-                    
-                                <div class="row mt-4" style="margin-left: 38%;">
-                                    <div class="row mt-4 mx-5">
-                                        <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
-                                            <input
-                                                type="submit"
-                                                value="Enviar"
-                                                class="btn text-black btn-info rounded-pill"
-                                            />
-                                        </div>
-                                    </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                    <label for="u_ciudad">Ciudad</label>
+                                    <input
+                                        type="text"
+                                        id="u_ciudad"
+                                        placeholder="Escriba la ciudad de la empresa"
+                                        required
+                                        class="form-control rounded-pill"
+                                        autocomplete="off"
+                                    />
                                 </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-info"> Crear </button>
-                </div>
+                            </div>
+                            <div class="row mt-3 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                    <label for="u_direccion">Direccion</label>
+                                    <input
+                                        type="text"
+                                        id="u_direccion"
+                                        placeholder="Escriba la direccion de la empresa"
+                                        class="form-control rounded-pill"
+                                        autocomplete="off"
+                                    />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                    <label for="u_NIT">NIT</label>
+                                    <input
+                                        type="text"
+                                        id="u_NIT"
+                                        placeholder="Escriba la nit de la empresa"
+                                        required
+                                        class="form-control rounded-pill"
+                                        autocomplete="off"
+                                    />
+                                </div>
+                            </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" on:click={Register}> Crear </button>
             </div>
         </div>
     </div>
+</div>
     
-
     <!-- Modal de escoger tecnicos -->
 <div class="modal fade" id="Select_tecnico" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -1365,8 +1536,126 @@
     </div>
 </div>
   
+ <!-- Modal de creacion de maquinas -->
+ <div class="modal fade" id="creacion_maquina" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mleModalLabel">
+                    <b>Creacion de Maquinas</b>
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                    <form name="formulario"id="formulario">
+                        <div class="container py-1 ps-3 px-5">
+                            <!-- border-danger -->
+                            <div class="row mt-5 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <label for="m_equipo">Nombre del equipo:</label>
+                                    <input
+                                        type="text"
+                                        id="m_equipo"
+                                        name="name"
+                                        placeholder="Escriba el nombre de la mauqina"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                    />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <!--El autocomplete off, es para que no te salga sugerencia de cosas que ya registraste-->
+                                    <label for="m_marca">Marca:</label>
+                                    <input
+                                        type="text"
+                                        id="m_marca"
+                                        name="marca"
+                                        placeholder="Escriba la marca"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                    />
+                                </div>
+                            </div>
+                
+                            <div class="row mt-4 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <label for="m_modelo">Modelo:</label>
+                                    <input
+                                        type="text"
+                                        id="m_modelo"
+                                        name="modelo"
+                                        placeholder="Escriba el modelo del equipo"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                    />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <label for="m_serie">numero de serie</label>
+                                    <input
+                                        type="text"
+                                        id="m_serie"
+                                        name="serial"
+                                        placeholder="Escriba el serial del equipo"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                    />
+                                </div>
+                            </div>
+                
+                            <div class="row mt-4 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                    <label for="m_inventario">Inventario:</label>
+                                    <input
+                                        type="text"
+                                        id="m_inventario"
+                                        name="inventario"
+                                        placeholder="Escriba donde se encuentra ubicado el equipo"
+                                        class="form-control rounded-pill"
+                                        autocomplete="off"
+                                    />
+                                </div>
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                    <label for="m_ubicacion">Ubicacion:</label>
+                                    <input
+                                        type="text"
+                                        id="m_ubicacion"
+                                        placeholder="Escriba la ubicacion del equipo"
+                                        class="form-control rounded-pill"
+                                        autocomplete="off"
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mt-3 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
+                                    <label for="m_sede">sede</label>
+                                    <input
+                                        type="text"
+                                        id="m_sede"
+                                        placeholder="Escriba la ciudad donde esta el equipo"
+                                        class="form-control rounded-pill"
+                                        autocomplete="off"
+                                    />
+                                </div>
+                            </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" on:click={register_machine}> Crear </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .fa{
         color: black;
+    }
+    .fa:hover{
+        color: gray;
     }
 </style>
