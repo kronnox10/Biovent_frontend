@@ -29,7 +29,7 @@
 
     onMount(async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/get_clients");
+            const response = await fetch("https://biovent-backend.onrender.com/get_clients");
             if (!response.ok) throw new Error("Error al cargar los datos");
             const data = await response.json();
             todos = data.resultado;
@@ -113,7 +113,7 @@
 
         try{
             console.log("Entra al try de actualzar");
-            const response = await fetch("http://127.0.0.1:8000/update_client", {
+            const response = await fetch("https://biovent-backend.onrender.com/update_client", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -175,7 +175,7 @@
 
         try{
             console.log("Entra al try de actualzar");
-            const response = await fetch("http://127.0.0.1:8000/update_maquina", {
+            const response = await fetch("https://biovent-backend.onrender.com/update_maquina", {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -226,7 +226,7 @@
         let vtecnico = document.getElementById("tecnico_se").value;
         try {
 
-            const response = await fetch("http://127.0.0.1:8000/asignar_tecnico_os", {
+            const response = await fetch("https://biovent-backend.onrender.com/asignar_tecnico_os", {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -321,7 +321,7 @@
 
     async function Asignar_tecnico(){
         try {
-            const response = await fetch("http://127.0.0.1:8000/get_tecnicos");
+            const response = await fetch("https://biovent-backend.onrender.com/get_tecnicos");
             if (!response.ok) throw new Error("Error al cargar los datos");
             const data = await response.json();
             tecnicos = data.resultado;
@@ -353,7 +353,7 @@
 
     async function perfil(id) {
         v_id_usuario=id
-        const response = await fetch("http://127.0.0.1:8000/get_client",{
+        const response = await fetch("https://biovent-backend.onrender.com/get_client",{
             method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -382,7 +382,7 @@
     async function perfil_maquina(id) {
         console.log("verificando que id toma", id)
         v_id_maquina=id
-        const response = await fetch("http://127.0.0.1:8000/get_machines",{
+        const response = await fetch("https://biovent-backend.onrender.com/get_machines",{
             method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -409,11 +409,10 @@
     }
 
     async function inventario() {
-    error = null;
-
+        error = null;
         console.log("entra inventario")
         try { 
-                const response = await fetch("http://127.0.0.1:8000/get_machine",{
+                const response = await fetch("https://biovent-backend.onrender.com/get_machine",{
                 method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -449,7 +448,7 @@
 
     async function OS_activa(id) {
         try { 
-            const response = await fetch("http://127.0.0.1:8000/get_osi",{
+            const response = await fetch("https://biovent-backend.onrender.com/get_osi",{
             method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -482,7 +481,7 @@
 
     async function OS_historial() {//
         try { 
-                const response = await fetch("http://127.0.0.1:8000/get_os",{
+                const response = await fetch("https://biovent-backend.onrender.com/get_os",{
                 method: "POST",
                     headers: {
                         "Content-Type": "application/json",

@@ -13,7 +13,7 @@
     /*
     onMount(async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/login");
+            const response = await fetch("https://biovent-backend.onrender.com/login");
             if (!response.ok) throw new Error("Error al cargar los datos");
             todos = await response.json();
         } catch (e) {
@@ -32,7 +32,7 @@
     });
 
     /*async function token() {
-        const response = await fetch("http://127.0.0.1:8000/generate_token", {
+        const response = await fetch("https://biovent-backend.onrender.com/generate_token", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -53,7 +53,7 @@
     async function Login() {
         loading = true;
         try {
-            const response = await fetch("http://127.0.0.1:8000/login", {
+            const response = await fetch("https://biovent-backend.onrender.com/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

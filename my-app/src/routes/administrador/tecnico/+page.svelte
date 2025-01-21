@@ -9,7 +9,7 @@
     onMount(async () => {
         try {
             const response = await fetch(
-                "http://127.0.0.1:8000/get_technicals",
+                "https://biovent-backend.onrender.com/get_technicals",
             );
             if (!response.ok) throw new Error("Error al cargar los datos");
             const data = await response.json();
@@ -28,7 +28,7 @@
     async function editar(id) {
          v_id_tecnico = id;
         console.log("id del ", v_id_tecnico);
-        const response = await fetch("http://127.0.0.1:8000/get_technical", {
+        const response = await fetch("https://biovent-backend.onrender.com/get_technical", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

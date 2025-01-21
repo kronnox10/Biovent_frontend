@@ -2,7 +2,7 @@ Myvenv
 
 
 ---->Para Ver la api
-http://127.0.0.1:8000/docs
+https://biovent-backend.onrender.com/docs
 
 -->Para ver la pagina:
 http://26.135.80.104:5173/
