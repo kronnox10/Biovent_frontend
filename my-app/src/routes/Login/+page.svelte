@@ -267,6 +267,3 @@
         }
     }
 </style>
-
-
-<a href="/administrador">asdad</a>

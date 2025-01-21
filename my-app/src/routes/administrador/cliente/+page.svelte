@@ -2,6 +2,9 @@
     import { onMount } from "svelte";
     import { nonpassive } from "svelte/legacy";
     let todos = {};
+    let todos_inventario = {};
+    let todos_os_activas = {};
+    let todos_historial = {};
     let tecnicos = {};
     let todos2 = {};
     let loading = true;
@@ -406,6 +409,9 @@
     }
 
     async function inventario() {
+    error = null;
+
+        console.log("entra inventario")
         try { 
                 const response = await fetch("http://127.0.0.1:8000/get_machine",{
                 method: "POST",
@@ -418,7 +424,7 @@
                 });
                 
                 const data = await response.json();
-                todos = data.resultado;
+                todos_inventario = data.resultado;
                 console.log(todos)
 
                 if (data.resultado && data.resultado.length > 0) {
@@ -426,7 +432,7 @@
                     globalThis.$("#myinventario").DataTable(); 
                 }, 0);
             }else {
-                todos = [];
+                todos_inventario = [];
                 error = "No hay maquinas en el inventario de este cliente :(";
             }
         } catch (e) {
@@ -456,14 +462,14 @@
             console.log("_________",data)
             
             if ( data!=null && data.resultado && data.resultado.length > 0) {
-                todos = data.resultado;
+                todos_os_activas = data.resultado;
                 v_os_id=data.resultado[0].id
                 console.log("la id de la maquina es",v_os_id)
             setTimeout(() => {
                 globalThis.$("#myOSI").DataTable(); 
             }, 0);
             } else {
-                todos = [];
+                todos_os_activas = [];
                 error = "No hay órdenes de servicio activas para este usuario. :D";
             }
         } catch (e) {
@@ -488,13 +494,13 @@
                 
                 const data = await response.json();
                 if ( data!=null && data.resultado && data.resultado.length > 0) {
-            todos = data.resultado;
+            todos_historial = data.resultado;
             
             setTimeout(() => {
                 globalThis.$("#myOS").DataTable(); 
             }, 0);
             } else {
-                todos = [];
+                todos_historial = [];
                 error = "Que raro, no hay ninguna Orden de servicio para ese usuario (?";
             }
         } catch (e) {
@@ -686,7 +692,7 @@
 
         <div class="container">          
             <div class="row">
-                <div class="col-12 col-xl-12" style="background-color: red;">
+                <div class="col-12 col-xl-12">
                                                 
                     <div hidden={activeElement !== 'a'} class="card border-dark shadow" id="perfil" style="">
                         <div class="card-header row g-2">
@@ -1081,44 +1087,44 @@
                                                 </thead>
 
                                                 <tbody>
-                                                    {#each todos as todo}
+                                                    {#each todos_inventario as todos_inventario}
                                                         <tr class="hover:bg-gray-50">
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.nombre}</td
+                                                                >{todos_inventario.nombre}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.marca}</td
+                                                                >{todos_inventario.marca}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.modelo}</td
+                                                                >{todos_inventario.modelo}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.serial}</td
+                                                                >{todos_inventario.serial}</td
                                                             >
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.inventario}</td
+                                                                >{todos_inventario.inventario}</td
                                                             >
 
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.ubicacion}</td
+                                                                >{todos_inventario.ubicacion}</td
                                                         >
 
                                                             <td class="px-4 py-2 border"
-                                                                >{todo.sede}</td
+                                                                >{todos_inventario.sede}</td
                                                         >
 
                                                             <td class="px-4 py-2 border">
-                                                                <span style="color: {todo.estado ? 'green' : 'red'};">
-                                                                    {todo.estado ? "Activo" : "Inactivo"}
+                                                                <span style="color: {todos_inventario.estado ? 'green' : 'red'};">
+                                                                    {todos_inventario.estado ? "Activo" : "Inactivo"}
                                                                 </span>
                                                             </td>
 
 
-                                                            {#if todo.estado==0}
+                                                            {#if todos_inventario.estado==0}
                                                             <td class="px-4 py-2 border"
-                                                            >{todo.desc_estado}</td>
+                                                            >{todos_inventario.desc_estado}</td>
                                                             
-                                                            {:else if todo.estado==1}
+                                                            {:else if todos_inventario.estado==1}
                                                             <td class="px-4 py-2 border"></td>
                                                             {:else}
                                                             <td class="px-4 py-2 border"></td>
@@ -1126,7 +1132,7 @@
 
                                                             <td class="px-4 py-2 border">
                                                                 <button class="btn btn-success"
-                                                                    on:click={()=>{activeElement="mostrarb";perfil_maquina(todo.id)}}>Editar</button
+                                                                    on:click={()=>{activeElement="mostrarb";perfil_maquina(todos_inventario.id)}}>Editar</button
                                                                 >
                                                             </td>
                                                         </tr>
@@ -1206,7 +1212,7 @@
                                                 </thead>
                         
                                                 <tbody>
-                                                    {#each todos as todo}
+                                                    {#each todos_os_activas as todo}
                                                         <tr class="hover:bg-gray-50">
                                                             <td class="px-4 py-2 border"
                                                                 >{todo.usuario_cliente}</td
@@ -1291,7 +1297,7 @@
                                             </thead>
                     
                                             <tbody>
-                                                {#each todos as todo}
+                                                {#each todos_historial as todo}
                                                     <tr class="hover:bg-gray-50">
                                                         <td class="px-4 py-2 border"
                                                             >{todo.usuario_cliente}</td
@@ -1340,12 +1346,12 @@
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
-        <div class="card bg-secondary py-1 px-1">
-            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'a'; perfil(id);  }}>Perfil</button></div>
-            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
-            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() => activeElement = 'c'}>Cronograma</button></div>
-            <div class="text-center"><button class="mt-3 btn btn-primary" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
-            <div class="text-center"><button class="mt-3 mb-3 btn btn-primary" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
+        <div class="card bg-secondary py-1 px-1 row">
+            <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() =>{ activeElement = 'a'; perfil(id);  }}>Perfil</button></div>
+            <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
+            <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() => activeElement = 'c'}>Cronograma</button></div>
+            <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
+            <div class="text-center"><button class="mt-3 mb-3 btn btn-primary col-12" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
         </div>
     </div>
 </div>

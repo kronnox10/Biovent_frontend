@@ -38,7 +38,7 @@
             </div>
 
             <div class="col-4 text-center" style="margin-top: 15rem">
-                <a href="#">
+                <a href="/administrador/os">
                     <img
                         src="/admin_v/os.png"
                         alt=""

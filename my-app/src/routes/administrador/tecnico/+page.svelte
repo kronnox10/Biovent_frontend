@@ -5,6 +5,7 @@
     let error = null;
     let activeElement = "mostrar";
     var v_id_tecnico=0
+    
     onMount(async () => {
         try {
             const response = await fetch(
@@ -152,6 +153,7 @@
 
         alert("se actualizo perro")
     }
+
 </script>
 
 <div
@@ -338,7 +340,7 @@
 
                         <div class="row pt-3">
                             <div class="col-lg-2">
-                                <p class="card-text"><b>Jefe de uso:</b></p>
+                                <p class="card-text"><b>Tecnico:</b></p>
                             </div>
                             <div class="col-lg-10">
                                 <input
@@ -456,8 +458,7 @@
     aria-labelledby="rModalLabel"
     data-bs-backdrop="static"
     data-bs-keyboard="false"
-    aria-hidden="true"
->
+    aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
