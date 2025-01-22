@@ -53,7 +53,7 @@
             error= e.message;
         }finally{
             loading=false;
-        }        
+        }   //yo opino que borremos todo el proyecto y lo empezemos de nuevo, solo de chill     
     }
 
     async function os_all() {

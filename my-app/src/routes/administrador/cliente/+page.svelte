@@ -56,7 +56,7 @@
 
         try {
             const response = await fetch(
-                "http://localhost:8000/create_client",
+                "https://biovent-backend.onrender.com/create_client",
                 {
                     method: "POST",
                     headers: {
@@ -286,7 +286,7 @@
 
             try {
                 const response = await fetch(
-                    "http://localhost:8000/create_machine_masivo",
+                    "https://biovent-backend.onrender.com/create_machine_masivo",
                     {
                         method: "POST",
                         body: formData,
@@ -524,7 +524,7 @@
 
         try {
             const response = await fetch(
-                "http://localhost:8000/create_machine",
+                "https://biovent-backend.onrender.com/create_machine",
                 {
                     method: "POST",
                     headers: {

@@ -31,25 +31,6 @@
         }
     });
 
-    /*async function token() {
-        const response = await fetch("https://biovent-backend.onrender.com/generate_token", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                usuario: v_usuario,
-                password: v_password,
-            }),
-        });
-
-        const data = await response.json();
-        //return {"access_token": access_token}
-        todos2 = data.access_token;
-        console.log("Revisando token", todos2);
-        Login(todos2);
-    }*/
-
     async function Login() {
         loading = true;
         try {
@@ -115,6 +96,27 @@
                     setTimeout(() => {
                         window.location.href = "/usuario";
                     }, 2000);
+                } else if (rol_v == 3) {
+                    let name = data.resultado[0].nombre;
+                    let id = data.resultado[0].id;
+                    let correo = data.resultado[0].correo;
+
+                    let encontrado = { name, id, correo };
+                    console.log("Imprimos el encontrado", encontrado);
+                    let miStorage = window.localStorage;
+                    miStorage.setItem("usuario", JSON.stringify(encontrado));
+
+                   
+                    Swal.fire({
+                        position: "top",  
+                        icon: "success",
+                        title: "Inicio de sesion exitoso, bienvenido " + name,
+                        showConfirmButton: false,
+                    });
+
+                    setTimeout(() => {
+                        window.location.href = "/tecnico";
+                    }, 2000);
                 }
             } else {
                 Swal.fire({
@@ -171,7 +173,7 @@
             <img
                 src="foto_logo__2_-removebg-preview.png"
                 width="125"
-                height="80"
+                height="120"
                 id=""
                 alt=""
                 style="margin-bottom: 5%;"
@@ -180,7 +182,7 @@
             <b>Inicio de sesion</b>
         </div>
         <div class="row justify-content-center g-2">
-            <div class=" mx-5 col-md-6 mb-3">
+            <div class=" mx-5 col-md-6 mb-2">
                 <input
                     on:keydown={(event) => siguiente(event, "contrasena")}
                     type="text"
@@ -206,7 +208,11 @@
             <button type="button" class="btn btn-primary mt-3" on:click={Login}>
                 Ingresar
             </button>
-        </div>
+
+            <a href="/usuario" class="btn btn-primary mt-3">
+                Ingresar usuario 
+            </a>
+        </div><!--shhh me encuentro ahora mismo: 🛏️🛏️🛏️-->
     </div>
 </div>
 

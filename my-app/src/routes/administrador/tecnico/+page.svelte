@@ -60,33 +60,30 @@
     }
     
     async function Register() {
-       let vu_nombre = document.getElementById("u_nombre").value;
        let vu_correo = document.getElementById("u_correo").value;
        let vu_contraseña = document.getElementById("u_contraseña").value;
        let vu_user = document.getElementById("u_user").value;
        let vu_telefono = document.getElementById("u_telefono").value;
        let vu_ciudad = document.getElementById("u_ciudad").value;
-       let vu_direccion = document.getElementById("u_direccion").value;
-       let vu_NIT = document.getElementById("u_NIT").value;
+
 
         try {
             const response = await fetch(
-                "http://localhost:8000/create_technical",
-                {
+                "http://localhost:8000/create_technical",{
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
                         id_rol: 3,
-                        cliente: vu_nombre,
+                        cliente: "Biovent",
                         correo: vu_correo,
                         password: vu_contraseña,
                         jefe_de_uso: vu_user,
                         telefono: vu_telefono,
                         ciudad: vu_ciudad,
-                        direccion: vu_direccion,
-                        nic: vu_NIT,
+                        direccion: null,
+                        nic: "901617987-1",
                         estado: true,
                     }),
                 },
@@ -128,7 +125,7 @@
         let v_estado = document.getElementById("estado").value;
 
 
-        const response = await fetch("http://localhost:8000/update_client", {
+        const response = await fetch("https://biovent-backend.onrender.com/update_client", {
             
             method: "PUT",
             headers: {
@@ -477,25 +474,7 @@
                     <div class="container py-1 ps-3 px-5">
                         <!-- border-danger -->
                         <div class="row mt-5 mx-5">
-                            <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6"
-                            >
-                                <label for="u_nombre"
-                                    >Nombre de la empresa</label
-                                >
-                                <input
-                                    type="text"
-                                    id="u_nombre"
-                                    name="name"
-                                    placeholder="Escriba el nombre de la empresa"
-                                    autocomplete="off"
-                                    class="form-control rounded-pill"
-                                    required
-                                />
-                            </div>
-                            <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6"
-                            >
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
                                 <!--El autocomplete off, es para que no te salga sugerencia de cosas que ya registraste-->
                                 <label for="u_correo">correo</label>
                                 <input
@@ -508,9 +487,6 @@
                                     required
                                 />
                             </div>
-                        </div>
-
-                        <div class="row mt-4 mx-5">
                             <div
                                 class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6"
                             >
@@ -525,9 +501,9 @@
                                     required
                                 />
                             </div>
-                            <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6"
-                            >
+                        </div>
+                        <div class="row mt-4 mx-5">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
                                 <label for="u_user">Nombre del tecnico</label>
                                 <input
                                     type="text"
@@ -539,9 +515,6 @@
                                     required
                                 />
                             </div>
-                        </div>
-
-                        <div class="row mt-4 mx-5">
                             <div
                                 class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2"
                             >
@@ -555,6 +528,8 @@
                                     autocomplete="off"
                                 />
                             </div>
+                        </div>
+                        <div class="row mt-3 mx-5">
                             <div
                                 class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2"
                             >
@@ -563,33 +538,6 @@
                                     type="text"
                                     id="u_ciudad"
                                     placeholder="Escriba la ciudad del tecnico"
-                                    required
-                                    class="form-control rounded-pill"
-                                    autocomplete="off"
-                                />
-                            </div>
-                        </div>
-                        <div class="row mt-3 mx-5">
-                            <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2"
-                            >
-                                <label for="u_direccion">Direccion</label>
-                                <input
-                                    type="text"
-                                    id="u_direccion"
-                                    placeholder="Escriba la direccion de la empresa del tecnico"
-                                    class="form-control rounded-pill"
-                                    autocomplete="off"
-                                />
-                            </div>
-                            <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2"
-                            >
-                                <label for="u_NIT">NIT</label>
-                                <input
-                                    type="text"
-                                    id="u_NIT"
-                                    placeholder="Escriba la nit de la empresa"
                                     required
                                     class="form-control rounded-pill"
                                     autocomplete="off"
