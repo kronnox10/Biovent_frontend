@@ -59,7 +59,7 @@
                                 Somos una empresa biomédica calificada, con conocimiento
                                 en tecnología para la prestación de servicio oportuno,
                                 optimo y con calidad en el funcionamiento de equipo
-                                médico. De esta manera aportar herramientas para brindar
+                                médico. De esta manera aportar herramientas para
                                 una mayor seguridad y confianza a cada ente prestador
                             </p>
                             <p hidden class="card-text" id="vision-text" style="text-align: justify;">
@@ -68,7 +68,7 @@
                                 con un servicio personalizado, integral y de calidad
                                 tecnológica y humana, a su vez, siendo un apoyo en las
                                 funciones de regulación del sistema de garantía de
-                                calidad orientado al área biomédica, así como precios
+                                calidad, orientado al área biomédica, así como precios
                                 competitivos.
                             </p>
                         </div>

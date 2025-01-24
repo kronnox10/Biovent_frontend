@@ -208,11 +208,7 @@
             <button type="button" class="btn btn-primary mt-3" on:click={Login}>
                 Ingresar
             </button>
-
-            <a href="/usuario" class="btn btn-primary mt-3">
-                Ingresar usuario 
-            </a>
-        </div><!--shhh me encuentro ahora mismo: 🛏️🛏️🛏️-->
+        </div>
     </div>
 </div>
 

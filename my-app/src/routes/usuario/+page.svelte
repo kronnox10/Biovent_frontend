@@ -1,31 +1,162 @@
 <script>
-    /*
-    import {OnMount} from "svelte";
+    
+    import {onMount} from "svelte";
 
     let todos={}
     let loading=true;
     let error= null;
+    let todos_inventario=[]
 
-
+    var v_id=0
     onMount(async()=>{
-        try{//ruta para mostrar nombre(rafael) y el cliente (universidad del norte), equipos actuales...
-            const response = await fetch("https://biovent-backend.onrender.com/");
+        let miStorage = window.localStorage;
+        let usuario = JSON.parse(miStorage.getItem("usuario"));
+         v_id = usuario.id;
+        console.log(v_id)
+
+        try{
+            const response = await fetch("https://biovent-backend.onrender.com/get_machine_on",{
+
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_usuario:v_id
+                    }),      
+
+
+            });
             const data= await response.json();
-            todos= data.resultado;
-
-            let v_name= document.getElementById('name').innerHTML=todos.name;//algo asi
-            let v_client= document.getElementById('client').innerHTML=todos.client;
-            let v_t_equipos= document.getElementById('t_equipos').innerHTML=todos.t_equipos;
-            let v_e_inactive= document.getElementById('e_inactive').innerHTML=todos.e_inactive;
-            let v_inactive_pieza= document.getElementById('inactive_pieza').innerHTML=todos.inactive_pieza;
-
+            todos= data.Funcionando;
+            console.log("verificando todos", todos)
+            let v_t_equipos= document.getElementById('t_equipos').innerHTML=todos;
+            inventario()
+            client()    
+            e_inactive()
+            e_inactive_topic()
         }catch(e){
             error= e.message;
         }finally{
-            loading=false;
+            loading=false
         }
 
-    })*/
+    })
+
+
+    async function inventario() {
+        error = null;
+            console.log("entra inventario")
+            try { 
+                    const response = await fetch("https://biovent-backend.onrender.com/get_machine",{
+                    method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            id_usuario: v_id,
+                        }),
+                    });
+                    
+                    const data = await response.json();
+                    todos_inventario = data.resultado;
+                    
+                    if (data.resultado && data.resultado.length > 0) {
+                    setTimeout(() => {
+                        globalThis.$("#myinventario").DataTable(); 
+                    }, 0);
+                }else {
+                    todos_inventario = [];
+                    error = "No hay maquinas en el inventario de este cliente ??"
+                }
+            } catch (e) {
+                error = e.message;
+            } finally {
+                loading = false;
+            } 
+
+    }
+
+
+    async function client() {
+        try{
+            console.log(v_id)
+            const response = await fetch("https://biovent-backend.onrender.com/get_client",{
+
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id:v_id
+                    }),      
+
+            });
+            const data= await response.json();
+            todos= data.resultado;
+            console.log("verificando todos, client" ,todos)
+          let name= document.getElementById('name').innerHTML=todos[0].persona_acargo;
+          let cliente= document.getElementById('client').innerHTML=todos[0].cliente;
+
+
+        }catch(e){
+        error= e.message;
+        }finally{    
+        }
+    }      
+
+    async function e_inactive() {
+        try{//ruta para mostrar nombre(rafael) y el cliente (universidad del norte), equipos actuales...
+
+            const response = await fetch("https://biovent-backend.onrender.com/get_machine_off",{
+
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_usuario:v_id
+                    }),      
+
+            });
+            const data= await response.json();
+            todos= data.Dañadas;
+            let v_e_inactive= document.getElementById('e_inactive').innerHTML=todos;
+            
+        }catch(e){
+            error= e.message;
+        }finally{
+            
+        }
+    }
+
+    
+    async function e_inactive_topic() {
+        try{
+            console.log("Segundo llamado")
+            const response = await fetch("https://biovent-backend.onrender.com/get_machine_off_topic",{
+                method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_usuario:v_id
+                    }),      
+            });
+            const data= await response.json();
+            todos=data.Dañadasporalgo;
+            console.log("verificando todos", todos)
+            let v_e_inactive_pieza= document.getElementById('inactive_pieza').innerHTML=todos;
+    
+        }catch(e){
+            error= e.message;
+        }finally{
+            //loading=false;
+            
+        }
+    }
+
+
 
 </script>
 
@@ -50,32 +181,109 @@
                 </div>
 
                 <div style="background-color: white; color:black; border-radius:7%;" class="text-center mt-3 pt-3" ><!--HOlAAAAAAAAAAAA-->
-
                     <p><b>Equipos actuales</b></p>
-                    <p><b id="t_equipos">14</b> equipos en total</p>
-                    <p><b id="e_inactive">3</b> equipos inactivo</p>
-                    <p><b id="inactive_pieza">5</b> equipos inactivos por pieza faltante</p>
-
+                    <p><b id="t_equipos">-</b> equipos en total</p>
+                    <p><b id="e_inactive">-</b> equipos inactivo</p>
+                    <p><b id="inactive_pieza">-</b> equipos inactivos por pieza faltante</p>
                 </div>
-
                 
-
-
+                <button class="btn btn-danger col-12">Editar perfil</button>
             </div>
             
-            <div class="col-xl-4 col-lg-4 col-4"  style="background-color: chocolate;">
-                <p>Tabla_1</p>
-                <p>Tabla_2</p>
-                <p>Tabla_3</p>
-                <button class="btn btn-danger ">ver todos los equipos</button>
+            <div class="col-xl-9 col-lg-9 col-9">
+                <div id="tablita">
+                    <div class="container py-4">
+                        <h4 class="mb-4 text-center">Lista de equipos</h4>
+                        {#if loading}
+                            <div class="row g-2 justify-content-center">
+                                <p
+                                    class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                >
+                                    Cargando datos...
+                                </p>
+                                <div
+                                    class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                    role="status"
+                                >
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        {:else if error}
+                            <p class="text-red-500">Error: {error}</p>
+                        {:else}
+                            <div class="">
+                                <table 
+                                    class="min-w-full bg-white border border-gray-300" style="width:100%; font-size: 13px;"
+                                    id="myinventario"
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th class="px-3 py-2 border">Nombre</th>
+                                            <th class="px-3 py-2 border">Inventario</th>
+                                            <th class="px-3 py-2 border">Ubicacion</th>
+                                            <th class="px-3 py-2 border">Sede</th>
+                                            <th class="px-3 py-2 border">Estado</th>
+                                            <th class="px-3 py-2 border">Descripcion de estado</th>
+                                            <th class="px-3 py-2 border">Opciones</th>
+                                        </tr>
+                                    </thead>
 
-                    
+                                    <tbody>
+                                        {#each todos_inventario as todos_inventario}
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-4 py-2 border"
+                                                    >{todos_inventario.nombre}</td
+                                                >
+
+                                                <td class="px-4 py-2 border"
+                                                    >{todos_inventario.inventario}</td
+                                                >
+
+                                                <td class="px-4 py-2 border"
+                                                    >{todos_inventario.ubicacion}</td
+                                            >
+
+                                                <td class="px-4 py-2 border"
+                                                    >{todos_inventario.sede}</td
+                                            >
+
+                                                <td class="px-4 py-2 border">
+                                                    <span style="color: {todos_inventario.estado ? 'green' : 'red'};">
+                                                        {todos_inventario.estado ? "Activo" : "Inactivo"}
+                                                    </span>
+                                                </td>
+
+
+                                                {#if todos_inventario.estado==0}
+                                                <td class="px-4 py-2 border"
+                                                >{todos_inventario.desc_estado}</td>
+                                                
+                                                {:else if todos_inventario.estado==1}
+                                                <td class="px-4 py-2 border"></td>
+                                                {:else}
+                                                <td class="px-4 py-2 border"></td>
+                                                {/if}
+
+                                                <td class="px-4 py-2 border">
+                                                    <button class="btn btn-success"
+                                                        on:click={()=>{(todos_inventario.id)}}>Solicitar OS</button
+                                                    >
+                                                </td>
+                                            </tr>
+                                        {/each}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {/if}
+                    </div>
+                </div>
             </div>
             
-            <div class="col-xl-4 col-lg-4 col-4 text-center" style="background-color    : darkred;">
+            <!--<div class="col-xl-2 col-lg-2 col-2 text-center" >
                 <p><b>Solicitar Os</b></p>
                 <button class="btn btn-danger">Solicitar</button>
             </div>
+            -->
         </div>
     </div>
 </div>

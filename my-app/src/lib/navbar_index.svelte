@@ -19,7 +19,7 @@
             <img
                 src="foto_logo__2_-removebg-preview.png"
                 width="125"
-                height="80"
+                height="100"
                 id=""
                 alt=""
             />

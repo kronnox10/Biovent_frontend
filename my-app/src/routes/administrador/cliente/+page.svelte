@@ -601,23 +601,24 @@
             {:else if error}
                 <p class="text-red-500">Error: {error}</p>
             {:else}
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto display compact">
                     <table
-                        class="min-w-full bg-white border border-gray-300"
+                        class="min-w-full bg-white border border-gray-300"  
+                        style="width:100%; font-size: 11px;"
                         id="myTable"
                     >
                         <thead>
                             <tr>
-                                <th class="px-4 py-2 border">Cliente</th>
-                                <th class="px-4 py-2 border">Correo</th>
-                                <th class="px-4 py-2 border">Contraseña</th>
-                                <th class="px-4 py-2 border">Persona a cargo</th>
-                                <th class="px-4 py-2 border">Telefono</th>
-                                <th class="px-4 py-2 border">Ciudad</th>
-                                <th class="px-4 py-2 border">Direccion</th>
-                                <th class="px-4 py-2 border">NIT</th>
-                                <th class="px-4 py-2 border">Estado</th>
-                                <th class="px-4 py-2 border">Opciones</th>
+                                <th class="px-2 py-2 border">Cliente</th>
+                                <th class="px-2 py-2 border">Correo</th>
+                                <th class="px-2 py-2 border">Contraseña</th>
+                                <th class="px-2 py-2 border">Persona a cargo</th>
+                                <th class="px-2 py-2 border">Telefono</th>
+                                <th class="px-2 py-2 border">Ciudad</th>
+                                <th class="px-2 py-2 border">Direccion</th>
+                                <th class="px-2 py-2 border">NIT</th>
+                                <th class="px-2 py-2 border">Estado</th>
+                                <th class="px-2 py-2 border">Opciones</th>
 
 
 
@@ -627,41 +628,41 @@
                         <tbody>
                             {#each todos as todo}
                                 <tr class="hover:bg-gray-50">
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                         >{todo.cliente}</td
                                     >
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                         >{todo.correo}</td
                                     >
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                         >{todo.contraseña}</td
                                     >
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                         >{todo.persona_acargo}</td
                                     >
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                         >{todo.telefono}</td
                                     >
 
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                     >{todo.ciudad}</td
                                 >
 
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                     >{todo.direccion}</td
                                 >
 
-                                    <td class="px-4 py-2 border"
+                                    <td class="px-2 py-2 border"
                                     >{todo.nic}</td
                                 >
 
 
-                                    <td class="px-4 py-2 border">
+                                    <td class="px-2 py-2 border">
                                         <span class={todo.estado ? "text-green-600" : "text-red-600"}
                                         > {todo.estado ? "Activo" : "Desactivado"}
                                         </span>
                                     </td>
-                                    <td class="px-4 py-2 border">
+                                    <td class="px-2 py-2 border">
                                         <button class="btn btn-success"
                                             on:click={()=>{activeElement="a";perfil(todo.id)}}>Ver</button
                                         >
@@ -1065,9 +1066,9 @@
                                     {:else if error}
                                         <p class="text-red-500">Error: {error}</p>
                                     {:else}
-                                        <div class="overflow-x-auto">
+                                        <div class="">
                                             <table 
-                                                class="min-w-full bg-white border border-gray-300"
+                                                class="min-w-full bg-white border border-gray-300" style="width:100%; font-size: 11px;"
                                                 id="myinventario"
                                             >
                                                 <thead>

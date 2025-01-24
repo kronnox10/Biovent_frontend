@@ -19,10 +19,10 @@
                     >
                         <img
                             src="foto_logo__2_-removebg-preview.png"
-                            id="facebook"
-                            width="173"
-                            height="123"
-                            alt="Facebook icon"
+                            id="Biovent"
+                            width="180"
+                            height="130"
+                            alt="Biovent icon"
                         />
                     </div>
                 </div>
@@ -61,29 +61,6 @@
                         <i class="fas fa-map-marker-alt" style="color: blue;"></i> Barranquilla - Colombia
                     </p>
                 </div>
-                <i class="nav-link active" aria-current="page" data-bs-toggle="modal" data-bs-target="#exampleModal1">Agradecimientos</i>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div class="modal fade" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content" style="margin-left:-50%; width: 200%;">
-            <div class="modal-header">
-                <h5 class="modal-title" style="padding-left: 40%;" id="exampleModalLabel">Agradecimientos</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body px-5" style="text-align: justify;">
-                <p>
-                    Muchas gracias a flaticon por prestar sus iconos y estos creadores de abajo, sin ustedes esta tarea sería más engorrosa de lo que ya es.
-                    <a href="https://www.flaticon.es/iconos-gratis/compromiso" title="compromiso iconos">Compromiso iconos creados por SBTS2018 - Flaticon</a>
-                    <a href="https://www.flaticon.es/iconos-gratis/conclusion" title="conclusión iconos">Conclusión iconos creados por piksart - Flaticon</a>
-                    <a href="https://www.flaticon.es/iconos-gratis/alta-calidad" title="alta calidad iconos">Alta calidad iconos creados por Uniconlabs - Flaticon</a>
-                    <a href="https://www.flaticon.es/iconos-gratis/el-respeto" title="el respeto iconos">El respeto iconos creados por Freepik - Flaticon</a>
-                    <a href="https://www.flaticon.es/iconos-gratis/nombre-de-usuario" title="nombre de usuario iconos">Nombre de usuario iconos creados por tuktukdesign - Flaticon</a>
-                    <a href="https://www.flaticon.es/iconos-gratis/innovacion" title="innovación iconos">Innovación iconos creados por zero_wing - Flaticon</a>
-                </p>
             </div>
         </div>
     </div>
