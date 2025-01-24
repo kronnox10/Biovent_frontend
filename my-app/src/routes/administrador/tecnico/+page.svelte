@@ -199,10 +199,10 @@
                     >
                         <thead>
                             <tr>
-                                <th class="px-4 py-2 border">Correo</th>
-                                <th class="px-4 py-2 border">Contraseña</th>
                                 <th class="px-4 py-2 border">Nombre tecnico</th>
                                 <th class="px-4 py-2 border">Telefono</th>
+                                <th class="px-4 py-2 border">Correo</th>
+                                <th class="px-4 py-2 border">Contraseña</th>
                                 <th class="px-4 py-2 border">Ciudad</th>
                                 <th class="px-4 py-2 border">Estado</th>
                                 <th class="px-4 py-2 border">Opciones</th>
@@ -213,16 +213,16 @@
                             {#each todos as todo}
                                 <tr class="hover:bg-gray-50">
                                     <td class="px-4 py-2 border"
-                                        >{todo.correo}</td
-                                    >
-                                    <td class="px-4 py-2 border"
-                                        >{todo.contraseña}</td
-                                    >
-                                    <td class="px-4 py-2 border"
                                         >{todo.persona_acargo}</td
                                     >
                                     <td class="px-4 py-2 border"
                                         >{todo.telefono}</td
+                                    >
+                                    <td class="px-4 py-2 border"
+                                        >{todo.correo}</td
+                                    >
+                                    <td class="px-4 py-2 border"
+                                        >{todo.contraseña}</td
                                     >
 
                                     <td class="px-4 py-2 border"

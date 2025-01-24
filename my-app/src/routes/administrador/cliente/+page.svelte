@@ -610,12 +610,12 @@
                         <thead>
                             <tr>
                                 <th class="px-2 py-2 border">Cliente</th>
-                                <th class="px-2 py-2 border">Correo</th>
-                                <th class="px-2 py-2 border">Contraseña</th>
-                                <th class="px-2 py-2 border">Persona a cargo</th>
                                 <th class="px-2 py-2 border">Telefono</th>
-                                <th class="px-2 py-2 border">Ciudad</th>
                                 <th class="px-2 py-2 border">Direccion</th>
+                                <th class="px-2 py-2 border">Correo</th>
+                                <th class="px-2 py-2 border">Ciudad</th>
+                                <th class="px-2 py-2 border">Jefe de area</th>
+                                <th class="px-2 py-2 border">Contraseña</th>
                                 <th class="px-2 py-2 border">NIT</th>
                                 <th class="px-2 py-2 border">Estado</th>
                                 <th class="px-2 py-2 border">Opciones</th>
@@ -632,25 +632,27 @@
                                         >{todo.cliente}</td
                                     >
                                     <td class="px-2 py-2 border"
-                                        >{todo.correo}</td
+                                        >{todo.telefono}</td
+                                        >
+                                        <td class="px-2 py-2 border"
+                                        >{todo.direccion}</td
                                     >
                                     <td class="px-2 py-2 border"
-                                        >{todo.contraseña}</td
+                                        >{todo.correo}</td
                                     >
+
+                                    <td class="px-2 py-2 border">
+                                        {todo.ciudad}
+                                    </td>
+                                    
                                     <td class="px-2 py-2 border"
                                         >{todo.persona_acargo}</td
                                     >
+                                    
                                     <td class="px-2 py-2 border"
-                                        >{todo.telefono}</td
+                                        >{todo.contraseña}</td
                                     >
 
-                                    <td class="px-2 py-2 border"
-                                    >{todo.ciudad}</td
-                                >
-
-                                    <td class="px-2 py-2 border"
-                                    >{todo.direccion}</td
-                                >
 
                                     <td class="px-2 py-2 border"
                                     >{todo.nic}</td
@@ -1447,12 +1449,12 @@
                                     />
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
-                                    <label for="u_user">Persona a cargo</label>
+                                    <label for="u_user">Jefe de area</label>
                                     <input
                                         type="text"
                                         id="u_user"
                                         name="otro_nombre"
-                                        placeholder="Escriba el nombre de la persona a cargo"
+                                        placeholder="Escriba el nombre del jefe de area"
                                         autocomplete="off"
                                         class="form-control rounded-pill"
                                         required
