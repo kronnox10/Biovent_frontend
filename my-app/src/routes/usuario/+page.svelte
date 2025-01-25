@@ -6,12 +6,12 @@
     let loading=true;
     let error= null;
     let todos_inventario=[]
-
+    var id_invt=0
     var v_id=0
     onMount(async()=>{
         let miStorage = window.localStorage;
         let usuario = JSON.parse(miStorage.getItem("usuario"));
-         v_id = usuario.id;
+        v_id = usuario.id;
         console.log(v_id)
 
         try{
@@ -157,6 +157,77 @@
     }
 
 
+    async function solicitar() {
+        try{
+            let desc=document.getElementById('desc').value;
+            const response = await fetch("https://biovent-backend.onrender.com/create_os",{
+            method: "POST",
+            headers:{
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                    id_propietario: v_id,
+                    id_maquina: id_invt,    
+                    descripcion: desc,
+                    tecnico:null,
+                    estado:1
+                }),
+        });    
+
+        if (!response.ok) {
+            throw new Error("Error en la actualización del usuario.");
+            }
+            
+            Swal.fire({
+                title: "Orden de servicio creada con exito",
+                icon: "success",
+                iconColor: "white",
+                color: "white",
+                showConfirmButton: false,
+                background: "gray",
+                timer: 2500
+            });
+
+
+
+
+        }catch(e){
+            error=e.message
+        }finally{
+            estado_maquina(id_invt)
+        }  
+    }
+
+    
+
+    async function estado_maquina(v_id_maquina) {
+        try{
+            const response = await fetch("https://biovent-backend.onrender.com/up_est_mac", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id:v_id_maquina,
+                }), 
+            });
+            console.log("Maquina apagada")
+
+            if (!response.ok) {
+            throw new Error("Error en la actualización de la maquina.");
+            }
+            Swal.fire({
+                title: "Maquina apagada :c",
+                icon: "error",
+                showConfirmButton: false,
+                timer: 2500
+            });
+            window.location.reload()
+        }catch(e){
+            error=e.message
+        } 
+    }
+
 
 </script>
 
@@ -184,7 +255,7 @@
                     <p><b>Equipos actuales</b></p>
                     <p><b id="t_equipos">-</b> equipos en total</p>
                     <p><b id="e_inactive">-</b> equipos inactivo</p>
-                    <p><b id="inactive_pieza">-</b> equipos inactivos por pieza faltante</p>
+                    <p><b id="inactive_pieza">-</b> equipos por algun motivo</p>
                 </div>
                 
                 <button class="btn btn-danger col-12">Editar perfil</button>
@@ -266,7 +337,9 @@
 
                                                 <td class="px-4 py-2 border">
                                                     <button class="btn btn-success"
-                                                        on:click={()=>{(todos_inventario.id)}}>Solicitar OS</button
+                                                        on:click={()=>{(id_invt=todos_inventario.id)}} 
+                                                        data-bs-toggle="modal" data-bs-target="#solicitar_os"
+                                                        >Solicitar OS</button
                                                     >
                                                 </td>
                                             </tr>
@@ -284,6 +357,32 @@
                 <button class="btn btn-danger">Solicitar</button>
             </div>
             -->
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="solicitar_os" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mleModalLabel">
+                   <p>Solicitud de orden de servicio</p>
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                    <label for="">Motivo de la solicitud:</label>
+                    <input type="text" id="desc" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" on:click={solicitar}>Solicitar</button>
+            </div>
         </div>
     </div>
 </div>
