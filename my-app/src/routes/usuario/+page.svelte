@@ -24,8 +24,6 @@
                     body: JSON.stringify({
                         id_usuario:v_id
                     }),      
-
-
             });
             const data= await response.json();
             todos= data.Funcionando;
@@ -43,6 +41,33 @@
 
     })
 
+
+    async function perfil() {
+        console.log("Entramos aca ",v_id)
+
+        const response = await fetch("https://biovent-backend.onrender.com/get_client",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id: v_id,
+                }),
+            });
+
+        if (!response.ok) throw new Error("Error al cargar los datos");
+        const data = await response.json();
+        todos = data.resultado;
+
+        document.getElementById('nombres').value=todos[0].cliente;
+        document.getElementById('correo').value=todos[0].correo;
+        document.getElementById('password').value=todos[0].contraseña;
+        document.getElementById('jefe_de_uso').value=todos[0].persona_acargo;
+        document.getElementById('telefono').value=todos[0].telefono;
+        document.getElementById('ciudad').value=todos[0].ciudad;
+        document.getElementById('direccion').value=todos[0].direccion;
+        document.getElementById('nit').value=todos[0].nic;
+    }
 
     async function inventario() {
         error = null;
@@ -129,7 +154,6 @@
             
         }
     }
-
     
     async function e_inactive_topic() {
         try{
@@ -155,7 +179,6 @@
             
         }
     }
-
 
     async function solicitar() {
         try{
@@ -197,8 +220,7 @@
             estado_maquina(id_invt)
         }  
     }
-
-    
+  
 
     async function estado_maquina(v_id_maquina) {
         try{
@@ -235,12 +257,12 @@
 
 <div style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;">
     
-    <div class="col-sm-2 col-md-3 col-xl-3 col-lg-3 col-2">
-        <a href="/Login" class="btn btn-dark mx-5 mb-2" style="margin-top:5%;">Salir</a>
+    <div class="col-sm-12 col-md-12 col-xl-12 col-lg-12 col-12 text-end">
+        <a href="/Login" class="btn btn-dark mx-5 mb-2" style="margin-top:1%;">Salir</a>
     </div>
 
     <div class="container-fluid">
-        <div class="row ms-1 me-1 mt-5">
+        <div class="row ms-1 me-1 mt-3">
             <div class="col-xl-3 col-lg-3 col-3">
                 
                 <div class="px-2 py-2" style="background-color:grey; border: solid 1px black ;color:aliceblue; border-radius: 7%;">
@@ -251,20 +273,19 @@
                     </b>
                 </div>
 
-                <div style="background-color: white; color:black; border-radius:7%;" class="text-center mt-3 pt-3" ><!--HOlAAAAAAAAAAAA-->
+                <div style="background-color: white; color:black;" class="text-center mt-3 pt-3 mb-3 pb-3" ><!--HOlAAAAAAAAAAAA-->
                     <p><b>Equipos actuales</b></p>
                     <p><b id="t_equipos">-</b> equipos en total</p>
                     <p><b id="e_inactive">-</b> equipos inactivo</p>
                     <p><b id="inactive_pieza">-</b> equipos por algun motivo</p>
                 </div>
                 
-                <button class="btn btn-danger col-12">Editar perfil</button>
+                <button class="btn btn-danger col-12" data-bs-toggle="modal" data-bs-target="#perfilModal" on:click={perfil()}>Editar perfil</button>
             </div>
             
             <div class="col-xl-9 col-lg-9 col-9">
                 <div id="tablita">
-                    <div class="container py-4">
-                        <h4 class="mb-4 text-center">Lista de equipos</h4>
+                    <div class="container">
                         {#if loading}
                             <div class="row g-2 justify-content-center">
                                 <p
@@ -382,6 +403,57 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-info" on:click={solicitar}>Solicitar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="perfilModalLabel">Editando perfil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="mb-3">
+                        <label for="nombres" class="form-label"><b>Nombre:</b></label>
+                        <input type="text" class="form-control" id="nombres" placeholder="Nombres" maxlength="100">
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label"><b>Correo:</b></label>
+                        <input type="email" class="form-control" id="correo" placeholder="Email">
+                    </div>
+                    <div class="mb-3">
+                        <label for="password" class="form-label"><b>Password:</b></label>
+                        <input type="text" class="form-control" id="password" placeholder="Contraseña">
+                    </div>
+                    <div class="mb-3">
+                        <label for="jefe_de_uso" class="form-label"><b>Jefe de uso:</b></label>
+                        <input type="text" class="form-control" id="jefe_de_uso" placeholder="Nombres" maxlength="50">
+                    </div>
+                    <div class="mb-3">
+                        <label for="telefono" class="form-label"><b>Teléfono:</b></label>
+                        <input type="text" class="form-control" id="telefono" placeholder="Teléfono">
+                    </div>
+                    <div class="mb-3">
+                        <label for="ciudad" class="form-label"><b>Ciudad:</b></label>
+                        <input type="text" class="form-control" id="ciudad" placeholder="Ciudad">
+                    </div>
+                    <div class="mb-3">
+                        <label for="direccion" class="form-label"><b>Dirección:</b></label>
+                        <input type="text" class="form-control" id="direccion" placeholder="Dirección">
+                    </div>
+                    <div class="mb-3">
+                        <label for="nit" class="form-label"><b>NIT:</b></label>
+                        <input type="text" class="form-control" id="nit" placeholder="NIT">
+                    </div>
+                    <p class="text-muted">¡Al terminar de editar, dale click en actualizar para guardar los cambios!</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-info"><b>Actualizar</b></button>
             </div>
         </div>
     </div>

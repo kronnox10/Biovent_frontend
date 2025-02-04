@@ -1664,6 +1664,7 @@
         color: black;
     }
     .fa:hover{
+        cursor: pointer;
         color: gray;
     }
 </style>

@@ -40,10 +40,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8">
-                    <div class="card-body" >
+                <div class="col-md-8 text-justify">
+                    <div class="card-body text-justify" >
                         <h5 class="card-title py-2">MANTENIMIENTOS PREVENTIVOS Y CORRECTIVOS</h5>
-                        <p class="card-text py-4">Nos comprometemos a garantizar el funcionamiento optimo de sus equipos médicos, prolongando su vida util y asegurando su fiabilidad y precision. Nuestros servicios de mantenimiento y reparacion estan diseñados para evitar futuras fallas y reparar problemas existentes de manera inmediata y eficiente, 
+                        <p class="card-text py-4" style=" text-align: justify;">Nos comprometemos a garantizar el funcionamiento optimo de sus equipos médicos, prolongando su vida util y asegurando su fiabilidad y precision. Nuestros servicios de mantenimiento y reparacion estan diseñados para evitar futuras fallas y reparar problemas existentes de manera inmediata y eficiente, 
                             minimizando el tiempo de inactividad y garantizando la continuidad de la atencion medica de alta calidad.
                         </p>
                     </div>
@@ -56,7 +56,7 @@
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title py-2">DISEÑO DE CRONOGRAMA DE MANTENIMIENTO</h5>
-                        <p class="card-text py-4">Organizamos un plan personalizado para el cuidado continuo de dispositivos médicos asegurando su disponibilidad y confiabilidad y proporcionara nuestros clientes un servicio de alta calidad adaptable a sus necesidades.</p>
+                        <p class="card-text py-4" style=" text-align: justify;">Organizamos un plan personalizado para el cuidado continuo de dispositivos médicos asegurando su disponibilidad y confiabilidad y proporcionara nuestros clientes un servicio de alta calidad adaptable a sus necesidades.</p>
                     </div>
                 </div>
                 <div class="col-md-4">
