@@ -7,10 +7,10 @@
     style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;"
 >
 <div class="col-sm-12 col-md-12 col-xl-12 col-lg-12 col-12 text-end">
-    <a href="/Login" class="btn btn-dark mx-5 mb-2" style="margin-top:1%;">Salir</a>
+    <a href="/Login" class="btn btn-dark mx-5 mb-1" style="margin-top:1%;">Salir</a>
 </div>
     <div class="container">
-        <div class="row">
+        <div class="row" style="margin-top: -6%;">
             <div class="col-3 text-center" style="margin-top: 15rem">
                 <a href="/administrador/cliente">
                     <img

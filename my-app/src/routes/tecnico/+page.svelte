@@ -166,7 +166,7 @@
 
 
 <div style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;" hidden={activeElement!=='mostrar'}>
-    <div class="col-sm-12 col-md-12 col-xl-12 col-lg-12 col-12 text-end">
+    <div class="col-sm-12 col-md-12 col-xl-12 col-lg-12 col-12 text-end mb-5">
         <a href="/Login" class="btn btn-dark mx-5" style="margin-top:1%;">Salir</a>
     </div>
     
@@ -180,12 +180,12 @@
                         <p id="client"></p>
                     </b>
                 </div>
-                <button class="btn btn-danger mt-2 col-12"data-bs-toggle="modal" data-bs-target="#perfilModal" on:click={perfil()}>Editar perfil</button>
-                <button class="btn btn-danger mt-5 col-12" on:click={()=>{activeElement='oeses'; os_oese()}}>OS</button>
+                <button class="btn btn-danger mt-4 col-12"data-bs-toggle="modal" data-bs-target="#perfilModal" on:click={perfil()}>Editar perfil</button>
+                <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses'; os_oese()}}>OS</button>
             </div>
             
             <div class="col-xl-9 col-lg-9 col-9">
-                <div class="container">
+                <div class="container" style="margin-top: -4%;">
                     <div class="card-header text-center "><p>CLIENTES</p></div>
                         <div class="row">
                             {#each todos_clientes as cliente,i}
@@ -217,7 +217,7 @@
 <div hidden={activeElement!=='inventario'}>
     <div class="ms-2">
         <div class="mx-4 fs-1">
-            <i class="fa fa-caret-left" aria-hidden="true" on:click={() => {activeElement = 'mostrar'; cerrar()}}></i>
+            <i class="fa fa-caret-left" aria-hidden="true" on:click={() => {activeElement = 'mostrar'}}></i>
         </div>
         <div class="container">
             <h2 class="my-4">Lista de maquinas del perfil <span id="name_machine"></span></h2>
@@ -368,7 +368,7 @@
 
 <div hidden={activeElement!=='oeses'}>
     <div class="mx-4 fs-1">
-        <i class="fa fa-caret-left" aria-hidden="true" on:click={() => {activeElement = 'mostrar'; cerrar()}}></i>
+        <i class="fa fa-caret-left" aria-hidden="true" on:click={() => {activeElement = 'mostrar'}}></i>
     </div>
     <div class="container">
         <div class="card-header text-center my-3"> <h4>OS</h4> </div>

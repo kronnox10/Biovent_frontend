@@ -258,7 +258,7 @@
 <div style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;">
     
     <div class="col-sm-12 col-md-12 col-xl-12 col-lg-12 col-12 text-end">
-        <a href="/Login" class="btn btn-dark mx-5 mb-2" style="margin-top:1%;">Salir</a>
+        <a href="/Login" class="btn btn-dark mx-5 mb-3" style="margin-top:1%;">Salir</a>
     </div>
 
     <div class="container-fluid">
@@ -283,7 +283,7 @@
                 <button class="btn btn-danger col-12" data-bs-toggle="modal" data-bs-target="#perfilModal" on:click={perfil()}>Editar perfil</button>
             </div>
             
-            <div class="col-xl-9 col-lg-9 col-9">
+            <div class="col-xl-9 col-lg-9 col-9" style="margin-top:-2%;">
                 <div id="tablita">
                     <div class="container">
                         {#if loading}
