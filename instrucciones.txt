@@ -18,7 +18,7 @@ http://26.135.80.104:5173/
 
  3.- --> acceder al entorno
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-cd myvenv 
+cd myvenv       
 cd .\Scripts\ 
 .\activate
 cd..

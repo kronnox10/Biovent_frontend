@@ -88,7 +88,7 @@
                 const data = await response.json();
                 todos_inventario = data.resultado;
                 console.log("namename", name_machine)
-             document.getElementById('name_machine').innerHTML=name_machine
+                document.getElementById('name_machine').innerHTML=name_machine
 
 
                 if (data.resultado && data.resultado.length > 0) {
@@ -140,8 +140,43 @@
         } 
     }
 
-    async function revisada() {
-        Swal.fire({
+    async function os_oese_h() {
+        let usuario = JSON.parse(localStorage.getItem("usuario"));
+        let v_id_usuario=usuario.id
+        console.log("hallado la ide oeses", v_id_usuario)
+
+        try { 
+            const response = await fetch("https://biovent-backend.onrender.com/get_osh",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_usuario: v_id_usuario,
+                }),
+            });
+                
+                const data = await response.json();
+                todos = data.resultado;
+                console.log("verificando todoss de os_oese", todos)
+
+
+                if (data.resultado && data.resultado.length > 0) {
+              
+            }else {
+               
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
+    }
+
+    async function revisada(id) {
+        let id_os=id
+        console.log(id_os)
+        let result = await Swal.fire({
             title: "<strong>Revisada</strong>",
             icon: "info",
             html: `
@@ -149,17 +184,51 @@
             Orden de servicio?
             `,
             showCloseButton: true,
-            showCancelButton: true,
+            showDenyButton: true,
             focusConfirm: false,
             confirmButtonText: `
             Solucionada
             `,
             confirmButtonAriaLabel: "Thumbs up, great!",
-            cancelButtonText: `
+            denyButtonText: `
             A la proxima
             `,
-            cancelButtonAriaLabel: "Thumbs down"
-            });
+            denyButtonAriaLabel: "Thumbs down"
+        })
+
+        if(result.isConfirmed){
+            try{
+                const response = await fetch("https://biovent-backend.onrender.com/update_os", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id: id_os,
+                    }),
+                });
+                
+
+                if (!response.ok) throw new Error("Error 1 al actualizar la OS");
+
+                Swal.fire({
+                    title: "Marcando OS como realizada :D",
+                    icon: "success",
+                    timer: 3000, 
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+                
+            } catch (error) {
+                console.error("Error 2 al actualizar la OS:", error);
+                Swal.fire("Error 3 al actualizar la OS", "", "error");
+            }
+        } else if (result.isDenied) {
+            Swal.fire("No solucionado... pendiente por nueva revision", "", "warning");
+        }
+        
     }
 
 </script>
@@ -181,7 +250,8 @@
                     </b>
                 </div>
                 <button class="btn btn-danger mt-4 col-12"data-bs-toggle="modal" data-bs-target="#perfilModal" on:click={perfil()}>Editar perfil</button>
-                <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses'; os_oese()}}>OS</button>
+                <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses'; os_oese()}}>OS Activas</button>
+                <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses_h'; os_oese_h()}}>OS Realizadas</button>
             </div>
             
             <div class="col-xl-9 col-lg-9 col-9">
@@ -372,6 +442,7 @@
     </div>
     <div class="container">
         <div class="card-header text-center my-3"> <h4>OS</h4> </div>
+        {#if todos && todos.length > 0}    
             <div class="row">
                 {#each todos as Oses,i}
                     <div class="col-sm-12">
@@ -381,12 +452,42 @@
                                 <p class="card-text">Cliente: {Oses.usuario_cliente}</p>
                                 <p class="card-text">Descripcion: {Oses.descripcion}</p>
                                 <p class="card-text mb-2"><b>Estado:</b><span class={Oses.estado? "text-success":"text-danger"}> {Oses.estado ? " En tramite" : " Corregido"}</span></p>
-                                <button class="btn btn-primary mx-1" on:click={revisada}>Revisada</button>
+                                <button class="btn btn-primary mx-1" on:click={()=>revisada(Oses.id)}>Revisada</button>
                             </div>
                         </div>
                     </div>
                 {/each}
             </div>
+        {:else}
+            <p class="text-center text-muted">No hay órdenes de servicio aqui.</p>
+        {/if}
+    </div>
+</div>
+
+<div hidden={activeElement!=='oeses_h'}>
+    <div class="mx-4 fs-1">
+        <i class="fa fa-caret-left" aria-hidden="true" on:click={() => {activeElement = 'mostrar'}}></i>
+    </div>
+    <div class="container">
+        <div class="card-header text-center my-3"> <h4>OS Realizadas</h4> </div>
+        {#if todos && todos.length > 0}
+            <div class="row">
+                {#each todos as readys,i}
+                    <div class="col-sm-12">
+                        <div class="card my-3">
+                            <div class="card-body">
+                                <h5 class="card-title mb-2">{readys.nombre_maquina}</h5>
+                                <p class="card-text">Cliente: {readys.usuario_cliente}</p>
+                                <p class="card-text">Descripcion: {readys.descripcion}</p>
+                                <p class="card-text mb-2"><b>Estado:</b><span class={readys.estado? "text-success":"text-danger"}> {readys.estado ? " En tramite" : " Corregido"}</span></p>
+                            </div>
+                        </div>
+                    </div>
+                {/each}
+            </div>
+        {:else}
+            <p class="text-center text-muted">No hay órdenes de servicio realizadas.</p>
+        {/if}
     </div>
 </div>
 

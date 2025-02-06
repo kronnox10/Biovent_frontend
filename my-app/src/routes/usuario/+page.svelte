@@ -255,7 +255,7 @@
 
 
 
-<div style="background-image: url('/fondo_login.png'); background-size: cover; background-color: darkcyan; height: 100vh; width: 100vw;">
+<div style="background-image: url(''); background-size: cover; height: 100vh; width: 100vw;">
     
     <div class="col-sm-12 col-md-12 col-xl-12 col-lg-12 col-12 text-end">
         <a href="/Login" class="btn btn-dark mx-5 mb-3" style="margin-top:1%;">Salir</a>
@@ -263,9 +263,9 @@
 
     <div class="container-fluid">
         <div class="row ms-1 me-1 mt-3">
-            <div class="col-xl-3 col-lg-3 col-3">
+            <div class="col-xl-2 col-lg-2 col-2" style="">
                 
-                <div class="px-2 py-2" style="background-color:grey; border: solid 1px black ;color:aliceblue; border-radius: 7%;">
+                <div class="px-2 py-2" style="background-color:grey; color:aliceblue; padding-right: -5%;">
                     <b>
                         <p id="name">Raphel Salcedo Gutierrez Naranja</p>
                         <p>Administrador</p>
@@ -277,13 +277,12 @@
                     <p><b>Equipos actuales</b></p>
                     <p><b id="t_equipos">-</b> equipos en total</p>
                     <p><b id="e_inactive">-</b> equipos inactivo</p>
-                    <p><b id="inactive_pieza">-</b> equipos por algun motivo</p>
+                    <p><b id="inactive_pieza">-</b> apagados por algun motivo</p>
                 </div>
                 
-                <button class="btn btn-danger col-12" data-bs-toggle="modal" data-bs-target="#perfilModal" on:click={perfil()}>Editar perfil</button>
             </div>
             
-            <div class="col-xl-9 col-lg-9 col-9" style="margin-top:-2%;">
+            <div class="col-xl-10 col-lg-10 col-10" style="margin-top:-2%;">
                 <div id="tablita">
                     <div class="container">
                         {#if loading}
@@ -323,23 +322,23 @@
                                     <tbody>
                                         {#each todos_inventario as todos_inventario}
                                             <tr class="hover:bg-gray-50">
-                                                <td class="px-4 py-2 border"
+                                                <td class="px-3 py-1 border"
                                                     >{todos_inventario.nombre}</td
                                                 >
 
-                                                <td class="px-4 py-2 border"
+                                                <td class="px-3 py-1 border"
                                                     >{todos_inventario.inventario}</td
                                                 >
 
-                                                <td class="px-4 py-2 border"
+                                                <td class="px-3 py-1 border"
                                                     >{todos_inventario.ubicacion}</td
                                             >
 
-                                                <td class="px-4 py-2 border"
+                                                <td class="px-3 py-1 border"
                                                     >{todos_inventario.sede}</td
                                             >
 
-                                                <td class="px-4 py-2 border">
+                                                <td class="px-3 py-1 border">
                                                     <span style="color: {todos_inventario.estado ? 'green' : 'red'};">
                                                         {todos_inventario.estado ? "Activo" : "Inactivo"}
                                                     </span>
@@ -347,16 +346,16 @@
 
 
                                                 {#if todos_inventario.estado==0}
-                                                <td class="px-4 py-2 border"
+                                                <td class="px-3 py-1 border"
                                                 >{todos_inventario.desc_estado}</td>
                                                 
                                                 {:else if todos_inventario.estado==1}
-                                                <td class="px-4 py-2 border"></td>
+                                                <td class="px-3 py-1 border"></td>
                                                 {:else}
-                                                <td class="px-4 py-2 border"></td>
+                                                <td class="px-3 py-1 border"></td>
                                                 {/if}
 
-                                                <td class="px-4 py-2 border">
+                                                <td class="px-3 py-1 border">
                                                     <button class="btn btn-success"
                                                         on:click={()=>{(id_invt=todos_inventario.id)}} 
                                                         data-bs-toggle="modal" data-bs-target="#solicitar_os"
