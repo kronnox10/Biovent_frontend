@@ -5,6 +5,7 @@
     let todos_inventario = {};
     let todos_os_activas = {};
     let todos_historial = {};
+    let todos_cronograma = {};
     let tecnicos = {};
     let todos2 = {};
     let loading = true;
@@ -319,6 +320,54 @@
         }
     }
 
+    async function enviar_crono() {
+        const input = document.getElementById("archivo_c");
+        file = input.files[0];
+        console.log(file);
+        let uid_usuario=v_id_usuario;
+        console.log("al usuario que se le mandan es", uid_usuario);
+
+        if (file) {
+            // Crear un objeto FormData
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append("id_usuario",uid_usuario);
+
+            try {
+                const response = await fetch(
+                    "https://biovent-backend.onrender.com/cargue_masivo_cronograma",
+                    {
+                        method: "POST",
+                        body: formData,
+                    },
+                );
+
+                const data = await response.json();
+                console.log("probando que entra");
+                console.log(data);
+
+                if (data.resultado === "Cronograma registrado exitosamente") {
+                    Swal.fire({
+                        title: "Cargue exisoto",
+                        icon: "success",
+                        draggable: true,
+                    });
+
+                    location.reload();
+                } else {
+                    Swal.fire({
+                        title: "ups! uyuyui esto no hay quien lo arregle",
+                        icon: "error",
+                        draggable: true,
+                    });
+                }
+            } catch (error) {
+                console.error("Error de red:", error);
+            }
+        } else {
+        }
+    }
+
     async function Asignar_tecnico(){
         try {
             const response = await fetch("https://biovent-backend.onrender.com/get_tecnicos");
@@ -442,8 +491,34 @@
 
     }
 
-    async function cronograma() {
-        
+    async function cronograma(id) {
+        console.log("id usuario" ,v_id_usuario)
+        try {
+            const response = await fetch("https://biovent-backend.onrender.com/getcronobyuser",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_usuario: v_id_usuario,
+                }),
+            });
+            
+            const data = await response.json();
+                if ( data!=null && data.resultado && data.resultado.length > 0) {
+            todos_cronograma = data.resultado;
+            setTimeout(() => {
+                globalThis.$("#mycronos").DataTable(); 
+            }, 0);
+            } else {
+                todos_cronograma = [];
+                error = "No hay ninguna cronograma registrado a este usuario";
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
     }
 
     async function OS_activa(id) {
@@ -566,6 +641,133 @@
             console.error("Error de red:", error);
         }
     }
+
+
+    async function limpiarCronograma() {
+        let uid_usuario = v_id_usuario; // Asumiendo que tienes esta variable con el id del usuario
+        console.log("Usuario al que borrarle el cronograma:", uid_usuario);
+
+        try {
+            const response = await fetch("https://biovent-backend.onrender.com/limpiarcronograma", {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json", 
+                },
+                body: JSON.stringify({
+                    id_usuario: uid_usuario,
+                }) 
+            });
+
+            const data = await response.json();
+
+            if (data.resultado === "Cronogramas borrados") {
+                Swal.fire({
+                    title: "Cronogramas eliminados",
+                    icon: "success",
+                    draggable: true,
+                });
+
+                location.reload();
+            } else {
+                Swal.fire({
+                    title: "¡Ups! Algo salió mal",
+                    icon: "error",
+                    draggable: true,
+                });
+            }
+        } catch (error) {
+            console.error("Error de red:", error);
+            Swal.fire({
+                title: "Error de red",
+                text: "No se pudo contactar con el servidor.",
+                icon: "error",
+                draggable: true,
+            });
+        }
+    }
+
+    /*async function register_cronograma(id) {
+        let vc_equipo = document.getElementById("c_equipo")?.value;
+        let vc_enero = document.getElementById("c_enero")?.value;
+        let vc_febrero = document.getElementById("c_febrero")?.value;
+        let vc_marzo = document.getElementById("c_marzo")?.value;
+        let vc_abril = document.getElementById("c_abril")?.value;
+        let vc_mayo = document.getElementById("c_mayo")?.value;
+        let vc_junio = document.getElementById("c_junio")?.value;
+        let vc_julio = document.getElementById("c_julio")?.value;
+        let vc_agosto = document.getElementById("c_agosto")?.value;
+        let vc_septiembre = document.getElementById("c_septiembre")?.value;
+        let vc_octubre = document.getElementById("c_octubre")?.value;
+        let vc_noviembre = document.getElementById("c_noviembre")?.value;
+        let vc_diciembre = document.getElementById("c_diciembre")?.value;
+
+        console.log({
+            id_usuario: v_id_usuario,
+            nombre: vc_equipo,
+            enero: vc_enero,
+            febrero: vc_febrero,
+            marzo: vc_marzo,
+            abril: vc_abril,
+            mayo: vc_mayo,
+            junio: vc_junio,
+            julio: vc_julio,
+            agosto: vc_agosto,
+            septiembre: vc_septiembre,
+            octubre: vc_octubre,
+            noviembre: vc_noviembre,
+            diciembre: vc_diciembre
+        });
+
+        console.log("la id donde se crea el cronograma es la ",v_id_usuario)
+        try {
+            const response = await fetch(
+                "https://biovent-backend.onrender.com/create_cronogr",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id_user: v_id_usuario,
+                        nombre: vc_equipo,
+                        enero: vc_enero,
+                        febrero: vc_febrero,
+                        marzo: vc_marzo,
+                        abril: vc_abril,
+                        mayo: vc_mayo,
+                        junio: vc_junio,
+                        julio: vc_julio,
+                        agosto: vc_agosto,
+                        septiembre: vc_septiembre,
+                        octubre: vc_octubre,
+                        noviembre: vc_noviembre,
+                        diciembre: vc_diciembre,
+                    }),
+                },);
+
+            const data = await response.json();
+            console.log(data);
+
+            if (data.resultado === "Cronograma añadido") {
+                Swal.fire({
+                    title: "registro exisoto",
+                    icon: "success",
+                    draggable: true,
+                });
+
+                location.reload();
+            } else {
+                Swal.fire({
+                    title: "ups! uyuyui esto no hay quien lo arregle",
+                    icon: "error",
+                    draggable: true,
+                });
+            }
+        } catch (error) {
+            console.error("Error de red:", error);
+        }
+    }*/
+
 </script>
 
 <div class="py-4" style="background-image: url(''); background-size: cover; background-color: white; height: 100vh; width: 100vw;">
@@ -1159,8 +1361,104 @@
                                 on:click={() => {activeElement = 'mostrar'; cerrar()}}
                             ></button>
                         </div>
-                        <div class="card-body" style="margin-left: 10%;">
-                            
+                        <div class="card-body" style="">
+                            <div id="Mostrarusuario">
+                                <div class="container py-4">
+                                    <div class="text-center mb-3">
+                                        <button class="btn btn-dark col-lg-5" data-bs-toggle="modal" data-bs-target="#cargue_cronograma">Cargar de excel</button>
+                                        <button class="btn btn-dark col-lg-5" on:click={limpiarCronograma()}>Limpiar cronograma</button>
+                                    </div>
+                                        {#if loading}
+                                        <!---->
+                                        <div class="row g-2 justify-content-center mt-2">
+                                            <p
+                                                class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                            >
+                                                Cargando datos...
+                                            </p>
+                                            <div
+                                                class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                                role="status"
+                                            >
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    {:else if error}
+                                        <p class="text-red-500">Error: {error}</p>
+                                    {:else}
+                                        <div class="overflow-x-auto">
+                                            <table
+                                                class="min-w-full bg-white border border-gray-300" style="width:100%; font-size: 11px;"
+                                                id="mycronos"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="px-2 py-2 border">Equipo</th>
+                                                        <th class="px-2 py-2 border">Enero</th>
+                                                        <th class="px-2 py-2 border">Febrero</th>
+                                                        <th class="px-2 py-2 border">Marzo</th>
+                                                        <th class="px-2 py-2 border">Abril</th>
+                                                        <th class="px-2 py-2 border">Mayo</th>
+                                                        <th class="px-2 py-2 border">Junio</th>
+                                                        <th class="px-2 py-2 border">Julio</th>
+                                                        <th class="px-2 py-2 border">Agosto</th>
+                                                        <th class="px-2 py-2 border">Septiembre</th>
+                                                        <th class="px-2 py-2 border">Octubre</th>
+                                                        <th class="px-2 py-2 border">Noviembre</th>
+                                                        <th class="px-2 py-2 border">Diciembre</th>
+                                                    </tr>
+                                                </thead>
+                        
+                                                <tbody>
+                                                    {#each todos_cronograma as todo}
+                                                        <tr class="hover:bg-gray-50">
+                                                            <td class="px-4 py-2 border"
+                                                                >{todo.equipo}</td
+                                                            >
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.enero ? 'green' : 'red'};">
+                                                            
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.febrero ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.marzo ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.abril ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.mayo ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.junio ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.julio ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.agosto ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.septiembre ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.octubre ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.noviembre ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                            <td class="px-4 py-2 border" style="background-color: {todo.diciembre ? 'green' : 'red'};">
+                                                                
+                                                            </td>
+                                                        </tr>
+                                                    {/each}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -1351,7 +1649,7 @@
         <div class="card bg-secondary py-1 px-1 row">
             <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() =>{ activeElement = 'a'; perfil(id);  }}>Perfil</button></div>
             <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() => { activeElement = 'b'; inventario(); }}>Inventario</button></div>
-            <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() => activeElement = 'c'}>Cronograma</button></div>
+            <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() => {activeElement = 'c';cronograma()}}>Cronograma</button></div>
             <div class="text-center"><button class="mt-3 btn btn-primary col-12" on:click={() =>{ activeElement = 'd'; OS_activa(); }}>OS activa</button></div>
             <div class="text-center"><button class="mt-3 mb-3 btn btn-primary col-12" on:click={() => { activeElement = 'e'; OS_historial();}}>Historial OS</button></div>
         </div>
@@ -1658,6 +1956,158 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal de cargue de cronogramas -->
+<div class="modal fade" id="cargue_cronograma" tabindex="-1" aria-labelledby="rModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mleModalLabel">
+                    <b>Cargue de cronograma</b>
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <p>Cargue el archivo de excel</p>
+
+                <input type="file" id="archivo_c" />
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" on:click={enviar_crono()}> Enviar </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+ <!-- Modal de creacion de cronograma 
+ <div class="modal fade" id="creacion_cronograma" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="mleModalLabel">
+                    <b>Creacion de cronograma</b>
+                </h5>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                ></button>
+            </div>
+            <div class="modal-body">
+                <form name="formulario"id="formulario">
+                        <div class="container py-1 ps-3 px-5">
+                            
+                            <div class="row mt-5 mx-5">
+                                <div class="col-lg-5 col-md-5 col-sm-5 col-12 col-xl-5">
+                                    <label for="c_equipo">Nombre del equipo:</label>
+                                    <input
+                                        type="text"
+                                        id="c_equipo"
+                                        name="name"
+                                        placeholder="Escriba el nombre de los equipos"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                    />
+                                </div>
+                                <div class="col-lg-7 col-md-7 col-sm-7 col-12 col-xl-7">
+                                    <div class="row">
+                                        <div class="mt-2 col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4">
+                                            <label for="c_enero">Enero:</label>
+                                            <select class="form-select" id="c_enero" name="mes1">
+                                                <option value=true>Si</option>
+                                                <option value=false>No</option>
+                                            </select>
+                        
+                                            <label for="c_febrero">Febrero:</label>
+                                            <select class="form-select"  id="c_febrero" name="mes2">
+                                                <option value=true>Si</option>
+                                                <option value=false>No</option>
+                                            </select>
+                                        
+                                            <label for="c_marzo">Marzo:</label>
+                                            <select class="form-select" id="c_marzo" name="mes3">
+                                                <option value=true>Si</option>
+                                                <option value=false>No</option>
+                                            </select>
+                                        
+                                            <label for="c_abril">Abril:</label>
+                                            <select class="form-select" id="c_abril" name="mes4">
+                                                <option value=true>Si</option>
+                                                <option value=false>No</option>
+                                            </select>
+                                        </div>
+                                    
+                                        <div class="mt-2 col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4">
+                                            <label for="c_mayo">Mayo:</label>
+                                            <select class="form-select" id="c_mayo" name="mes5">
+                                                <option value=true>Si</option>
+                                                <option value=false>No</option>
+                                            </select>
+
+                                            <label for="c_junio">Junio:</label>
+                                            <select class="form-select" id="c_junio" name="mes6">
+                                                <option value=true>Si</option>
+                                                <option value=false>No</option>
+                                            </select>
+                                        
+                                            <label for="c_julio">Julio:</label>
+                                            <select class="form-select" id="c_julio" name="mes7">
+                                                <option value=1>Si</option>
+                                                <option value=0>No</option>
+                                            </select>
+                                    
+                                            <label for="c_agosto">Agosto:</label>
+                                            <select class="form-select" id="c_agosto" name="mes8">
+                                                <option value=1>Si</option>
+                                                <option value=0>No</option>
+                                            </select>
+                                        </div>
+                                        
+                                        <div class="mt-2 col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4">
+                                            <label for="c_septiembre">Septiembre:</label>
+                                            <select class="form-select" id="c_septiembre" name="mes9">
+                                                <option value=1>Si</option>
+                                                <option value=0>No</option>
+                                            </select>
+                                        
+                                            <label for="c_octubre">Octubre:</label>
+                                            <select class="form-select" id="c_octubre" name="mes10">
+                                                <option value=1>Si</option>
+                                                <option value=0>No</option>
+                                            </select>
+                                    
+                                            <label for="c_noviembre">Noviembre:</label>
+                                            <select class="form-select" id="c_noviembre" name="mes11">
+                                                <option value=1>Si</option>
+                                                <option value=0>No</option>
+                                            </select>
+
+                                            <label for="c_diciembre">Diciembre:</label>
+                                            <select class="form-select" id="c_diciembre" name="mes12">
+                                                <option value=1>Si</option>
+                                                <option value=0>No</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-info" on:click={register_cronograma(v_id_usuario)}> Crear </button>
+            </div>
+        </div>
+    </div>
+</div>-->
+
 
 <style>
     .fa{
