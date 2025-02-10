@@ -53,6 +53,7 @@
                     id: v_id_usuario,
                     cliente:vnombre,
                     correo:vcorreo,
+                    usuario_l:"cinjoheva",
                     password:vpassword,
                     jefe_de_uso:vjefe,
                     telefono:vtelefono,

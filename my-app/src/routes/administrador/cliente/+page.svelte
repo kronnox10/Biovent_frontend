@@ -34,6 +34,7 @@
             if (!response.ok) throw new Error("Error al cargar los datos");
             const data = await response.json();
             todos = data.resultado;
+            console.log("todos",todos)
             
             setTimeout(() => {
                 globalThis.$("#myTable").DataTable(); // Para convertrlo en datatable :D
@@ -48,6 +49,7 @@
     async function Register() {
         vu_nombre = document.getElementById("u_nombre").value;
         vu_correo = document.getElementById("u_correo").value;
+        vu_usuario = document.getElementById("u_usuario").value;
         vu_contraseña = document.getElementById("u_contraseña").value;
         vu_user = document.getElementById("u_user").value;
         vu_telefono = document.getElementById("u_telefono").value;
@@ -67,6 +69,7 @@
                         id_rol: 2,
                         cliente: vu_nombre,
                         correo: vu_correo,
+                        usuario_l: vu_usuario,
                         password: vu_contraseña,
                         jefe_de_uso: vu_user,
                         telefono: vu_telefono,
@@ -105,6 +108,7 @@
         let vnombre=document.getElementById('nombres').value;
         let vcorreo=document.getElementById('correo').value
         let vpassword=document.getElementById('password').value
+        let vuseri=document.getElementById('useri').value
         let vjefe=document.getElementById('jefe_de_uso').value
         let vtelefono=document.getElementById('telefono').value
         let vciudad=document.getElementById('ciudad').value
@@ -124,6 +128,7 @@
                     cliente:vnombre,
                     correo:vcorreo,
                     password:vpassword,
+                    usuario_l:vuseri,
                     jefe_de_uso:vjefe,
                     telefono:vtelefono,
                     ciudad:vciudad,
@@ -138,7 +143,7 @@
             }
             const Toast = Swal.mixin({
                 toast: true,
-                position: "top-end",
+                position: "center",
                 showConfirmButton: false,
                 timer: 3000,
                 timerProgressBar: true,
@@ -420,6 +425,7 @@
         document.getElementById('nombres').value=todos[0].cliente;
         document.getElementById('correo').value=todos[0].correo;
         document.getElementById('password').value=todos[0].contraseña;
+        document.getElementById("useri").value=todos[0].usuario;
         document.getElementById('jefe_de_uso').value=todos[0].persona_acargo;
         document.getElementById('telefono').value=todos[0].telefono;
         document.getElementById('ciudad').value=todos[0].ciudad;
@@ -817,6 +823,7 @@
                                 <th class="px-2 py-2 border">Correo</th>
                                 <th class="px-2 py-2 border">Ciudad</th>
                                 <th class="px-2 py-2 border">Jefe de area</th>
+                                <th class="px-2 py-2 border">Usuario</th>
                                 <th class="px-2 py-2 border">Contraseña</th>
                                 <th class="px-2 py-2 border">NIT</th>
                                 <th class="px-2 py-2 border">Estado</th>
@@ -852,9 +859,12 @@
                                     >
                                     
                                     <td class="px-2 py-2 border"
-                                        >{todo.contraseña}</td
+                                        >{todo.usuario}</td
                                     >
 
+                                    <td class="px-2 py-2 border"
+                                        >{todo.contraseña}</td
+                                    >
 
                                     <td class="px-2 py-2 border"
                                     >{todo.nic}</td
@@ -954,6 +964,21 @@
                                         type="text"
                                         id="password"
                                         placeholder="contraseña"
+                                        style="border: none; width: 55%;"
+                                        autocomplete="off"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col-lg-2">
+                                    <p class="card-text"><b>Usuario:</b></p>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input
+                                        type="text"
+                                        id="useri"
+                                        placeholder="Usuario"
                                         style="border: none; width: 55%;"
                                         autocomplete="off"
                                     />
@@ -1734,6 +1759,21 @@
                 
                             <div class="row mt-4 mx-5">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                    <label for="u_usuario">Usuario</label>
+                                    <input
+                                        type="text"
+                                        id="u_usuario"
+                                        name="usuario"
+                                        placeholder="Escriba usuario para ingresar a la cuenta"
+                                        autocomplete="off"
+                                        class="form-control rounded-pill"
+                                        required
+                                    />
+                                </div>
+                            </div>
+                
+                            <div class="row mt-4 mx-5">
+                                <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
                                     <label for="u_contraseña">Contraseña</label>
                                     <input
                                         type="text"
@@ -1760,8 +1800,7 @@
                                     />
                                 </div>
                             </div>
-                
-                            <div class="row mt-4 mx-5">
+                            <div class="row mt-3 mx-5">
                                 <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2">
                                     <label for="u_telefono">Telefono</label>
                                     <input

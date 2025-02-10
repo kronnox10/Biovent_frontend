@@ -14,7 +14,7 @@
             if (!response.ok) throw new Error("Error al cargar los datos");
             const data = await response.json();
             todos = data.resultado;
-
+            console.log("data",todos)
             setTimeout(() => {
                 globalThis.$("#myTable").DataTable();
             }, 0);
@@ -46,6 +46,7 @@
 
         document.getElementById("nombres").value = todos[0].cliente;
         document.getElementById("correo").value = todos[0].correo;
+        document.getElementById("useri").value = todos[0].usuario;
         document.getElementById("password").value = todos[0].contraseña;
         document.getElementById("jefe_de_uso").value = todos[0].persona_acargo;
         document.getElementById("telefono").value = todos[0].telefono;
@@ -61,6 +62,7 @@
     
     async function Register() {
        let vu_correo = document.getElementById("u_correo").value;
+       let vu_usuario = document.getElementById("u_usuario").value;
        let vu_contraseña = document.getElementById("u_contraseña").value;
        let vu_user = document.getElementById("u_user").value;
        let vu_telefono = document.getElementById("u_telefono").value;
@@ -78,6 +80,7 @@
                         id_rol: 3,
                         cliente: "Biovent",
                         correo: vu_correo,
+                        usuario_l: vu_usuario,
                         password: vu_contraseña,
                         jefe_de_uso: vu_user,
                         telefono: vu_telefono,
@@ -116,6 +119,7 @@
         console.log("usuario a actualizar con id", v_id_tecnico)
         let v_nombre = document.getElementById("nombres").value;
         let v_correo = document.getElementById("correo").value;
+        let v_usuario = document.getElementById("useri").value;
         let v_contraseña = document.getElementById("password").value;
         let v_user = document.getElementById("jefe_de_uso").value;
         let v_telefono = document.getElementById("telefono").value;
@@ -134,6 +138,7 @@
             body: JSON.stringify({
                 cliente: v_nombre,
                 correo: v_correo,
+                usuario_l: v_usuario,
                 password: v_contraseña,
                 jefe_de_uso: v_user,
                 telefono: v_telefono,
@@ -202,6 +207,7 @@
                                 <th class="px-4 py-2 border">Nombre tecnico</th>
                                 <th class="px-4 py-2 border">Telefono</th>
                                 <th class="px-4 py-2 border">Correo</th>
+                                <th class="px-4 py-2 border">Usuario</th>
                                 <th class="px-4 py-2 border">Contraseña</th>
                                 <th class="px-4 py-2 border">Ciudad</th>
                                 <th class="px-4 py-2 border">Estado</th>
@@ -220,6 +226,9 @@
                                     >
                                     <td class="px-4 py-2 border"
                                         >{todo.correo}</td
+                                    >
+                                    <td class="px-4 py-2 border"
+                                        >{todo.usuario}</td
                                     >
                                     <td class="px-4 py-2 border"
                                         >{todo.contraseña}</td
@@ -271,7 +280,7 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-12 col-xl-12" style="background-color: red;">
+            <div class="col-12 col-xl-12">
                 <div class="card border-dark shadow" id="perfil" style="">
                     <div class="card-header row g-2">
                         <h5 class="card-title col-lg-11">
@@ -314,6 +323,22 @@
                                     type="email"
                                     placeholder="email"
                                     id="correo"
+                                    style="border: none; width: 55%;"
+                                    autocomplete="off"
+                                />
+                            </div>
+                        </div>
+
+                        <div class="row pt-3">
+                            <div class="col-lg-2">
+                                <p class="card-text"><b>Usuario:</b></p>
+                            </div>
+
+                            <div class="col-lg-10">
+                                <input
+                                    type="text"
+                                    placeholder="usuario"
+                                    id="useri"
                                     style="border: none; width: 55%;"
                                     autocomplete="off"
                                 />
@@ -502,7 +527,20 @@
                                 />
                             </div>
                         </div>
-                        <div class="row mt-4 mx-5">
+                        <div class="row mt-5 mx-5">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
+                                <!--El autocomplete off, es para que no te salga sugerencia de cosas que ya registraste-->
+                                <label for="u_usuario">Usuario</label>
+                                <input
+                                    type="text"
+                                    id="u_usuario"
+                                    name="Usuario"
+                                    placeholder="Escriba el usuario del tecnico"
+                                    autocomplete="off"
+                                    class="form-control rounded-pill"
+                                    required
+                                />
+                            </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6">
                                 <label for="u_user">Nombre del tecnico</label>
                                 <input
@@ -515,8 +553,10 @@
                                     required
                                 />
                             </div>
+                        </div>
+                        <div class="row mt-5 mx-5">
                             <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2"
+                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6"
                             >
                                 <label for="u_telefono">Telefono</label>
                                 <input
@@ -528,10 +568,8 @@
                                     autocomplete="off"
                                 />
                             </div>
-                        </div>
-                        <div class="row mt-3 mx-5">
                             <div
-                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6 py-2"
+                                class="col-lg-6 col-md-6 col-sm-6 col-12 col-xl-6"
                             >
                                 <label for="u_ciudad">Ciudad</label>
                                 <input

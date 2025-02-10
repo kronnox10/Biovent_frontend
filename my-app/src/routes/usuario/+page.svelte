@@ -8,11 +8,14 @@
     let todos_inventario=[]
     var id_invt=0
     var v_id=0
+    let activate="mostrar"
+    let todos_cronograma={}
+    
     onMount(async()=>{
         let miStorage = window.localStorage;
         let usuario = JSON.parse(miStorage.getItem("usuario"));
         v_id = usuario.id;
-        console.log(v_id)
+        
 
         try{
             const response = await fetch("https://biovent-backend.onrender.com/get_machine_on",{
@@ -27,7 +30,7 @@
             });
             const data= await response.json();
             todos= data.Funcionando;
-            console.log("verificando todos", todos)
+
             let v_t_equipos= document.getElementById('t_equipos').innerHTML=todos;
             inventario()
             client()    
@@ -43,8 +46,6 @@
 
 
     async function perfil() {
-        console.log("Entramos aca ",v_id)
-
         const response = await fetch("https://biovent-backend.onrender.com/get_client",{
             method: "POST",
                 headers: {
@@ -71,7 +72,7 @@
 
     async function inventario() {
         error = null;
-            console.log("entra inventario")
+            
             try { 
                     const response = await fetch("https://biovent-backend.onrender.com/get_machine",{
                     method: "POST",
@@ -105,7 +106,6 @@
 
     async function client() {
         try{
-            console.log(v_id)
             const response = await fetch("https://biovent-backend.onrender.com/get_client",{
 
                 method: "POST",
@@ -119,7 +119,7 @@
             });
             const data= await response.json();
             todos= data.resultado;
-            console.log("verificando todos, client" ,todos)
+            
           let name= document.getElementById('name').innerHTML=todos[0].persona_acargo;
           let cliente= document.getElementById('client').innerHTML=todos[0].cliente;
 
@@ -157,7 +157,6 @@
     
     async function e_inactive_topic() {
         try{
-            console.log("Segundo llamado")
             const response = await fetch("https://biovent-backend.onrender.com/get_machine_off_topic",{
                 method: "POST",
                     headers: {
@@ -169,7 +168,6 @@
             });
             const data= await response.json();
             todos=data.Dañadasporalgo;
-            console.log("verificando todos", todos)
             let v_e_inactive_pieza= document.getElementById('inactive_pieza').innerHTML=todos;
     
         }catch(e){
@@ -211,9 +209,6 @@
                 timer: 2500
             });
 
-
-
-
         }catch(e){
             error=e.message
         }finally{
@@ -233,7 +228,6 @@
                     id:v_id_maquina,
                 }), 
             });
-            console.log("Maquina apagada")
 
             if (!response.ok) {
             throw new Error("Error en la actualización de la maquina.");
@@ -250,6 +244,39 @@
         } 
     }
 
+    async function cronograma(id) {
+        try {
+
+            let usuario = JSON.parse(localStorage.getItem("usuario"));
+            let v_id_usuario=usuario.id
+
+            const response = await fetch("https://biovent-backend.onrender.com/getcronobyuser",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_usuario: v_id_usuario,
+                }),
+            });
+            
+            const data = await response.json();
+                if ( data!=null && data.resultado && data.resultado.length > 0) {
+            todos_cronograma = data.resultado;
+            setTimeout(() => {
+                globalThis.$("#mycronos").DataTable(); 
+            }, 0);
+            } else {
+                todos_cronograma = [];
+                error = "No hay ninguna cronograma registrado a este usuario";
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
+    }
+
 
 </script>
 
@@ -261,8 +288,9 @@
         <a href="/Login" class="btn btn-dark mx-5 mb-3" style="margin-top:1%;">Salir</a>
     </div>
 
-    <div class="container-fluid">
-        <div class="row ms-1 me-1 mt-3">
+    <div class="container-fluid" hidden={activate!='mostrar'}>
+        <div class="row ms-1 me-1 mt-3" >
+
             <div class="col-xl-2 col-lg-2 col-2" style="">
                 
                 <div class="px-2 py-2" style="background-color:grey; color:aliceblue; padding-right: -5%;">
@@ -279,6 +307,8 @@
                     <p><b id="e_inactive">-</b> equipos inactivo</p>
                     <p><b id="inactive_pieza">-</b> apagados por algun motivo</p>
                 </div>
+                
+                <button class="btn btn-success px-5 mx-1" on:click={()=>{activate="cronograma"; cronograma()}}>Cronograma</button>
                 
             </div>
             
@@ -379,6 +409,119 @@
             -->
         </div>
     </div>
+
+
+    <div hidden={activate!=='cronograma'}>
+        <div class="ms-2">
+            <div class="container">
+                <div class="card-header row g-2">
+                    <h5 class="card-title col-lg-11">
+                        <b>Cronograma</b>
+                    </h5>
+                    <button
+                        class="btn btn-close col-lg-1"
+                        aria-label="Cerrar edición de usuario"
+                        on:click={() => {activate = 'mostrar'; cerrar()}}
+                    ></button>
+                </div>
+                <div class="card-body" style="">
+                    <div id="Mostrarusuario">
+                        <div class="container py-4">
+                            {#if loading}
+                                <div class="row g-2 justify-content-center mt-2">
+                                    <p
+                                        class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                    >
+                                        Cargando datos...
+                                    </p>
+                                    <div
+                                        class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                        role="status"
+                                    >
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            {:else if error}
+                                <p class="text-red-500">Error: {error}</p>
+                            {:else}
+                                <div class="overflow-x-auto">
+                                    <table
+                                        class="min-w-full bg-white border border-gray-300" style="width:100%; font-size: 11px;"
+                                        id="mycronos"
+                                    >
+                                        <thead>
+                                            <tr>
+                                                <th class="px-2 py-2 border">Equipo</th>
+                                                <th class="px-2 py-2 border">Enero</th>
+                                                <th class="px-2 py-2 border">Febrero</th>
+                                                <th class="px-2 py-2 border">Marzo</th>
+                                                <th class="px-2 py-2 border">Abril</th>
+                                                <th class="px-2 py-2 border">Mayo</th>
+                                                <th class="px-2 py-2 border">Junio</th>
+                                                <th class="px-2 py-2 border">Julio</th>
+                                                <th class="px-2 py-2 border">Agosto</th>
+                                                <th class="px-2 py-2 border">Septiembre</th>
+                                                <th class="px-2 py-2 border">Octubre</th>
+                                                <th class="px-2 py-2 border">Noviembre</th>
+                                                <th class="px-2 py-2 border">Diciembre</th>
+                                            </tr>
+                                        </thead>
+                
+                                        <tbody>
+                                            {#each todos_cronograma as todo}
+                                                <tr class="hover:bg-gray-50">
+                                                    <td class="px-4 py-2 border"
+                                                        >{todo.equipo}</td
+                                                    >
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.enero ? 'green' : 'red'};">
+                                                    
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.febrero ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.marzo ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.abril ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.mayo ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.junio ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.julio ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.agosto ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.septiembre ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.octubre ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.noviembre ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                    <td class="px-4 py-2 border" style="background-color: {todo.diciembre ? 'green' : 'red'};">
+                                                        
+                                                    </td>
+                                                </tr>
+                                            {/each}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            {/if}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 
