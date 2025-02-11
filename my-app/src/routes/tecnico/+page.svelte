@@ -107,6 +107,7 @@
         let usuario = JSON.parse(localStorage.getItem("usuario"));
         let v_id_usuario=usuario.id
 
+
         try { 
             const response = await fetch("https://biovent-backend.onrender.com/get_ost",{
             method: "POST",
@@ -165,62 +166,144 @@
         } 
     }
 
-    async function revisada(id) {
+    async function revisada(id, maquina, dueño) {
         let id_os=id
-        console.log(id_os)
-        let result = await Swal.fire({
-            title: "<strong>Revisada</strong>",
-            icon: "info",
-            html: `
-            Se <b>soluciono</b> el error por el que solicitaron la 
-            Orden de servicio?
-            `,
-            showCloseButton: true,
-            showDenyButton: true,
-            focusConfirm: false,
-            confirmButtonText: `
-            Solucionada
-            `,
-            confirmButtonAriaLabel: "Thumbs up, great!",
-            denyButtonText: `
-            A la proxima
-            `,
-            denyButtonAriaLabel: "Thumbs down"
-        })
+        let id_de_la_maquina=maquina
+        let id_del_dueño=dueño
+        console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
+       
+        //-------------------------------------------------------------------------------------------------------------------------
+            let result = await Swal.fire({
+                title: "<strong>Trabajo realizado</strong>",
+                input: "textarea",
+                inputPlaceholder: "Describe el trabajo realizado...",
+                showCloseButton: true,
+                showDenyButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "Solucionado ",
+                denyButtonText: "No Solucionado ",
+                cancelButtonText: "Trabajando Parcialmente ⚙️",
+            });
 
-        if(result.isConfirmed){
-            try{
-                const response = await fetch("https://biovent-backend.onrender.com/update_os", {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        id: id_os,
-                    }),
-                });
+            if (result.isConfirmed) {
+         
                 
-
-                if (!response.ok) throw new Error("Error 1 al actualizar la OS");
-
+                // ✅ Solucionado
                 Swal.fire({
-                    title: "Marcando OS como realizada :D",
+                    title: "Información registrada",
+                    text: "Los datos han sido guardados correctamente.",
                     icon: "success",
-                    timer: 3000, 
+                    timer: 3000,
                     timerProgressBar: true,
                     showConfirmButton: false
-                }).then(() => {
-                    location.reload();
+                }).then(async() => {
+                    let descip = result.value
+                console.log("iiiiiiiiiii",descip)
+
+                    try{
+                       const response = await fetch("https://biovent-backend.onrender.com/update_os",{
+
+                        method: "POST",
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            osupdate:{
+                                id: id_os,
+                                id_maquina: id_de_la_maquina,
+                                estado_machine: 1,
+                                estado: 0,
+                            },
+                            pendiente:{
+                                id_os: id_os, 
+                                id_maquina_p: id_de_la_maquina,
+                                id_propietario:id_del_dueño,
+                                descripcion: descip,
+                                repuestos: "Ninguno",
+                                estado_p: "Funcionando"
+                            }
+                        }),
+                    })
+
+                    }catch(e){
+                       error=e.message
+                        console.log(error)
+                    }
+
+
+                  //  location.reload();
                 });
+
+            } else if (result.isDenied) {
+                // ❌ No Solucionado
+                let opcionNoSolucionado = await Swal.fire({
+                    title: "Selecciona una opción",
+                    input: "radio",
+                    inputOptions: {
+                        repuesto: "Solicitar Repuesto ",
+                        terminal: "Daño Terminal "
+                    },
+                    showCancelButton: true,
+                    cancelButtonText: "Cancelar",
+                    inputValidator: (value) => {
+                        if (!value) {
+                            return "Debes seleccionar una opción";
+                        }
+                    }
+                });
+
+            if (!opcionNoSolucionado.value) return;
+
+            if (opcionNoSolucionado.value === "repuesto") {
+                let repuestoSolicitado = await Swal.fire({
+                    title: "Especifica el repuesto solicitado",
+                    input: "textarea",
+                    inputPlaceholder: "Describe el repuesto requerido...",
+                    showCancelButton: true
+                });
+
+                if (!repuestoSolicitado.value) return;
+
+                Swal.fire({
+                    title: "Repuesto solicitado correctamente 📦",
+                    icon: "success",
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                });
+
+            } else if (opcionNoSolucionado.value === "terminal") {
                 
-            } catch (error) {
-                Swal.fire("Error al actualizar la OS", "", "error");
+
+                Swal.fire({
+                    title: "Orden cerrada",
+                    text: "El equipo ha sido marcado como inactivo.",
+                    icon: "info",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
             }
-        } else if (result.isDenied) {
-            Swal.fire("No solucionado... pendiente por nueva revision", "", "warning");
+
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // ⚙️ Trabajando Parcialmente
+                let repuestos = await Swal.fire({
+                    title: "Materiales/Repuestos solicitados",
+                    input: "textarea",
+                    inputPlaceholder: "Especifica los materiales necesarios...",
+                    showCancelButton: true
+                });
+
+                if (!repuestos.value) return;
+
+                Swal.fire({
+                    title: "Equipo 'Trabajando Parcialmente' ⚙️",
+                    icon: "info",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+            }
         }
-        
-    }
 
     async function cronograma(vid_client) {
         
@@ -283,7 +366,9 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <h5 class="card-title">{cliente.cliente}</h5>
-                                            <p class="card-text">{cliente.persona_acargo}</p>
+                                            <p class="card-text" >{cliente.persona_acargo}</p>
+                                            <p class="card-text" style="margin-top: -3%;">{cliente.telefono}</p>
+                                            <p class="card-text" style="margin-top: -3%;">{cliente.direccion}</p>
                                             <p class="card-text"><b>Estado:</b><span class={cliente.estado? "text-success":"text-danger"}> {cliente.estado ? " Activo" : " Desactivo"}</span></p>
 
                                             <button class="btn btn-primary mx-1" on:click={()=> {activeElement = 'inventario'; inventario(cliente.id, cliente.cliente)}}>Inventario</button>
@@ -293,7 +378,7 @@
                                 </div>
                             
                                 {#if (i + 1) % 2 === 0 }<!-- 1%2=1   2%2=0   3%2=1   4%2=0-->
-                                <div class="pt-2"> 
+                                <div class="pt-1"> 
                                 </div> 
                                 {/if}
                             {/each}
@@ -585,7 +670,7 @@
                                 <p class="card-text">Cliente: {Oses.usuario_cliente}</p>
                                 <p class="card-text">Descripcion: {Oses.descripcion}</p>
                                 <p class="card-text mb-2"><b>Estado:</b><span class={Oses.estado? "text-success":"text-danger"}> {Oses.estado ? " En tramite" : " Corregido"}</span></p>
-                                <button class="btn btn-primary mx-1" on:click={()=>revisada(Oses.id)}>Revisada</button>
+                                <button class="btn btn-primary mx-1" on:click={()=>revisada(Oses.id,Oses.maquina,Oses.dueño)}>Revisada</button>
                             </div>
                         </div>
                     </div>
@@ -633,3 +718,57 @@
         cursor: pointer;
     }
 </style>
+
+
+
+<!--
+
+
+/* let result = await Swal.fire({
+            title: "<strong>Trabajo realizado</strong>",
+            input: "text",
+            showCloseButton: true,
+            showDenyButton: true,
+            focusConfirm: false,
+            confirmButtonText: `
+            Solucionada
+            `,
+            confirmButtonAriaLabel: "Thumbs up, great!",
+            denyButtonText: `
+            A la proxima
+            `,
+            denyButtonAriaLabel: "Thumbs down"
+        })
+
+        if(result.isConfirmed){
+            try{
+                const response = await fetch("https://biovent-backend.onrender.com/update_os", {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        id: id_os,
+                    }),
+                });
+                
+
+                if (!response.ok) throw new Error("Error 1 al actualizar la OS");
+
+                Swal.fire({
+                    title: "Marcando OS como realizada :D",
+                    icon: "success",
+                    timer: 3000, 
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(() => {
+                    location.reload();
+                });
+                
+            } catch (error) {
+                Swal.fire("Error al actualizar la OS", "", "error");
+            }
+        } else if (result.isDenied) {
+            Swal.fire("No solucionado... pendiente por nueva revision", "", "warning");
+        }*/
+-->

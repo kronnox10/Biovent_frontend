@@ -151,9 +151,28 @@
         });
 
         const data = await response.json();
-        console.log(data);
-
-        alert("se actualizo perro")
+        
+        if (!response.ok) {
+            throw new Error("Error en la actualización del usuario.");
+            }
+            const Toast = Swal.mixin({
+                toast: true,
+                position: "center",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.onmouseenter = Swal.stopTimer;
+                    toast.onmouseleave = Swal.resumeTimer;
+                },
+            });
+            Toast.fire({
+                icon: "success",
+                iconColor: "white",
+                color: "white",
+                background: "#00bdff",
+                title: "usuario actualizado con exito",
+            });
     }
 
 </script>
