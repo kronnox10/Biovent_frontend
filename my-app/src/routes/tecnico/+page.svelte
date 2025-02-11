@@ -44,7 +44,7 @@
         }
     })  
 
-    async function perfil() {
+    /*async function perfil() {
         const response = await fetch("https://biovent-backend.onrender.com/get_client",{
             method: "POST",
                 headers: {
@@ -67,7 +67,7 @@
         document.getElementById('ciudad').value=todos[0].ciudad;
         document.getElementById('direccion').value=todos[0].direccion;
         document.getElementById('nit').value=todos[0].nic;
-    }
+    }*/
 
     async function inventario(vid_client, name_machine) {
         error = null;
@@ -270,7 +270,6 @@
                         <p id="client"></p>
                     </b>
                 </div>
-                <button class="btn btn-danger mt-4 col-12"data-bs-toggle="modal" data-bs-target="#perfilModal" on:click={perfil()}>Editar perfil</button>
                 <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses'; os_oese()}}>OS Activas</button>
                 <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses_h'; os_oese_h()}}>OS Realizadas</button>
             </div>

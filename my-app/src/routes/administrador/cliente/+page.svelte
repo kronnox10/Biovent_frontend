@@ -1,6 +1,7 @@
 <script>
     import { onMount } from "svelte";
     import { nonpassive } from "svelte/legacy";
+
     let todos = {};
     let todos_inventario = {};
     let todos_os_activas = {};
@@ -525,6 +526,20 @@
         } finally {
             loading = false;
         } 
+    }
+
+    async function descargar_tabla() {
+        
+        let headers = ["EQUIPO", "ENERO", "FEBRERO", "MARZO", "ABRIL", "MAYO", "JUNIO",
+                    "JULIO", "AGOSTO", "SEPTIEMBRE", "OCTUBRE", "NOVIEMBRE", "DICIEMBRE"];
+
+        let rows = [];
+
+        const worksheet = XLSX.utils.aoa_to_sheet([headers]);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "hoja 1");
+
+        XLSX.writeFile(workbook, "cronograma.xlsx");
     }
 
     async function OS_activa(id) {
@@ -1390,8 +1405,9 @@
                             <div id="Mostrarusuario">
                                 <div class="container py-4">
                                     <div class="text-center mb-3">
-                                        <button class="btn btn-dark col-lg-5" data-bs-toggle="modal" data-bs-target="#cargue_cronograma">Cargar de excel</button>
-                                        <button class="btn btn-dark col-lg-5" on:click={limpiarCronograma()}>Limpiar cronograma</button>
+                                        <button class="btn btn-dark col-lg-3" data-bs-toggle="modal" data-bs-target="#cargue_cronograma">Cargar de excel</button>
+                                        <button class="btn btn-dark col-lg-3" on:click={descargar_tabla()}>Descargar plantilla cronograma</button>
+                                        <button class="btn btn-dark col-lg-3" on:click={limpiarCronograma()}>Limpiar cronograma</button>
                                     </div>
                                         {#if loading}
                                         <!---->
