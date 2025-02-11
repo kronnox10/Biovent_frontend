@@ -71,7 +71,7 @@
 
         try {
             const response = await fetch(
-                "http://localhost:8000/create_technical",{
+                "https://biovent-backend.onrender.com/create_technical",{
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
