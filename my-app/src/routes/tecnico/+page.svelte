@@ -5,9 +5,12 @@
     let error= null;
     let todos_clientes={}
     let v_id = 0;
+    let v_os = 0;
     let activeElement="mostrar"
     let todos_inventario={}
     let todos_cronograma={}
+    let todos_pendientes={}
+    let loading_opciones=false
     
     onMount(async()=>{
         let miStorage = window.localStorage;
@@ -166,42 +169,63 @@
         } 
     }
 
+    let v_opcion=""
+    let dañoOpciones=false
+    let loading_extra=false
+
+    let id_os=""
+    let id_de_la_maquina=""
+    let id_del_dueño=""
+
+   
+    
+
+
+    async function revisada_v(event) {
+        loading_opciones=false
+            console.log("Estado cambiado a:", event.target.value);
+   
+           setTimeout(() => {
+               console.log("Estado procesado:", event.target.value);
+           }, 200);
+
+console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
+
+
+    if(v_opcion==="solucionado"){
+        dañoOpciones=false
+            loading_extra=false 
+    }else if(v_opcion==="noSolucionado"){
+        loading_opciones=true
+        loading_extra=false
+    }else{
+        dañoOpciones=false 
+        loading_extra=true
+
+    }
+
+}
+
+
+   
     async function revisada(id, maquina, dueño) {
-        let id_os=id
-        let id_de_la_maquina=maquina
-        let id_del_dueño=dueño
+
+         id_os=id
+         id_de_la_maquina=maquina
+         id_del_dueño=dueño
         console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
-       
-        //-------------------------------------------------------------------------------------------------------------------------
-            let result = await Swal.fire({
-                title: "<strong>Trabajo realizado</strong>",
-                input: "textarea",
-                inputPlaceholder: "Describe el trabajo realizado...",
-                showCloseButton: true,
-                showDenyButton: true,
-                showCancelButton: true,
-                focusConfirm: false,
-                confirmButtonText: "Solucionado ",
-                denyButtonText: "No Solucionado ",
-                cancelButtonText: "Trabajando Parcialmente ⚙️",
-            });
+    }
+        
 
-            if (result.isConfirmed) {
-         
-                
-                // ✅ Solucionado
-                Swal.fire({
-                    title: "Información registrada",
-                    text: "Los datos han sido guardados correctamente.",
-                    icon: "success",
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                }).then(async() => {
-                    let descip = result.value
-                console.log("iiiiiiiiiii",descip)
-
-                    try{
+    async function guardar_revisada() {
+        try{
+           
+           console.log("yy opcion es", v_opcion)
+           if(v_opcion==="solucionado"){
+            dañoOpciones=false
+            loading_extra=false
+            let vdescripcion=document.getElementById("descripcionTrabajo").value;
+                console.log("acacaa",vdescripcion)
                        const response = await fetch("https://biovent-backend.onrender.com/update_os",{
 
                         method: "POST",
@@ -219,7 +243,232 @@
                                 id_os: id_os, 
                                 id_maquina_p: id_de_la_maquina,
                                 id_propietario:id_del_dueño,
-                                descripcion: descip,
+                                descripcion: vdescripcion,
+                                repuestos: "Ninguno",
+                                estado_p: "Funcionando"
+                            }
+                        }),
+                    });
+                    //const data= await response.json()
+                   
+                        Swal.fire({
+                    title: "Información registrada",
+                    text: "Los datos han sido guardados correctamente.",
+                    icon: "success",
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                })
+                location.reload();
+                    
+
+
+
+            }else if(v_opcion==="noSolucionado"){
+
+                loading_opciones=true
+                loading_extra=false
+
+                if (dañoOpciones===true){
+                  
+                let v_desc_resp=document.getElementById("desc_resp").value;
+                let vdescripcion=document.getElementById("descripcionTrabajo").value;
+                console.log("acacaa",vdescripcion)
+                console.log("descripcion del respuesto:",v_desc_resp)
+              console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
+
+
+                       const response = await fetch("https://biovent-backend.onrender.com/update_os",{
+
+                        method: "POST",
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            osupdate:{
+                                id: id_os,
+                                id_maquina: id_de_la_maquina,
+                                estado_machine: 0,
+                                estado: 1,
+                            },
+                            pendiente:{
+                                id_os: id_os, 
+                                id_maquina_p: id_de_la_maquina,
+                                id_propietario:id_del_dueño,
+                                descripcion: vdescripcion,
+                                repuestos: v_desc_resp,
+                                estado_p: "No funcionando"
+                            }
+                        }),
+                    })
+
+                Swal.fire({
+                        title: "Repuesto solicitado correctamente 📦",
+                        icon: "success",
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+
+                location.reload();
+               
+
+                }else{
+               
+                let vdescripcion=document.getElementById("descripcionTrabajo").value;
+                console.log("acacaa",vdescripcion)
+                 console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
+
+
+                       const response = await fetch("https://biovent-backend.onrender.com/update_os",{
+
+                        method: "POST",
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            osupdate:{
+                                id: id_os,
+                                id_maquina: id_de_la_maquina,
+                                estado_machine: 0,
+                                estado: 0,
+                            },
+                            pendiente:{
+                                id_os: id_os, 
+                                id_maquina_p: id_de_la_maquina,
+                                id_propietario:id_del_dueño,
+                                descripcion: vdescripcion,
+                                repuestos: "ninguno",
+                                estado_p: "No funcionando"
+                            }
+                        }),
+                    })
+
+                    Swal.fire({
+                    title: "Orden cerrada",
+                    text: "El equipo se a dejado inactivo.",
+                    icon: "info",
+                    timer: 3000,
+                    timerProgressBar: true
+                });
+               
+                location.reload();
+                }
+                
+
+
+
+            }else{
+                dañoOpciones=false 
+                console.log("entra al extra opciones")
+                loading_extra=true
+
+               let v_repuestS=document.getElementById('repuestoSolicitado').value;
+
+                let vdescripcion=document.getElementById("descripcionTrabajo").value;
+                console.log("acacaa",vdescripcion)
+                console.log("acacaa",v_repuestS)
+
+                 console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
+
+
+                       const response = await fetch("https://biovent-backend.onrender.com/update_os",{
+
+                        method: "POST",
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            osupdate:{
+                                id: id_os,
+                                id_maquina: id_de_la_maquina,
+                                estado_machine: 1,
+                                estado: 1,
+                            },
+                            pendiente:{
+                                id_os: id_os, 
+                                id_maquina_p: id_de_la_maquina,
+                                id_propietario:id_del_dueño,
+                                descripcion: vdescripcion,
+                                repuestos: v_repuestS,
+                                estado_p: "Trabajando parcialmente"
+                            }
+                        }),
+                    });
+                    
+                    Swal.fire({
+                        title: "Repuesto solicitado correctamente 📦",
+                        icon: "success",
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                location.reload();
+
+            }
+        }catch(e){
+               error=e.message
+                console.log(error)
+            }  
+         
+      }
+
+  
+
+
+        //let v_opcion=document.getElementById("trabajando")
+        /*let id_os=id
+        let id_de_la_maquina=maquina
+        let id_del_dueño=dueño
+        let vdescripcion=""
+        console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
+       
+        //-------------------------------------------------------------------------------------------------------------------------
+            let result = await Swal.fire({
+                title: "<strong>Trabajo realizado</strong>",
+                input: "textarea",
+                inputPlaceholder: "Describe el trabajo realizado...",
+                showCloseButton: true,
+                showDenyButton: true,
+                showCancelButton: true,
+                focusConfirm: false,
+                confirmButtonText: "Solucionado",
+                denyButtonText: "No Solucionado ",
+                cancelButtonText: "Trabajando Parcialmente ⚙️",
+            });
+            vdescripcion=result.value
+
+            if (result.isConfirmed) {
+                // ✅ Solucionado
+                console.log("revisando solamente el result2", vdescripcion)
+                Swal.fire({
+                    title: "Información registrada",
+                    text: "Los datos han sido guardados correctamente.",
+                    icon: "success",
+                    timer: 3000,
+                    timerProgressBar: true,
+                    showConfirmButton: false
+                }).then(async() => {
+                    
+                    try{
+                       const response = await fetch("https://biovent-backend.onrender.com/update_os_",{
+
+                        method: "POST",
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            osupdate:{
+                                id: id_os,
+                                id_maquina: id_de_la_maquina,
+                                estado_machine: 1,
+                                estado: 0,
+                            },
+                            pendiente:{
+                                id_os: id_os, 
+                                id_maquina_p: id_de_la_maquina,
+                                id_propietario:id_del_dueño,
+                                descripcion: vdescripcion,
                                 repuestos: "Ninguno",
                                 estado_p: "Funcionando"
                             }
@@ -236,6 +485,7 @@
                 });
 
             } else if (result.isDenied) {
+                console.log("revisando solamente el result", result.value)
                 // ❌ No Solucionado
                 let opcionNoSolucionado = await Swal.fire({
                     title: "Selecciona una opción",
@@ -256,29 +506,94 @@
             if (!opcionNoSolucionado.value) return;
 
             if (opcionNoSolucionado.value === "repuesto") {
+             
                 let repuestoSolicitado = await Swal.fire({
                     title: "Especifica el repuesto solicitado",
                     input: "textarea",
                     inputPlaceholder: "Describe el repuesto requerido...",
+                   
                     showCancelButton: true
                 });
 
                 if (!repuestoSolicitado.value) return;
 
-                Swal.fire({
-                    title: "Repuesto solicitado correctamente 📦",
-                    icon: "success",
-                    timer: 3000,
-                    timerProgressBar: true,
-                    showConfirmButton: false
-                });
+                    let repuestoDesc  = repuestoSolicitado.value
+                    console.log("Repuesto ",repuestoDesc )
+                    console.log("descripcion ",vdescripcion )
+
+                        try{
+                        const response = await fetch("https://biovent-backend.onrender.com/update_os_",{
+
+                            method: "POST",
+                            headers:{
+                                "Content-Type": "application/json",
+                            },
+                            body: JSON.stringify({
+                                osupdate:{
+                                    id: id_os,
+                                    id_maquina: id_de_la_maquina,
+                                    estado_machine: 0,
+                                    estado: 0,
+                                },
+                                pendiente:{
+                                    id_os: id_os, 
+                                    id_maquina_p: id_de_la_maquina,
+                                    id_propietario:id_del_dueño,
+                                    descripcion: vdescripcion,
+                                    repuestos: repuestoDesc ,
+                                    estado_p: "No funcionando"
+                                }
+                            }),
+                        })
+                      }catch(e){
+                        error=e.message
+                        console.log(error)
+                      }
+
+                    Swal.fire({
+                        title: "Repuesto solicitado correctamente 📦",
+                        icon: "success",
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
 
             } else if (opcionNoSolucionado.value === "terminal") {
-                
+
+                let descip = result.value
+                    try{
+                       const response = await fetch("https://biovent-backend.onrender.com/update_os_",{
+
+                        method: "POST",
+                        headers:{
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                            osupdate:{
+                                id: id_os,
+                                id_maquina: id_de_la_maquina,
+                                estado_machine: 0,
+                                estado: 0,
+                            },
+                            pendiente:{
+                                id_os: id_os, 
+                                id_maquina_p: id_de_la_maquina,
+                                id_propietario:id_del_dueño,
+                                descripcion: vdescripcion,
+                                repuestos: "Ninguno, se sugiere dar de baja el equipo",
+                                estado_p: "No funcionando"
+                            }
+                        }),
+                    })
+
+                    }catch(e){
+                       error=e.message
+                        console.log(error)
+                    }
 
                 Swal.fire({
                     title: "Orden cerrada",
-                    text: "El equipo ha sido marcado como inactivo.",
+                    text: "El equipo se a dejado inactivo.",
                     icon: "info",
                     timer: 3000,
                     timerProgressBar: true
@@ -302,12 +617,129 @@
                     timer: 3000,
                     timerProgressBar: true
                 });
+            }*/
+        
+        // Escuchar la selección de los radios
+     
+    
+    async function descargar_pdf(id) {
+        try {
+            console.log("",id)
+            
+            const response = await fetch("https://biovent-backend.onrender.com/pendientes_pdf", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ 
+                    id: id })
+            });
+
+            const data = await response.json();
+            const resultados = data.resultado;
+            console.log("data de download pdf",data)
+
+            if (!resultados.length) {
+                alert("No hay datos disponibles.");
+                return;
             }
+
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+
+            const logoWidth = 30;  // Ancho de la imagen (en mm)
+            const logoHeight = 25; // Alto de la imagen (en mm)
+            doc.addImage("foto_logo__2_-removebg-preview.png", "PNG", 210-logoWidth-14, 10, logoWidth, logoHeight)
+            
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
+            doc.text("REPORTE DE TÉCNICO", 14, 50);
+
+            
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Cliente: ${resultados[0].Dueño}`, 14, 60);
+            doc.text(`Equipo: ${resultados[0].Maquina}`, 14, 65);
+            doc.text(`Técnico a cargo: ${resultados[0].tecnico}`, 14,70);
+            doc.text(`Estado de la máquina: ${resultados[0]["Estado de la maquina"]}`, 14, 75);
+
+            // Trabajos Realizados
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("Trabajos Realizados:", 14, 85);
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+
+            // Dividir el texto en líneas si es muy largo
+            let trabajos = doc.splitTextToSize(resultados[0].Descripcion, 180);
+            doc.text(trabajos, 14, 90);
+
+            //--------------------------------------------------------------------------
+            doc.setFontSize(12);
+            doc.setFont("helvetica", "bold");
+            doc.text("Repuestos solicitados:", 14, 110);
+
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal");
+
+            // Dividir el texto en líneas si es muy largo
+            let repuestos = doc.splitTextToSize(resultados[0].Repuestos, 180);
+            doc.text(repuestos, 14, 125);
+
+ 
+            // Guardar el archivo
+            doc.save("Reporte_Tecnico.pdf");
+
+        } catch (error) {
+            console.error("Error generando PDF:", error);
         }
+    }
+    
+    async function mostrar_pdf() {
+        let usuario = JSON.parse(localStorage.getItem("usuario"));
+        let v_id_usuario=usuario.id
+        console.log("estamos aca",v_id_usuario)
+        try { 
+            const response = await fetch("https://biovent-backend.onrender.com/get_pendientes",{
+            method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    id_usuario: v_id_usuario,
+                }),
+            });
+                
+            const data = await response.json();
+            todos_pendientes = data.resultado;
+            console.log("pasamos el try",todos_pendientes);
+            v_os=todos_pendientes.id
+
+            if (data.resultado && data.resultado.length > 0) {
+            setTimeout(() => {
+                globalThis.$("#mymp").DataTable(); 
+            }, 0);
+            }else {
+                todos_pendientes = [];
+                error = "No hay maquinas en el inventario de este cliente :(";
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
+
+    }
 
     async function cronograma(vid_client) {
-        
         try {
+            loading=true;
+            error=null;
+            
+            console.log(vid_client)    
+
             const response = await fetch("https://biovent-backend.onrender.com/getcronobyuser",{
             method: "POST",
                 headers: {
@@ -318,10 +750,15 @@
                 }),
             });
             
+            
             const data = await response.json();
                 if ( data!=null && data.resultado && data.resultado.length > 0) {
             todos_cronograma = data.resultado;
+
+            console.log("todos_cronograma",todos_cronograma)
+
             setTimeout(() => {
+                
                 globalThis.$("#mycronos").DataTable(); 
             }, 0);
             } else {
@@ -355,6 +792,7 @@
                 </div>
                 <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses'; os_oese()}}>OS Activas</button>
                 <button class="btn btn-danger mt-4 col-12" on:click={()=>{activeElement='oeses_h'; os_oese_h()}}>OS Realizadas</button>
+                <button class="btn btn-danger mt-4 col-12"on:click={()=> {activeElement = 'pdf';mostrar_pdf()}}>Exportar trabajos</button>
             </div>
             
             <div class="col-xl-9 col-lg-9 col-9">
@@ -490,10 +928,7 @@
 
 <div hidden={activeElement!=='cronograma'}>
     <div class="ms-2">
-        <div class="mx-4 fs-1">
-            <i class="fa fa-caret-left" aria-hidden="true" on:click={() => {activeElement = 'mostrar'}}></i>
-        </div>
-        <div class="container">
+        <div class="container mt-4">
             <div class="card-header row g-2">
                 <h5 class="card-title col-lg-11">
                     <b>Cronograma</b>
@@ -602,6 +1037,90 @@
     </div>
 </div>
 
+<div hidden={activeElement!=='pdf'}>
+    <div class="ms-2">
+        <div class="container mt-4">
+            <div class="card-header row g-2">
+                <h5 class="card-title col-lg-11">
+                    <b>Descargar PDF de los trabajos realizados</b>
+                </h5>
+                <button
+                    class="btn btn-close col-lg-1"
+                    aria-label="Cerrar edición de usuario"
+                    on:click={() => {activeElement = 'mostrar'; cerrar()}}
+                ></button>
+            </div>
+            <div class="card-body">
+                <div id="Mostrarpdfs">
+                    <div class="container mt-4">
+                        {#if loading}
+                            <!---->
+                            <div class="row g-2 justify-content-center">
+                                <p
+                                    class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                >
+                                    Cargando datos...
+                                </p>
+                                <div
+                                    class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                    role="status"
+                                >
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        {:else if error}
+                            <p class="text-red-500">Error: {error}</p>
+                        {:else}
+                            <div class="overflow-x-auto display compact">
+                                <table
+                                    class="min-w-full bg-white border border-gray-300"  
+                                    style="width:100%; font-size: 12px;"
+                                    id="mymp"
+                                >
+                                <thead>
+                                    <tr>
+                                        <th class="px-3 py-2 border">Cliente</th>
+                                        <th class="px-3 py-2 border">Maquina</th>
+                                        <th class="px-3 py-2 border">Descripcion del daño</th>
+                                        <th class="px-1 py-2 border">Estado del equipo</th>
+                                        <th class="py-2 border">Opciones</th>
+                                    </tr>
+                                </thead>
+
+                                    <tbody>
+                                        {#each todos_pendientes as todos}
+                                            <tr class="hover:bg-gray-50">
+                                                <td class="px-2 py-2 border"
+                                                    >{todos.usuario_cliente}</td
+                                                >
+                                                <td class="px-2 py-2 border"
+                                                    >{todos.nombre_maquina}</td
+                                                >
+                                                <td class="px-2 py-2 border"
+                                                    >{todos.descripcion}</td
+                                                >
+                                                <td class="px-2 py-2 border"
+                                                    ><span style="color: {todos.estado ? 'green' : 'red'};">
+                                                        {todos.estado ? "Activo" : "Inactivo"}
+                                                    </span></td
+                                                >
+                                                <td class="py-2 border text-center">
+                                                    <button
+                                                    class="btn btn-success" on:click={()=>descargar_pdf(todos.id)}>Descargar</button>
+                                                </td>
+                                            </tr>
+                                        {/each}
+                                    </tbody>
+                                </table>
+                            </div>
+                        {/if}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="perfilModal" tabindex="-1" aria-labelledby="perfilModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -670,7 +1189,7 @@
                                 <p class="card-text">Cliente: {Oses.usuario_cliente}</p>
                                 <p class="card-text">Descripcion: {Oses.descripcion}</p>
                                 <p class="card-text mb-2"><b>Estado:</b><span class={Oses.estado? "text-success":"text-danger"}> {Oses.estado ? " En tramite" : " Corregido"}</span></p>
-                                <button class="btn btn-primary mx-1" on:click={()=>revisada(Oses.id,Oses.maquina,Oses.dueño)}>Revisada</button>
+                                <button class="btn btn-primary mx-1" data-bs-toggle="modal" data-bs-target="#revisadaModal" on:click={()=>revisada(Oses.id,Oses.maquina,Oses.dueño)}>Revisada</button>
                             </div>
                         </div>
                     </div>
@@ -708,6 +1227,67 @@
         {/if}
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="revisadaModal" tabindex="-1" aria-labelledby="revisadaModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="revisadaModalLabel">Trabajo realizado</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="descripcionTrabajo" class="form-label">Describe el trabajo realizado:</label>
+                <textarea id="descripcionTrabajo" class="form-control" placeholder="Escribe aquí..." rows="3"></textarea>
+        
+                <hr>
+                
+                <!-- svelte-ignore a11y_label_has_associated_control-->
+                 <!-- que es esto wtf de arriba -->
+               
+                <label class="form-label">Selecciona una opción:</label>
+                <div class="form-check">
+                <input class="form-check-input" type="radio" bind:group={v_opcion} on:change={revisada_v} name="estadoMaquina" id="solucionado" value="solucionado">
+                <label class="form-check-label" for="solucionado">Solucionado</label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="radio"   bind:group={v_opcion}  on:change={revisada_v} name="estadoMaquina" id="noSolucionado" value="noSolucionado">
+                <label class="form-check-label" for="noSolucionado">No Solucionado</label>
+                </div>
+                <div class="form-check">
+                <input class="form-check-input" type="radio"  bind:group={v_opcion} on:change={revisada_v} name="estadoMaquina" id="trabajando" value="trabajando">
+                <label class="form-check-label" for="trabajando">Trabajando Parcialmente</label>
+                </div>
+         
+                
+                <!-- Opciones adicionales -->
+                 {#if loading_extra}
+                    <div id="extraOptions" >
+                     <label for="repuestoSolicitado" class="form-label">Especifica el repuesto solicitado:</label>
+                     <textarea id="repuestoSolicitado" class="form-control" placeholder="Describe el repuesto..." rows="2"></textarea>
+                    </div>
+                {/if}
+
+                {#if loading_opciones}
+                <div id="dañoOpciones"><!--no solucionado-->
+                <button id="solicitarRepuesto" class="btn btn-warning" on:click={()=>{dañoOpciones=true}}>Solicitar Repuesto</button>
+                <button id="dañoTerminal" class="btn btn-danger" on:click={()=>{dañoOpciones=false; guardar_revisada()}}>Daño Terminal</button>
+                </div>
+                {/if}   
+                {#if dañoOpciones}
+                <label for="" class="mt-2">Ingrese el respuesto a solicitar</label>
+                <textarea name="" id="desc_resp" class="form-control"></textarea>
+                {/if}
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="guardarEstado" on:click={guardar_revisada}>Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <style>
      .fa{
