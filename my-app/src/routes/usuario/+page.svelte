@@ -86,6 +86,7 @@
                     
                     const data = await response.json();
                     todos_inventario = data.resultado;
+                    console.log (todos_inventario)
                     
                     if (data.resultado && data.resultado.length > 0) {
                     setTimeout(() => {
@@ -131,7 +132,7 @@
     }      
 
     async function e_inactive() {
-        try{//ruta para mostrar nombre(rafael) y el cliente (universidad del norte), equipos actuales...
+        try{
 
             const response = await fetch("https://biovent-backend.onrender.com/get_machine_off",{
 
@@ -180,6 +181,11 @@
 
     async function solicitar() {
         try{
+            console.log("entra al solicitar que raro no?")
+
+            console.log(id_invt)
+            console.log(v_id)
+
             let desc=document.getElementById('desc').value;
             const response = await fetch("https://biovent-backend.onrender.com/create_os",{
             method: "POST",
@@ -196,7 +202,7 @@
         });    
 
         if (!response.ok) {
-            throw new Error("Error en la actualización del usuario.");
+            throw new Error("Error en la os.");
             }
             
             Swal.fire({
@@ -238,7 +244,7 @@
                 showConfirmButton: false,
                 timer: 2500
             });
-            window.location.reload()
+           // window.location.reload()
         }catch(e){
             error=e.message
         } 
@@ -340,7 +346,7 @@
                                     <thead>
                                         <tr>
                                             <th class="px-3 py-2 border">Nombre</th>
-                                            <th class="px-3 py-2 border">Inventario</th>
+                                            <th class="px-3 py-2 border">Serial</th>
                                             <th class="px-3 py-2 border">Ubicacion</th>
                                             <th class="px-3 py-2 border">Sede</th>
                                             <th class="px-3 py-2 border">Estado</th>
@@ -357,7 +363,7 @@
                                                 >
 
                                                 <td class="px-3 py-1 border"
-                                                    >{todos_inventario.inventario}</td
+                                                    >{todos_inventario.serial}</td
                                                 >
 
                                                 <td class="px-3 py-1 border"
@@ -544,7 +550,7 @@
                     <input type="text" id="desc" class="form-control">
             </div>
             <div class="modal-footer">
-                <button class="btn btn-info" on:click={solicitar}>Solicitar</button>
+                <button class="btn btn-info" on:click={solicitar()}>Solicitar</button>
             </div>
         </div>
     </div>

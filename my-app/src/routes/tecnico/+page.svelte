@@ -218,6 +218,11 @@ console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
         
 
     async function guardar_revisada() {
+        console.log("v_opcion:", v_opcion);
+        console.log("id_os:", id_os);
+        console.log("id_de_la_maquina:", id_de_la_maquina);
+        console.log("id_del_dueño:", id_del_dueño);
+
         try{
            
            console.log("yy opcion es", v_opcion)
@@ -227,7 +232,6 @@ console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
             let vdescripcion=document.getElementById("descripcionTrabajo").value;
                 console.log("acacaa",vdescripcion)
                        const response = await fetch("https://biovent-backend.onrender.com/update_os",{
-
                         method: "POST",
                         headers:{
                             "Content-Type": "application/json",
@@ -249,7 +253,10 @@ console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
                             }
                         }),
                     });
-                    //const data= await response.json()
+                    console.log("HTTP Status:", response.status);
+                    console.log("Response OK?", response.ok);
+                    const data = await response.json();
+                    console.log("Response Data:", data);
                    
                         Swal.fire({
                     title: "Información registrada",
@@ -259,7 +266,7 @@ console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
                     timerProgressBar: true,
                     showConfirmButton: false
                 })
-                location.reload();
+               location.reload();
                     
 
 
@@ -1081,6 +1088,7 @@ console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
                                     <tr>
                                         <th class="px-3 py-2 border">Cliente</th>
                                         <th class="px-3 py-2 border">Maquina</th>
+                                        <th class="px-3 py-2 border">Serial</th>
                                         <th class="px-3 py-2 border">Descripcion del daño</th>
                                         <th class="px-1 py-2 border">Estado del equipo</th>
                                         <th class="py-2 border">Opciones</th>
@@ -1095,6 +1103,9 @@ console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
                                                 >
                                                 <td class="px-2 py-2 border"
                                                     >{todos.nombre_maquina}</td
+                                                >
+                                                <td class="px-2 py-2 border"
+                                                    >{todos.serial}</td
                                                 >
                                                 <td class="px-2 py-2 border"
                                                     >{todos.descripcion}</td

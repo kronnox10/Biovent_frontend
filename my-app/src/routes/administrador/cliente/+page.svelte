@@ -3,6 +3,7 @@
     import { nonpassive } from "svelte/legacy";
 
     let todos = {};
+    let todos_h = {};
     let todos_inventario = {};
     let todos_os_activas = {};
     let todos_historial = {};
@@ -495,7 +496,6 @@
         } finally {
             loading = false;
         } 
-
     }
 
     async function cronograma(id) {
@@ -707,7 +707,41 @@
         }
     }
 
-    /*async function register_cronograma(id) {
+    async function historial(id) {
+        error = null;
+        console.log("entra al historico yujuuu")
+        v_id_maquina=id
+        console.log("id maquina ",v_id_maquina)
+        try { 
+                const response = await fetch("https://biovent-backend.onrender.com/historial_os_machine",{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                    body: JSON.stringify({
+                        id_machine: v_id_maquina,
+                    }),
+                });
+                
+                const data = await response.json();
+                todos_h = data.resultado;
+                console.log(todos_h)
+
+                if (data.resultado && data.resultado.length > 0) {
+                setTimeout(() => {
+                    globalThis.$("#myhistorico").DataTable(); 
+                }, 0);
+            }else {
+                todos_h = [];
+                error = "No hay registros en esta maquina :3";
+            }
+        } catch (e) {
+            error = e.message;
+        } finally {
+            loading = false;
+        } 
+    }
+    /*  async function register_cronograma(id) {
         let vc_equipo = document.getElementById("c_equipo")?.value;
         let vc_enero = document.getElementById("c_enero")?.value;
         let vc_febrero = document.getElementById("c_febrero")?.value;
@@ -787,7 +821,7 @@
         } catch (error) {
             console.error("Error de red:", error);
         }
-    }*/
+        }*/
 
 </script>
 
@@ -893,7 +927,7 @@
                                     </td>
                                     <td class="px-2 py-2 border">
                                         <button class="btn btn-success"
-                                            on:click={()=>{activeElement="a";perfil(todo.id)}}>Ver</button
+                                            on:click={()=>{activeElement="none";perfil(todo.id)}}>Ver</button
                                         >
                                     </td>
                                 </tr>
@@ -1114,11 +1148,6 @@
                             <h5 class="card-title col-lg-11">
                                 <b>Editando maquina</b>
                             </h5>
-                            <button
-                                class="btn btn-close col-lg-1"
-                                aria-label="Cerrar edición de usuario"
-                                on:click={() => {activeElement = 'mostrar'; cerrar()}}
-                            ></button>
                         </div>
                         <div class="card-body" style="margin-left: 10%;">
                             <div class="row">
@@ -1378,6 +1407,82 @@
                                                                 <button class="btn btn-success"
                                                                     on:click={()=>{activeElement="mostrarb";perfil_maquina(todos_inventario.id)}}>Editar</button
                                                                 >
+                                                                <button class="btn btn-success"
+                                                                    on:click={()=>{activeElement="mostrarh";historial(todos_inventario.id)}}>OS</button
+                                                                >
+                                                            </td>
+                                                        </tr>
+                                                    {/each}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    {/if}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div hidden={activeElement !== 'mostrarh'} class="card border-dark shadow" id="historico_os" style="">
+                        <div class="card-header row g-2">
+                            <h5 class="card-title col-lg-11">
+                                <b>Inventario</b>
+                            </h5>
+                        </div>
+                        
+                        <div class="card-body" style="">
+                            <div id="tablita">
+                                <div class="container py-4">
+                                    <h2 class="mb-4">Historial del equipo</h2>
+                                    {#if loading}
+                                        <div class="row g-2 justify-content-center">
+                                            <p
+                                                class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
+                                            >
+                                                Cargando datos...
+                                            </p>
+                                            <div
+                                                class="spinner-border col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4"
+                                                role="status"
+                                            >
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                        </div>
+                                    {:else if error}
+                                        <p class="text-red-500">Error: {error}</p>
+                                    {:else}
+                                        <div class="">
+                                            <table 
+                                                class="min-w-full bg-white border border-gray-300" style="width:100%; font-size: 12px;"
+                                                id="myhistorico"
+                                            >
+                                                <thead>
+                                                    <tr>
+                                                        <th class="px-2 py-2 border">Nombre</th>
+                                                        <th class="px-2 py-2 border">Serie</th>
+                                                        <th class="px-2 py-2 border">Descripcion de os</th>
+                                                        <th class="px-2 py-2 border">Tecnico a cargo</th>
+                                                        <th class="px-2 py-2 border">Estado del equipo en el momento</th>
+                                                        <th class="px-2 py-2 border">Fecha</th>
+                                                        <th class="px-2 py-2 border">Opciones</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    {#each todos_h as todos_historico}
+                                                        <tr class="hover:bg-gray-50">
+                                                            <td class="px-3 py-2 border">{todos_historico.Equipo}</td>
+                                                            <td class="px-3 py-2 border">{todos_historico.Serie}</td>
+                                                            <td class="px-3 py-2 border">{todos_historico.Descripcion}</td>
+                                                            <td class="px-3 py-2 border">{todos_historico.Tecnico}</td>
+                                                            <td class="px-3 py-2 border">{todos_historico.Estado}</td>
+
+                                                            <td class="px-3 py-2 border">{todos_historico.Fecha}</td>
+
+
+                                                            <td class="px-3 py-2 border">
+                                                                <button class="btn btn-info">
+                                                                    Descargar
+                                                                </button>
                                                             </td>
                                                         </tr>
                                                     {/each}
