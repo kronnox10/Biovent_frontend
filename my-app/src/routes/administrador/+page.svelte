@@ -11,26 +11,40 @@
 </div>
     <div class="container">
         <div class="row" style="margin-top: -6%;">
-            <div class="col-3 text-center" style="margin-top: 15rem">
+            <div class="col-2" style="margin-top: 14rem">
                 <a href="/administrador/cliente">
                     <img
                         src="/admin_v/persona.png"
                         alt=""
-                        width="125"
-                        height="125"
+                        width="100"
+                        height="100"
                         id="cliente_si"
                     />
                 </a>
                 <div><p class="fs-2 text-white">Cliente</p></div>
             </div>
 
-            <div class="col-3 text-center" style="margin-top: 15rem">
+            <div class="col-2" style="margin-top: 14rem">
+                <a href="/administrador/cronograma">
+                    <img
+                        src="/admin_v/persona.png"
+                        alt=""
+                        width="100"
+                        height="100"
+                        id="cliente_si"
+                    />
+                </a>
+                <div><p class="fs-2 text-white">Cronogramas</p></div>
+            </div>
+
+
+            <div class="col-2" style="margin-top: 14rem">
                 <a href="/administrador/tecnico">
                     <img
                         src="/admin_v/tecnico.png"
                         alt=""
-                        width="125"
-                        height="125"
+                        width="100"
+                        height="100"
                         id="tecnico_si"
                     />
                 </a>
@@ -38,13 +52,13 @@
                 <div><p class="fs-2 text-white">Tecnico</p></div>
             </div>
 
-            <div class="col-3 text-center" style="margin-top: 15rem">
+            <div class="col-2" style="margin-top: 14rem">
                 <a href="/administrador/os">
                     <img
                         src="/admin_v/os.png"
                         alt=""
-                        width="125"
-                        height="125"
+                        width="100"
+                        height="100"
                         id="os_si"
                     />
                 </a>
@@ -52,13 +66,13 @@
                 <div><p class="fs-2 text-white">OS</p></div>
             </div>
 
-            <div class="col-3 text-center" style="margin-top: 15rem">
+            <div class="col-2" style="margin-top: 14rem">
                 <a href="/administrador/perfil">
                     <img
                         src="/admin_v/persona.png"
                         alt=""
-                        width="125"
-                        height="125"
+                        width="100"
+                        height="100"
                         id="cliente_si"
                     />
                 </a>

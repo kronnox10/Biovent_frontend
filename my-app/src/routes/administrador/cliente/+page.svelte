@@ -515,7 +515,9 @@
                 if ( data!=null && data.resultado && data.resultado.length > 0) {
             todos_cronograma = data.resultado;
             setTimeout(() => {
-                globalThis.$("#mycronos").DataTable(); 
+                globalThis.$("#mycronos").DataTable({
+                    ordering: false
+                }); 
             }, 0);
             } else {
                 todos_cronograma = [];
@@ -839,6 +841,7 @@
             <h2 class="mb-4">Lista de usuarios</h2>
 
             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#creacion_user">Crear usuario</button>
+            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#creacion_cronograma">Crear cr</button>
 
             {#if loading}
                 <!---->
@@ -1533,75 +1536,45 @@
                                         <p class="text-red-500">Error: {error}</p>
                                     {:else}
                                         <div class="overflow-x-auto">
-                                            <table
-                                                class="min-w-full bg-white border border-gray-300" style="width:100%; font-size: 11px;"
-                                                id="mycronos"
-                                            >
+                                            <table class="w-full border border-dark-300" style="background-color: #8db4e2; border: 2px black solid; width: 100%; font-size: 11px;" id="mycronos">
                                                 <thead>
-                                                    <tr>
-                                                        <th class="px-2 py-2 border">Equipo</th>
-                                                        <th class="px-2 py-2 border">Enero</th>
-                                                        <th class="px-2 py-2 border">Febrero</th>
-                                                        <th class="px-2 py-2 border">Marzo</th>
-                                                        <th class="px-2 py-2 border">Abril</th>
-                                                        <th class="px-2 py-2 border">Mayo</th>
-                                                        <th class="px-2 py-2 border">Junio</th>
-                                                        <th class="px-2 py-2 border">Julio</th>
-                                                        <th class="px-2 py-2 border">Agosto</th>
-                                                        <th class="px-2 py-2 border">Septiembre</th>
-                                                        <th class="px-2 py-2 border">Octubre</th>
-                                                        <th class="px-2 py-2 border">Noviembre</th>
-                                                        <th class="px-2 py-2 border">Diciembre</th>
+                                                    <tr class="">
+                                                        <th class="text-center border border-dark" style="width: 30%;">EQUIPOS</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">ENE</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">FEB</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">MAR</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">ABR</th>
+                                                        <th class="text-center border border-dark" style="width: 13px; height: 5px">MAY</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">JUN</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">JUL</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">AGO</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">SEP</th> 
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">OCT</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">NOV</th>
+                                                        <th class="text-center border border-dark" style="width: 15px; height: 5px">DIC</th>
                                                     </tr>
                                                 </thead>
-                        
                                                 <tbody>
                                                     {#each todos_cronograma as todo}
-                                                        <tr class="hover:bg-gray-50">
-                                                            <td class="px-4 py-2 border"
-                                                                >{todo.equipo}</td
-                                                            >
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.enero ? 'green' : 'red'};">
-                                                            
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.febrero ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.marzo ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.abril ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.mayo ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.junio ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.julio ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.agosto ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.septiembre ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.octubre ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.noviembre ? 'green' : 'red'};">
-                                                                
-                                                            </td>
-                                                            <td class="px-4 py-2 border" style="background-color: {todo.diciembre ? 'green' : 'red'};">
-                                                                
-                                                            </td>
+                                                        <tr class="hover:bg-gray-50 border border-dark">
+                                                            <td class="border border-dark" style="background-color: #c5d9f1 ; width: 30%;">{todo.equipo}</td>
+                                                            <td class="border border-dark" style="background-color: {todo.enero ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.febrero ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.marzo ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.abril ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.mayo ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.junio ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.julio ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.agosto ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.septiembre ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.octubre ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.noviembre ? '#336497' : '#c5d9f1'};"></td>
+                                                            <td class="border border-dark" style="background-color: {todo.diciembre ? '#336497' : '#c5d9f1'};"></td>
                                                         </tr>
                                                     {/each}
                                                 </tbody>
                                             </table>
-                                        </div>
+                                        </div>                                    
                                     {/if}
                                 </div>
                             </div>
@@ -2145,7 +2118,7 @@
     </div>
 </div>
 
- <!-- Modal de creacion de cronograma 
+ <!-- Modal de creacion de cronograma -->
  <div class="modal fade" id="creacion_cronograma" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -2266,7 +2239,7 @@
             </div>
         </div>
     </div>
-</div>-->
+</div>
 
 
 <style>
