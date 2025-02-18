@@ -433,7 +433,9 @@
                 <div class="card-body" style="">
                     <div id="Mostrarusuario">
                         <div class="container py-4">
-                            {#if loading}
+                            </div>
+                                {#if loading}
+                                <!---->
                                 <div class="row g-2 justify-content-center mt-2">
                                     <p
                                         class="text-center col-lg-2 col-md-2 col-sm-2 col-12 col-xl-2"
@@ -451,75 +453,45 @@
                                 <p class="text-red-500">Error: {error}</p>
                             {:else}
                                 <div class="overflow-x-auto">
-                                    <table
-                                        class="min-w-full bg-white border border-gray-300" style="width:100%; font-size: 11px;"
-                                        id="mycronos"
-                                    >
+                                    <table class="w-full border border-dark-300" style="background-color: #8db4e2; border: 2px black solid; width: 100%; font-size: 11px;" id="mycronos">
                                         <thead>
-                                            <tr>
-                                                <th class="px-2 py-2 border">Equipo</th>
-                                                <th class="px-2 py-2 border">Enero</th>
-                                                <th class="px-2 py-2 border">Febrero</th>
-                                                <th class="px-2 py-2 border">Marzo</th>
-                                                <th class="px-2 py-2 border">Abril</th>
-                                                <th class="px-2 py-2 border">Mayo</th>
-                                                <th class="px-2 py-2 border">Junio</th>
-                                                <th class="px-2 py-2 border">Julio</th>
-                                                <th class="px-2 py-2 border">Agosto</th>
-                                                <th class="px-2 py-2 border">Septiembre</th>
-                                                <th class="px-2 py-2 border">Octubre</th>
-                                                <th class="px-2 py-2 border">Noviembre</th>
-                                                <th class="px-2 py-2 border">Diciembre</th>
+                                            <tr class="">
+                                                <th class="text-center border border-dark" style="width: 30%;">EQUIPOS</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">ENE</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">FEB</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">MAR</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">ABR</th>
+                                                <th class="text-center border border-dark" style="width: 13px; height: 5px">MAY</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">JUN</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">JUL</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">AGO</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">SEP</th> 
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">OCT</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">NOV</th>
+                                                <th class="text-center border border-dark" style="width: 15px; height: 5px">DIC</th>
                                             </tr>
                                         </thead>
-                
                                         <tbody>
                                             {#each todos_cronograma as todo}
-                                                <tr class="hover:bg-gray-50">
-                                                    <td class="px-4 py-2 border"
-                                                        >{todo.equipo}</td
-                                                    >
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.enero ? 'green' : 'red'};">
-                                                    
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.febrero ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.marzo ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.abril ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.mayo ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.junio ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.julio ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.agosto ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.septiembre ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.octubre ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.noviembre ? 'green' : 'red'};">
-                                                        
-                                                    </td>
-                                                    <td class="px-4 py-2 border" style="background-color: {todo.diciembre ? 'green' : 'red'};">
-                                                        
-                                                    </td>
+                                                <tr class="hover:bg-gray-50 border border-dark">
+                                                    <td class="border border-dark" style="background-color: #c5d9f1 ; width: 30%;">{todo.equipo}</td>
+                                                    <td class="border border-dark" style="background-color: {todo.enero ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.febrero ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.marzo ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.abril ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.mayo ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.junio ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.julio ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.agosto ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.septiembre ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.octubre ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.noviembre ? '#336497' : '#c5d9f1'};"></td>
+                                                    <td class="border border-dark" style="background-color: {todo.diciembre ? '#336497' : '#c5d9f1'};"></td>
                                                 </tr>
                                             {/each}
                                         </tbody>
                                     </table>
-                                </div>
+                                </div>                                    
                             {/if}
                         </div>
                     </div>
@@ -527,8 +499,6 @@
             </div>
         </div>
     </div>
-
-</div>
 
 
 <div class="modal fade" id="solicitar_os" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">

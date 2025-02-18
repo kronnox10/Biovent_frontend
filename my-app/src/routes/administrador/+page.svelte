@@ -11,7 +11,7 @@
 </div>
     <div class="container">
         <div class="row" style="margin-top: -6%;">
-            <div class="col-2" style="margin-top: 14rem">
+            <div class="col" style="margin-top: 14rem">
                 <a href="/administrador/cliente">
                     <img
                         src="/admin_v/persona.png"
@@ -21,24 +21,24 @@
                         id="cliente_si"
                     />
                 </a>
-                <div><p class="fs-2 text-white">Cliente</p></div>
+                <div><p class="fs-2">Cliente</p></div>
             </div>
 
-            <div class="col-2" style="margin-top: 14rem">
+            <div class="col me-3" style="margin-top: 14rem">
                 <a href="/administrador/cronograma">
-                    <img
-                        src="/admin_v/persona.png"
+                    <img class="ms-5"
+                        src="/admin_v/cronograma(1).png"
                         alt=""
                         width="100"
                         height="100"
-                        id="cliente_si"
+                        id="cronograma_si"
                     />
                 </a>
-                <div><p class="fs-2 text-white">Cronogramas</p></div>
+                <div><p class="fs-2">Cronogramas</p></div>
             </div>
 
 
-            <div class="col-2" style="margin-top: 14rem">
+            <div class="col ms-5" style="margin-top: 14rem">
                 <a href="/administrador/tecnico">
                     <img
                         src="/admin_v/tecnico.png"
@@ -49,10 +49,10 @@
                     />
                 </a>
 
-                <div><p class="fs-2 text-white">Tecnico</p></div>
+                <div><p class="fs-2">Tecnico</p></div>
             </div>
 
-            <div class="col-2" style="margin-top: 14rem">
+            <div class="col ms-3" style="margin-top: 14rem">
                 <a href="/administrador/os">
                     <img
                         src="/admin_v/os.png"
@@ -63,10 +63,10 @@
                     />
                 </a>
 
-                <div><p class="fs-2 text-white">OS</p></div>
+                <div><p class="fs-2 ms-4">OS</p></div>
             </div>
 
-            <div class="col-2" style="margin-top: 14rem">
+            <div class="col" style="margin-top: 14rem">
                 <a href="/administrador/perfil">
                     <img
                         src="/admin_v/persona.png"
@@ -76,7 +76,7 @@
                         id="cliente_si"
                     />
                 </a>
-                <div><p class="fs-2 text-white">Perfil</p></div>
+                <div><p class="fs-2 ms-3">Perfil</p></div>
             </div>
         </div>
     </div>
@@ -93,6 +93,15 @@
     }
     #os_si:hover {
         content: url('/admin_v/os (1).png');
+    }
+    #cronograma_si:hover {
+        content: url('/admin_v/cronograma.png');
+    }
+
+    p {
+        color: white;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0);
     }
 
 </style>

@@ -124,8 +124,6 @@
                 
                 const data = await response.json();
                 todos = data.resultado;
-                console.log("verificando todoss de os_oese", todos)
-
 
                 if (data.resultado && data.resultado.length > 0) {
               
@@ -156,6 +154,7 @@
                 
                 const data = await response.json();
                 todos = data.resultado;
+                console.log("verificando todoss de os_oese", todos)
 
                 if (data.resultado && data.resultado.length > 0) {
               
@@ -1225,6 +1224,7 @@ console.log(id_os+"maq:"+id_de_la_maquina+"maqdue:"+id_del_dueño )
                         <div class="card my-3">
                             <div class="card-body">
                                 <h5 class="card-title mb-2">{readys.nombre_maquina}</h5>
+                                <p class="card-text">Serial: {readys.serial}</p>
                                 <p class="card-text">Cliente: {readys.usuario_cliente}</p>
                                 <p class="card-text">Descripcion: {readys.descripcion}</p>
                                 <p class="card-text mb-2"><b>Estado:</b><span class={readys.estado? "text-success":"text-danger"}> {readys.estado ? " En tramite" : " Corregido"}</span></p>

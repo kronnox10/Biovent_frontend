@@ -9,7 +9,7 @@
 
     onMount(async () => {
         try {
-            const response = await fetch("http://127.0.0.1:8000/gealls");
+            const response = await fetch("https://biovent-backend.onrender.com/gealls");
             if (!response.ok) throw new Error("Error al cargar los datos");
             const data = await response.json();
             todos_cronograma = data.resultado;
@@ -25,15 +25,15 @@
         }
     });
 
-    function cerrar() {
+   /* function cerrar() {
         location.reload()
-    }
+    }*/
 
     async function cronograma_individual(id) {
         v_id_usuario=id
         console.log("id usuario" ,v_id_usuario)
         try {
-            const response = await fetch("http://127.0.0.1:8000/getcronobyuser",{
+            const response = await fetch("https://biovent-backend.onrender.com/getcronobyuser",{
             method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -213,3 +213,13 @@
             </div>
         </div>
     </div>
+
+<style>
+    .fa{
+        color: black;
+    }
+    .fa:hover{
+        cursor: pointer;
+        color: gray;
+    }
+</style>

@@ -327,7 +327,7 @@
         }
     }
 
-    async function enviar_crono() {
+    /*async function enviar_crono() {
         const input = document.getElementById("archivo_c");
         file = input.files[0];
         console.log(file);
@@ -373,7 +373,7 @@
             }
         } else {
         }
-    }
+    }*/
 
     async function Asignar_tecnico(){
         try {
@@ -521,7 +521,7 @@
             }, 0);
             } else {
                 todos_cronograma = [];
-                error = "No hay ninguna cronograma registrado a este usuario";
+                error = "No hay ningun cronograma registrado a este usuario";
             }
         } catch (e) {
             error = e.message;
@@ -743,7 +743,8 @@
             loading = false;
         } 
     }
-    /*  async function register_cronograma(id) {
+    
+    async function register_cronograma(id) {
         let vc_equipo = document.getElementById("c_equipo")?.value;
         let vc_enero = document.getElementById("c_enero")?.value;
         let vc_febrero = document.getElementById("c_febrero")?.value;
@@ -785,8 +786,8 @@
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        id_user: v_id_usuario,
-                        nombre: vc_equipo,
+                        id_usuario: v_id_usuario,
+                        equipo: vc_equipo,
                         enero: vc_enero,
                         febrero: vc_febrero,
                         marzo: vc_marzo,
@@ -823,7 +824,7 @@
         } catch (error) {
             console.error("Error de red:", error);
         }
-        }*/
+    }
 
 </script>
 
@@ -841,8 +842,7 @@
             <h2 class="mb-4">Lista de usuarios</h2>
 
             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#creacion_user">Crear usuario</button>
-            <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#creacion_cronograma">Crear cr</button>
-
+            
             {#if loading}
                 <!---->
                 <div class="row g-2 justify-content-center">
@@ -1513,9 +1513,10 @@
                             <div id="Mostrarusuario">
                                 <div class="container py-4">
                                     <div class="text-center mb-3">
-                                        <button class="btn btn-dark col-lg-3" data-bs-toggle="modal" data-bs-target="#cargue_cronograma">Cargar de excel</button>
-                                        <button class="btn btn-dark col-lg-3" on:click={descargar_tabla()}>Descargar plantilla cronograma</button>
-                                        <button class="btn btn-dark col-lg-3" on:click={limpiarCronograma()}>Limpiar cronograma</button>
+                                        <!--<button class="btn btn-dark col-lg-3" data-bs-toggle="modal" data-bs-target="#cargue_cronograma">Cargar de excel</button>
+                                        <button class="btn btn-dark col-lg-3" on:click={descargar_tabla()}>Descargar plantilla cronograma</button>-->
+                                        <button class="btn btn-dark col" data-bs-toggle="modal" data-bs-target="#creacion_cronograma">Crear cronograma</button>
+                                        <button class="btn btn-dark col" on:click={limpiarCronograma()}>Limpiar cronograma</button>
                                     </div>
                                         {#if loading}
                                         <!---->
@@ -2091,7 +2092,7 @@
 </div>
 
 
-<!-- Modal de cargue de cronogramas -->
+<!-- Modal de cargue de cronogramas
 <div class="modal fade" id="cargue_cronograma" tabindex="-1" aria-labelledby="rModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -2116,7 +2117,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 
  <!-- Modal de creacion de cronograma -->
  <div class="modal fade" id="creacion_cronograma" tabindex="-1" aria-labelledby="rModalLabel" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
@@ -2235,7 +2236,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-info" on:click={register_cronograma(v_id_usuario)}> Crear </button>
+                <button class="btn btn-info" on:click={() => register_cronograma(v_id_usuario)}> Crear </button>
             </div>
         </div>
     </div>
