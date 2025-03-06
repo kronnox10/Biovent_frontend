@@ -18,7 +18,7 @@
         <a target="" href="/">
             <img
                 src="foto_logo__2_-removebg-preview.png"
-                width="125"
+                width="119"
                 height="100"
                 id=""
                 alt=""
@@ -63,7 +63,7 @@
                     </li>
                 </ul>
 
-                <a href="/Login" class="icon_container">
+                <a href="https://oxford-frontend.onrender.com/" class="icon_container">
                     <img src="/usuario.png" alt="..." width="45" height="45" style="margin-right: 1vw;">
                 </a>
                 <form class="d-flex  " style="padding-right: 11vw;">

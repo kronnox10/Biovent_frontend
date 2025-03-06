@@ -16,26 +16,26 @@ http://26.135.80.104:5173/
 
 
 
- 3.- --> acceder al entorno
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
-cd myvenv       
-cd .\Scripts\ 
-.\activate
-cd..
-cd..
-cd app
-fastapi dev main.py
+3.- --> acceder al entorno
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+    cd myvenv       
+    cd .\Scripts\ 
+    .\activate
+    cd..
+    cd..
+    cd app
+    fastapi dev main.py
 
 
 
 ------------------------------------------------------------------------------------------
 
 Para importar svelte
-1.npx sv create my-app​    
-2.SvelteKit minimal (barebones scaffolding for your new app)
-3.No
-4.None(dar enter)
-5.npm
+    1.npx sv create my-app​    
+    2.SvelteKit minimal (barebones scaffolding for your new app)
+    3.No
+    4.None(dar enter)
+    5.npm
 
 --> librerias(dentro del cd app antes de correr el  fastapi dev main.py)
     pip install mysql-connector-python
@@ -43,8 +43,8 @@ Para importar svelte
     
 
 Para cargar el svelte: 
-cd my-app
- npm run dev -- --open
+    cd my-app
+    npm run dev -- --host
 
 
 pip install fastapi
