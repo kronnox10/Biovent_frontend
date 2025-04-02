@@ -347,7 +347,7 @@
                                         <tr>
                                             <th class="px-3 py-2 border">Nombre</th>
                                             <th class="px-3 py-2 border">Serial</th>
-                                            <th class="px-3 py-2 border">Ubicacion</th>
+                                            <th class="px-1 py-2 border">Ubicacion</th>
                                             <th class="px-3 py-2 border">Sede</th>
                                             <th class="px-3 py-2 border">Estado</th>
                                             <th class="px-3 py-2 border">Descripcion de estado</th>
@@ -366,7 +366,7 @@
                                                     >{todos_inventario.serial}</td
                                                 >
 
-                                                <td class="px-3 py-1 border"
+                                                <td class="px-1 py-1 border"
                                                     >{todos_inventario.ubicacion}</td
                                             >
 

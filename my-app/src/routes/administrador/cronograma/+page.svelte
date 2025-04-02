@@ -25,9 +25,9 @@
         }
     });
 
-   /* function cerrar() {
+    function cerrar() {
         location.reload()
-    }*/
+    }
 
     async function cronograma_individual(id) {
         v_id_usuario=id
@@ -46,6 +46,7 @@
             todos_cronograma_individual = data.resultado;
             console.log("todos",todos_cronograma_individual)
 
+            
             setTimeout(() => {
                 globalThis.$("#mycronos").DataTable({
                     ordering: false

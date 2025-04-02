@@ -20,6 +20,7 @@
     var file = null;
 
     let vu_nombre = "";
+    let vu_usuario = "";
     let vu_correo = "";
     let vu_contraseña = "";
     let vu_user = "";
@@ -843,6 +844,10 @@
 
             <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#creacion_user">Crear usuario</button>
             
+            <a href="/administrador/preventivos">
+                <button class="btn btn-dark">preventivos</button>
+            </a>
+
             {#if loading}
                 <!---->
                 <div class="row g-2 justify-content-center">
@@ -2155,78 +2160,78 @@
                                         <div class="mt-2 col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4">
                                             <label for="c_enero">Enero:</label>
                                             <select class="form-select" id="c_enero" name="mes1">
-                                                <option value=true>Si</option>
                                                 <option value=false>No</option>
+                                                <option value=true>Si</option>
                                             </select>
                         
                                             <label for="c_febrero">Febrero:</label>
                                             <select class="form-select"  id="c_febrero" name="mes2">
-                                                <option value=true>Si</option>
                                                 <option value=false>No</option>
+                                                <option value=true>Si</option>
                                             </select>
                                         
                                             <label for="c_marzo">Marzo:</label>
                                             <select class="form-select" id="c_marzo" name="mes3">
-                                                <option value=true>Si</option>
                                                 <option value=false>No</option>
+                                                <option value=true>Si</option>
                                             </select>
                                         
                                             <label for="c_abril">Abril:</label>
                                             <select class="form-select" id="c_abril" name="mes4">
-                                                <option value=true>Si</option>
                                                 <option value=false>No</option>
+                                                <option value=true>Si</option>
                                             </select>
                                         </div>
                                     
                                         <div class="mt-2 col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4">
                                             <label for="c_mayo">Mayo:</label>
                                             <select class="form-select" id="c_mayo" name="mes5">
-                                                <option value=true>Si</option>
                                                 <option value=false>No</option>
+                                                <option value=true>Si</option>
                                             </select>
 
                                             <label for="c_junio">Junio:</label>
                                             <select class="form-select" id="c_junio" name="mes6">
-                                                <option value=true>Si</option>
                                                 <option value=false>No</option>
+                                                <option value=true>Si</option>
                                             </select>
                                         
                                             <label for="c_julio">Julio:</label>
                                             <select class="form-select" id="c_julio" name="mes7">
-                                                <option value=1>Si</option>
                                                 <option value=0>No</option>
+                                                <option value=1>Si</option>
                                             </select>
                                     
                                             <label for="c_agosto">Agosto:</label>
                                             <select class="form-select" id="c_agosto" name="mes8">
-                                                <option value=1>Si</option>
                                                 <option value=0>No</option>
+                                                <option value=1>Si</option>
                                             </select>
                                         </div>
                                         
                                         <div class="mt-2 col-lg-4 col-md-4 col-sm-4 col-12 col-xl-4">
                                             <label for="c_septiembre">Septiembre:</label>
                                             <select class="form-select" id="c_septiembre" name="mes9">
-                                                <option value=1>Si</option>
                                                 <option value=0>No</option>
+                                                <option value=1>Si</option>
                                             </select>
                                         
                                             <label for="c_octubre">Octubre:</label>
                                             <select class="form-select" id="c_octubre" name="mes10">
-                                                <option value=1>Si</option>
                                                 <option value=0>No</option>
+                                                <option value=1>Si</option>
                                             </select>
                                     
                                             <label for="c_noviembre">Noviembre:</label>
                                             <select class="form-select" id="c_noviembre" name="mes11">
-                                                <option value=1>Si</option>
                                                 <option value=0>No</option>
+                                                <option value=1>Si</option>
                                             </select>
 
                                             <label for="c_diciembre">Diciembre:</label>
                                             <select class="form-select" id="c_diciembre" name="mes12">
-                                                <option value=1>Si</option>
                                                 <option value=0>No</option>
+                                                <option value=1>Si</option>
                                             </select>
                                         </div>
                                     </div>

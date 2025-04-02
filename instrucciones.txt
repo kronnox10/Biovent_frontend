@@ -45,6 +45,7 @@ Para importar svelte
 Para cargar el svelte: 
     cd my-app
     npm run dev -- --host
+                     open
 
 
 pip install fastapi
