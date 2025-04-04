@@ -19,6 +19,14 @@
             style="font-size: 3em; color: #white;"
         ></i>
     </a>
+    
+    <a href="https://youtube.com/@bioventingenieriabiomedica2022?si=4JzMMIPis04Yagti" class="youtube" target="_blank" aria-label="Icono de whats">
+        <i
+            class="fab fa-youtube"
+            id="youtube"
+            style="font-size: 3em; color: #white;"
+        ></i>
+    </a>
 </div>
 
 <style>
@@ -52,6 +60,10 @@
 
     .social-icons a.whatsapp {
         background-color: #15dd0f;
+    }
+
+    .social-icons a.youtube {
+        background-color: #dd0f0f;
     }
     
     .social-icons a:hover {
